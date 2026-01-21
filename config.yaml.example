@@ -1,0 +1,25 @@
+# Configuration for 4factors-rnn-analysis
+# Copy this file to config.yaml and edit paths for your system
+
+# Data paths (EDIT THESE)
+data_root: "/path/to/OneDrive/Neuronal Data Analysis/4factors-analysis-pipeline/data"
+export_dir: "data/"  # Where exported .mat files go
+results_dir: "results/"  # Where trained models go
+
+# Default session for testing
+default_session: "Feynman_08_15_2025_SC"
+
+# Training defaults
+training:
+  max_epochs: 1000
+  patience: 100
+  learning_rate: 0.001
+  lambda_reg: 0.0001
+  enforce_ratio: true  # 4:1 E:I ratio
+  seed: 42
+
+# Model defaults
+model:
+  tau: 50.0  # Time constant (ms)
+  noise_scale: 0.01
+  spectral_radius: 0.9
