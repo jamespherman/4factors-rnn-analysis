@@ -193,30 +193,158 @@ def plot_training_curves(history: dict, save_path: str):
     plt.close()
 
 
+def plot_psth_comparison(
+    model: EIRNN,
+    data: dict,
+    neuron_info: dict,
+    device: str,
+    save_path: str,
+    n_best: int = 3,
+    n_worst: int = 3
+):
+    """
+    Plot PSTH comparison for best and worst fitting neurons.
+
+    Args:
+        model: Trained EIRNN model
+        data: Data dict with inputs, targets, mask
+        neuron_info: Dict with n_exc, n_inh counts
+        device: Device to run model on
+        save_path: Path to save the figure
+        n_best: Number of best-fitting neurons to plot
+        n_worst: Number of worst-fitting neurons to plot
+    """
+    model.eval()
+
+    with torch.no_grad():
+        inputs = data['inputs'].to(device)
+        targets = data['targets'].to(device)
+
+        model_rates, _ = model(inputs)
+
+        # Trial-average
+        model_psth = model_rates.mean(dim=0).cpu().numpy()  # [time, neurons]
+        target_psth = targets.mean(dim=0).cpu().numpy()
+
+    # Compute correlation per neuron
+    n_recorded = target_psth.shape[1]
+    correlations = []
+    for i in range(n_recorded):
+        r = np.corrcoef(model_psth[:, i], target_psth[:, i])[0, 1]
+        correlations.append(r if not np.isnan(r) else 0.0)
+    correlations = np.array(correlations)
+
+    # Get neuron types
+    n_exc = neuron_info['n_exc']
+    neuron_types = ['E'] * n_exc + ['I'] * (n_recorded - n_exc)
+
+    # Sort by correlation
+    sorted_idx = np.argsort(correlations)[::-1]  # Best first
+
+    best_idx = sorted_idx[:n_best]
+    worst_idx = sorted_idx[-n_worst:][::-1]  # Worst last
+
+    # Time axis (assuming 25ms bins)
+    time_bins = np.arange(target_psth.shape[0]) * 25 / 1000  # Convert to seconds
+
+    # Create figure
+    n_rows = n_best + n_worst
+    fig, axes = plt.subplots(n_rows, 1, figsize=(12, 2.5 * n_rows))
+
+    # Plot best neurons
+    for i, idx in enumerate(best_idx):
+        ax = axes[i]
+        ax.plot(time_bins, target_psth[:, idx], 'b-', linewidth=2, label='Target')
+        ax.plot(time_bins, model_psth[:, idx], 'r--', linewidth=2, label='Model')
+        ax.set_ylabel('Firing Rate\n(sp/s)')
+        ax.set_title(f'BEST #{i+1}: Neuron {idx} ({neuron_types[idx]}) - r = {correlations[idx]:.3f}',
+                    fontsize=12, fontweight='bold', color='green')
+        if i == 0:
+            ax.legend(loc='upper right')
+        ax.grid(True, alpha=0.3)
+
+    # Plot worst neurons
+    for i, idx in enumerate(worst_idx):
+        ax = axes[n_best + i]
+        ax.plot(time_bins, target_psth[:, idx], 'b-', linewidth=2, label='Target')
+        ax.plot(time_bins, model_psth[:, idx], 'r--', linewidth=2, label='Model')
+        ax.set_ylabel('Firing Rate\n(sp/s)')
+        ax.set_title(f'WORST #{i+1}: Neuron {idx} ({neuron_types[idx]}) - r = {correlations[idx]:.3f}',
+                    fontsize=12, fontweight='bold', color='red')
+        ax.grid(True, alpha=0.3)
+
+    axes[-1].set_xlabel('Time (s)')
+
+    plt.tight_layout()
+    plt.savefig(save_path, dpi=150)
+    plt.close()
+
+    print(f"PSTH comparison plot saved to: {save_path}")
+
+    # Return summary stats
+    return {
+        'best_idx': best_idx.tolist(),
+        'worst_idx': worst_idx.tolist(),
+        'best_corr': correlations[best_idx].tolist(),
+        'worst_corr': correlations[worst_idx].tolist(),
+        'best_types': [neuron_types[i] for i in best_idx],
+        'worst_types': [neuron_types[i] for i in worst_idx],
+    }
+
+
 def train(
     data_path: str,
     output_dir: str,
     max_epochs: int = 1000,
     patience: int = 100,
     lr: float = 1e-3,
-    lambda_reg: float = 1e-4,
+    lambda_neuron: float = 1.0,
+    lambda_trial: float = 1.0,
+    lambda_reg: float = 1e-3,
+    normalize_psth: bool = True,
     enforce_ratio: bool = True,
     device: str = 'cpu',
-    seed: int = 42
+    seed: int = 42,
+    warmup_epochs: int = 0,  # Disabled by default - warmup hurts performance
+    warmup_lambda_scale: float = 0.3,
+    warmup_lambda_var: float = 0.1,
+    post_warmup_lambda_scale: float = 0.1,
+    post_warmup_lambda_var: float = 0.05,
+    trial_ramp_epochs: int = 300,
+    bypass_dale: bool = False,
+    target_total: int = None
 ):
     """
-    Main training function.
-    
+    Main training function with curriculum learning.
+
+    Curriculum Learning Strategy:
+    - Warmup phase (epochs 0 to warmup_epochs): L_neuron only, higher scale/var weights
+    - Ramp phase (warmup_epochs to warmup_epochs + trial_ramp_epochs):
+      Gradually ramp L_trial from 0 to lambda_trial, transition lambda weights
+    - Full phase: All losses at full weight
+
     Args:
         data_path: Path to exported .mat file
         output_dir: Directory for outputs
         max_epochs: Maximum training epochs
         patience: Early stopping patience
         lr: Learning rate
+        lambda_neuron: Weight for PSTH (L_neuron) loss
+        lambda_trial: Weight for trial-matching (L_trial) loss (default 0.1 since raw is ~50x L_neuron)
         lambda_reg: Regularization strength
+        normalize_psth: If True, use z-score normalized PSTH loss (shape only).
+                       If False, use raw MSE (scale + shape).
         enforce_ratio: Whether to enforce 4:1 E:I ratio
         device: 'cpu' or 'cuda'
         seed: Random seed
+        warmup_epochs: Number of epochs for warmup (L_neuron only). Set to 0 to disable warmup.
+        warmup_lambda_scale: Lambda for scale loss during warmup
+        warmup_lambda_var: Lambda for variance loss during warmup
+        post_warmup_lambda_scale: Lambda for scale loss after warmup
+        post_warmup_lambda_var: Lambda for variance loss after warmup
+        trial_ramp_epochs: Epochs to ramp L_trial from 0 to lambda_trial after warmup (default 300)
+        bypass_dale: If True, disable Dale's law constraints (for debugging)
+        target_total: If specified, use this many total units (e.g., 200 for 160E+40I with 4:1 ratio)
     """
     # Setup
     torch.manual_seed(seed)
@@ -258,6 +386,8 @@ def train(
         n_interneuron=neuron_info['n_inh'],
         n_inputs=n_inputs,
         enforce_ratio=enforce_ratio,
+        bypass_dale=bypass_dale,
+        target_total=target_total,
         dt=float(dataset.bin_size_ms),
         device=device
     )
@@ -265,7 +395,8 @@ def train(
     # Loss function
     loss_fn = EIRNNLoss(
         bin_size_ms=dataset.bin_size_ms,
-        lambda_reg=lambda_reg
+        lambda_reg=lambda_reg,
+        use_gradient_normalization=True
     )
     
     # Optimizer
@@ -280,12 +411,23 @@ def train(
         'max_epochs': max_epochs,
         'patience': patience,
         'lr': lr,
+        'lambda_neuron': lambda_neuron,
+        'lambda_trial': lambda_trial,
         'lambda_reg': lambda_reg,
+        'normalize_psth': normalize_psth,
         'enforce_ratio': enforce_ratio,
         'seed': seed,
         'n_train': len(train_idx),
         'n_val': len(val_idx),
         'timestamp': datetime.now().isoformat(),
+        'warmup_epochs': warmup_epochs,
+        'warmup_lambda_scale': warmup_lambda_scale,
+        'warmup_lambda_var': warmup_lambda_var,
+        'post_warmup_lambda_scale': post_warmup_lambda_scale,
+        'post_warmup_lambda_var': post_warmup_lambda_var,
+        'trial_ramp_epochs': trial_ramp_epochs,
+        'bypass_dale': bypass_dale,
+        'target_total': target_total,
     }
     
     # Save config
@@ -301,24 +443,60 @@ def train(
         'train_L_neuron': [], 'val_L_neuron': [],
         'train_L_trial': [], 'val_L_trial': [],
         'train_psth_corr': [], 'val_psth_corr': [],
+        'stage': [],  # Track curriculum stage
     }
-    
-    best_val_loss = float('inf')
+
+    best_val_corr = float('-inf')  # Track best correlation (maximize)
     epochs_without_improvement = 0
-    
-    pbar = tqdm(range(max_epochs), desc="Training")
+
+    # Initialize warmup settings
+    loss_fn.lambda_trial = 0.0  # No trial loss during warmup
+    loss_fn.lambda_scale = warmup_lambda_scale
+    loss_fn.lambda_var = warmup_lambda_var
+
+    if warmup_epochs > 0:
+        print(f"\nCurriculum learning schedule:")
+        print(f"  Warmup (epochs 0-{warmup_epochs}): L_neuron only, lambda_scale={warmup_lambda_scale}, lambda_var={warmup_lambda_var}")
+        print(f"  Ramp (epochs {warmup_epochs}-{warmup_epochs + trial_ramp_epochs}): L_trial 0 -> {lambda_trial}")
+        print(f"  Full (epochs {warmup_epochs + trial_ramp_epochs}+): All losses at full weight")
+    else:
+        print(f"\nNo warmup - all losses active from start (lambda_trial={lambda_trial})")
+
+    pbar = tqdm(range(max_epochs), desc="Warmup")
     for epoch in pbar:
+        # Curriculum learning: fixed epoch-based transitions
+        if epoch < warmup_epochs:
+            # Warmup phase: L_neuron only
+            stage = "warmup"
+            loss_fn.lambda_trial = 0.0
+            loss_fn.lambda_scale = warmup_lambda_scale
+            loss_fn.lambda_var = warmup_lambda_var
+        elif epoch < warmup_epochs + trial_ramp_epochs:
+            # Ramp phase: gradually introduce L_trial, transition lambdas
+            ramp_progress = (epoch - warmup_epochs) / trial_ramp_epochs
+            loss_fn.lambda_trial = lambda_trial * ramp_progress
+            # Smoothly transition lambda_scale and lambda_var
+            loss_fn.lambda_scale = warmup_lambda_scale + (post_warmup_lambda_scale - warmup_lambda_scale) * ramp_progress
+            loss_fn.lambda_var = warmup_lambda_var + (post_warmup_lambda_var - warmup_lambda_var) * ramp_progress
+            stage = f"ramp"
+        else:
+            # Full phase: all losses at target weights
+            stage = "full"
+            loss_fn.lambda_trial = lambda_trial
+            loss_fn.lambda_scale = post_warmup_lambda_scale
+            loss_fn.lambda_var = post_warmup_lambda_var
+
         # Train
         train_metrics = train_epoch(model, train_data, loss_fn, optimizer, device)
         train_psth_corr = compute_psth_correlation(model, train_data, device)
-        
+
         # Validate
         val_metrics = validate(model, val_data, loss_fn, device)
         val_psth_corr = compute_psth_correlation(model, val_data, device)
-        
+
         # Update scheduler
         scheduler.step(val_metrics['total'])
-        
+
         # Record history
         history['train_total'].append(train_metrics['total'])
         history['val_total'].append(val_metrics['total'])
@@ -328,20 +506,23 @@ def train(
         history['val_L_trial'].append(val_metrics['L_trial'])
         history['train_psth_corr'].append(train_psth_corr)
         history['val_psth_corr'].append(val_psth_corr)
-        
+        history['stage'].append(stage)
+
         # Update progress bar
+        pbar.set_description(stage.capitalize() if stage != "full" else "Training")
         pbar.set_postfix({
             'train': f"{train_metrics['total']:.4f}",
             'val': f"{val_metrics['total']:.4f}",
             'corr': f"{val_psth_corr:.3f}",
+            'λ_trial': f"{loss_fn.lambda_trial:.2f}",
             'lr': f"{optimizer.param_groups[0]['lr']:.1e}"
         })
         
-        # Check for improvement
-        if val_metrics['total'] < best_val_loss:
-            best_val_loss = val_metrics['total']
+        # Check for improvement (using correlation - maximize)
+        if val_psth_corr > best_val_corr:
+            best_val_corr = val_psth_corr
             epochs_without_improvement = 0
-            
+
             # Save best model
             save_checkpoint(
                 model, optimizer, epoch,
@@ -351,10 +532,10 @@ def train(
             )
         else:
             epochs_without_improvement += 1
-        
-        # Early stopping
+
+        # Early stopping (based on correlation)
         if epochs_without_improvement >= patience:
-            print(f"\nEarly stopping at epoch {epoch}")
+            print(f"\nEarly stopping at epoch {epoch} (best val_corr={best_val_corr:.4f})")
             break
         
         # Periodic checkpoint
@@ -380,11 +561,24 @@ def train(
     
     # Plot training curves
     plot_training_curves(history, str(output_dir / 'training_curves.png'))
-    
+
+    # Plot PSTH comparison for best/worst neurons
+    print("\nGenerating PSTH comparison plots...")
+    psth_summary = plot_psth_comparison(
+        model, val_data, neuron_info, device,
+        str(output_dir / 'psth_comparison.png'),
+        n_best=3, n_worst=3
+    )
+
+    # Save PSTH summary
+    with open(output_dir / 'psth_summary.json', 'w') as f:
+        json.dump(psth_summary, f, indent=2)
+
     print("\n" + "="*60)
     print("Training complete!")
-    print(f"Best validation loss: {best_val_loss:.4f}")
+    print(f"Best validation correlation: {best_val_corr:.4f}")
     print(f"Final PSTH correlation: {val_psth_corr:.3f}")
+    print(f"Final stage: {stage}")
     print(f"Outputs saved to: {output_dir}")
     
     return model, history
@@ -397,21 +591,31 @@ def main():
     parser.add_argument('--epochs', type=int, default=1000, help='Max epochs')
     parser.add_argument('--patience', type=int, default=100, help='Early stopping patience')
     parser.add_argument('--lr', type=float, default=1e-3, help='Learning rate')
+    parser.add_argument('--lambda-neuron', type=float, default=1.0, help='Weight for PSTH loss')
+    parser.add_argument('--lambda-trial', type=float, default=1.0, help='Weight for trial-matching loss')
     parser.add_argument('--reg', type=float, default=1e-4, help='Regularization strength')
+    parser.add_argument('--raw-psth', action='store_true', help='Use raw MSE for PSTH loss (learn scale + shape)')
     parser.add_argument('--no-ratio', action='store_true', help='Disable 4:1 E:I ratio enforcement')
+    parser.add_argument('--bypass-dale', action='store_true', help='Disable Dale\'s law constraints (for debugging)')
+    parser.add_argument('--target-total', type=int, default=None, help='Target total units (e.g., 200 for 160E+40I)')
     parser.add_argument('--device', type=str, default='cpu', help='Device (cpu/cuda)')
     parser.add_argument('--seed', type=int, default=42, help='Random seed')
-    
+
     args = parser.parse_args()
-    
+
     train(
         data_path=args.data,
         output_dir=args.output,
         max_epochs=args.epochs,
         patience=args.patience,
         lr=args.lr,
+        lambda_neuron=args.lambda_neuron,
+        lambda_trial=args.lambda_trial,
         lambda_reg=args.reg,
+        normalize_psth=not args.raw_psth,
         enforce_ratio=not args.no_ratio,
+        bypass_dale=args.bypass_dale,
+        target_total=args.target_total,
         device=args.device,
         seed=args.seed
     )

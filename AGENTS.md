@@ -36,6 +36,13 @@ This repository fits excitatory-inhibitory RNNs to superior colliculus (SC) neur
 └── results/                  # Trained models and analysis outputs
 ```
 
+## First-Time Setup
+
+Always create/activate a virtual environment before running code:
+```bash
+python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
+```
+
 ## Key Technical Decisions
 
 ### Framework

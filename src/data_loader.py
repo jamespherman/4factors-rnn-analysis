@@ -15,19 +15,81 @@ from pathlib import Path
 def load_mat_file(filepath: str) -> dict:
     """
     Load exported .mat file from MATLAB pipeline.
-    
+
+    Handles both v7 (.mat) and v7.3 (HDF5) formats.
+
     Args:
         filepath: Path to .mat file
-    
+
     Returns:
         Dictionary with all data fields as numpy arrays
     """
-    data = sio.loadmat(filepath, squeeze_me=True, struct_as_record=False)
-    
-    # Remove MATLAB metadata fields
-    data = {k: v for k, v in data.items() if not k.startswith('__')}
-    
+    try:
+        # Try standard scipy.io first (for v7 and earlier)
+        data = sio.loadmat(filepath, squeeze_me=True, struct_as_record=False)
+        # Remove MATLAB metadata fields
+        data = {k: v for k, v in data.items() if not k.startswith('__')}
+    except NotImplementedError:
+        # v7.3 format requires h5py
+        import h5py
+        data = {}
+        with h5py.File(filepath, 'r') as f:
+            for key in f.keys():
+                if key.startswith('#'):
+                    continue
+                item = f[key]
+                if isinstance(item, h5py.Dataset):
+                    arr = item[()]
+                    # HDF5 stores in column-major order, transpose if needed
+                    if arr.ndim > 1:
+                        arr = arr.T
+                    # Convert bytes to string for string arrays
+                    if arr.dtype.kind == 'O' or arr.dtype == 'uint16':
+                        try:
+                            arr = np.array([
+                                ''.join(chr(c) for c in f[ref][:].flatten())
+                                for ref in arr.flatten()
+                            ]) if arr.dtype == 'O' else arr
+                        except:
+                            pass
+                    data[key] = np.squeeze(arr)
+
     return data
+
+
+def preprocess_firing_rates(firing_rates: np.ndarray, clip_percentile: float = 99.5) -> np.ndarray:
+    """
+    Preprocess firing rates: clip outliers, ensure non-negative.
+
+    Args:
+        firing_rates: [neurons, time, trials] or [trials, time, neurons] array
+        clip_percentile: Percentile for outlier clipping
+
+    Returns:
+        Preprocessed firing rates
+    """
+    # Handle NaN values for percentile calculation
+    valid_rates = firing_rates[~np.isnan(firing_rates)]
+
+    if len(valid_rates) == 0:
+        return firing_rates
+
+    # Compute clip threshold
+    clip_threshold = np.percentile(valid_rates, clip_percentile)
+
+    # Report clipping
+    n_clipped = (firing_rates > clip_threshold).sum()
+    if n_clipped > 0:
+        print(f"Clipping {n_clipped} values ({100*n_clipped/firing_rates.size:.3f}%) above {clip_threshold:.1f} sp/s")
+
+    # Clip (preserve NaN)
+    firing_rates = np.where(
+        np.isnan(firing_rates),
+        firing_rates,
+        np.clip(firing_rates, 0, clip_threshold)
+    )
+
+    return firing_rates
 
 
 def validate_data(data: dict) -> bool:
@@ -53,15 +115,15 @@ def validate_data(data: dict) -> bool:
         'bin_size_ms',
         # Task inputs (all required for consistent 14-dim input)
         'input_fixation_on', 'input_target_loc', 'input_go_signal', 'input_reward_on',
+        'input_eye_x', 'input_eye_y',  # Eye position (degrees, z-score normalized in Python)
         'input_is_face', 'input_is_nonface', 'input_is_bullseye',
         'input_high_salience', 'input_low_salience',
         # Trial labels
         'trial_reward', 'trial_location'
     ]
 
-    # Optional fields (eye position may not be available)
-    optional = ['input_eye_x', 'input_eye_y', 'trial_duration_ms',
-                'trial_probability', 'trial_identity', 'trial_salience']
+    # Optional fields
+    optional = ['trial_duration_ms', 'trial_probability', 'trial_identity', 'trial_salience']
     
     for field in required:
         assert field in data, f"Missing required field: {field}"
@@ -142,18 +204,19 @@ def construct_input_tensor(data: dict) -> np.ndarray:
     # 6: Reward on
     input_channels.append(data['input_reward_on'].T)
 
-    # 7-8: Eye position (optional - use zeros if not available)
-    if 'input_eye_x' in data and not np.all(np.isnan(data['input_eye_x'])):
-        eye_x = data['input_eye_x'].T
-        eye_x_norm = (eye_x - np.nanmean(eye_x)) / (np.nanstd(eye_x) + 1e-8)
-    else:
+    # 7-8: Eye position (required, in degrees - z-score normalize here)
+    # Falls back to zeros if data is all zeros/NaN (MATLAB hasn't populated yet)
+    eye_x = data['input_eye_x'].T
+    if np.all(np.isnan(eye_x)) or np.nanstd(eye_x) < 1e-8:
         eye_x_norm = np.zeros((n_trials, n_bins))
-
-    if 'input_eye_y' in data and not np.all(np.isnan(data['input_eye_y'])):
-        eye_y = data['input_eye_y'].T
-        eye_y_norm = (eye_y - np.nanmean(eye_y)) / (np.nanstd(eye_y) + 1e-8)
     else:
+        eye_x_norm = (eye_x - np.nanmean(eye_x)) / (np.nanstd(eye_x) + 1e-8)
+
+    eye_y = data['input_eye_y'].T
+    if np.all(np.isnan(eye_y)) or np.nanstd(eye_y) < 1e-8:
         eye_y_norm = np.zeros((n_trials, n_bins))
+    else:
+        eye_y_norm = (eye_y - np.nanmean(eye_y)) / (np.nanstd(eye_y) + 1e-8)
 
     input_channels.append(eye_x_norm)
     input_channels.append(eye_y_norm)
@@ -177,20 +240,30 @@ def construct_input_tensor(data: dict) -> np.ndarray:
     return inputs.astype(np.float32)
 
 
-def construct_target_tensor(data: dict) -> np.ndarray:
+def construct_target_tensor(data: dict, clip_outliers: bool = True) -> np.ndarray:
     """
     Construct target firing rate tensor.
-    
+
+    Args:
+        data: Data dictionary with 'firing_rates' field
+        clip_outliers: Whether to clip outlier firing rates
+
     Returns:
         targets: [n_trials, n_bins, n_neurons] array
     """
     # firing_rates is [n_neurons, n_bins, n_trials]
+    firing_rates = data['firing_rates'].copy()
+
+    # Clip outliers before transposing (Priority 3)
+    if clip_outliers:
+        firing_rates = preprocess_firing_rates(firing_rates, clip_percentile=99.5)
+
     # Transpose to [n_trials, n_bins, n_neurons]
-    targets = np.transpose(data['firing_rates'], (2, 1, 0))
-    
+    targets = np.transpose(firing_rates, (2, 1, 0))
+
     # Replace NaN with 0 (for padded regions)
     targets = np.nan_to_num(targets, nan=0.0)
-    
+
     return targets.astype(np.float32)
 
 
@@ -439,17 +512,17 @@ if __name__ == "__main__":
     train_idx, val_idx = train_val_split(dataset)
     print(f"\nTrain/val split: {len(train_idx)}/{len(val_idx)}")
 
-    # Test with missing eye position (optional field)
-    print("\nTesting with missing eye position...")
-    synthetic_data_no_eye = synthetic_data.copy()
-    del synthetic_data_no_eye['input_eye_x']
-    del synthetic_data_no_eye['input_eye_y']
-    dataset_no_eye = RNNDataset(synthetic_data_no_eye)
-    batch_no_eye = dataset_no_eye.get_all_trials()
-    assert batch_no_eye['inputs'].shape == (n_trials, n_bins, 14), "Input dim should still be 14"
-    # Check that eye channels (7, 8) are zeros
-    assert torch.all(batch_no_eye['inputs'][:, :, 7] == 0), "Eye X should be zeros"
-    assert torch.all(batch_no_eye['inputs'][:, :, 8] == 0), "Eye Y should be zeros"
-    print("  Missing eye position handled correctly (filled with zeros)")
+    # Test with all-zeros eye position (MATLAB hasn't populated yet)
+    print("\nTesting with all-zeros eye position...")
+    synthetic_data_zeros_eye = synthetic_data.copy()
+    synthetic_data_zeros_eye['input_eye_x'] = np.zeros((n_bins, n_trials))
+    synthetic_data_zeros_eye['input_eye_y'] = np.zeros((n_bins, n_trials))
+    dataset_zeros_eye = RNNDataset(synthetic_data_zeros_eye)
+    batch_zeros_eye = dataset_zeros_eye.get_all_trials()
+    assert batch_zeros_eye['inputs'].shape == (n_trials, n_bins, 14), "Input dim should still be 14"
+    # Check that eye channels (7, 8) are zeros when input is zeros
+    assert torch.all(batch_zeros_eye['inputs'][:, :, 7] == 0), "Eye X should be zeros"
+    assert torch.all(batch_zeros_eye['inputs'][:, :, 8] == 0), "Eye Y should be zeros"
+    print("  All-zeros eye position handled correctly (remains zeros)")
 
     print("\nAll tests passed!")

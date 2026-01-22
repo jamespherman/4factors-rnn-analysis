@@ -1,0 +1,21 @@
+{
+  "data_path": "data/rnn_export_Newton_08_14_2025_SC.mat",
+  "max_epochs": 200,
+  "patience": 100,
+  "lr": 0.001,
+  "lambda_neuron": 1.0,
+  "lambda_trial": 1.0,
+  "lambda_reg": 0.0001,
+  "normalize_psth": true,
+  "enforce_ratio": true,
+  "seed": 42,
+  "n_train": 790,
+  "n_val": 196,
+  "timestamp": "2026-01-22T11:58:14.535912",
+  "warmup_corr_threshold": 0.15,
+  "warmup_lambda_scale": 0.5,
+  "warmup_lambda_var": 0.2,
+  "post_warmup_lambda_scale": 0.1,
+  "post_warmup_lambda_var": 0.05,
+  "trial_ramp_epochs": 50
+}

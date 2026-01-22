@@ -3,7 +3,9 @@
     "allow": [
       "Bash(python src/model.py:*)",
       "Bash(pip install:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(powershell:*)",
+      "Bash(dir:*)"
     ]
   }
 }
