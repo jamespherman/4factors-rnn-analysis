@@ -119,8 +119,8 @@ class EIRNN(nn.Module):
         # Store as raw (absolute values, sign will be applied in forward)
         self.W_rec_raw.data = torch.tensor(np.abs(W_rec), dtype=torch.float32)
         
-        # Initialize input weights
-        nn.init.uniform_(self.W_in, -0.1, 0.1)
+        # Initialize input weights (larger for stronger input drive)
+        nn.init.uniform_(self.W_in, -1.0, 1.0)
         
         # Initialize output weights
         nn.init.uniform_(self.W_out, -0.1, 0.1)
@@ -170,7 +170,7 @@ class EIRNN(nn.Module):
         for t in range(n_steps):
             # Current firing rate
             r = torch.nn.functional.softplus(x)
-            
+
             # Recurrent input: r @ W_rec.T gives [batch, n_total]
             rec_input = torch.matmul(r, W_rec.T)
             

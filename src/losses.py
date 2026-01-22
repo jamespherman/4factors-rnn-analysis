@@ -69,11 +69,12 @@ def compute_L_neuron(
     bin_size_ms: float = 25.0,
     smooth_ms: float = 8.0,
     mask: Optional[torch.Tensor] = None,
-    recorded_indices: Optional[torch.Tensor] = None
+    recorded_indices: Optional[torch.Tensor] = None,
+    normalize: bool = True
 ) -> torch.Tensor:
     """
     Compute trial-averaged activity (PSTH) loss.
-    
+
     Args:
         model_rates: [batch, time, n_neurons] - RNN firing rates
         target_rates: [batch, time, n_recorded] - Recorded firing rates
@@ -81,7 +82,8 @@ def compute_L_neuron(
         smooth_ms: Smoothing kernel size in milliseconds
         mask: [batch, time] - Valid timesteps (1) vs padding (0)
         recorded_indices: Which model neurons correspond to recorded neurons
-    
+        normalize: If True, z-score normalize (shape only). If False, use raw MSE (scale + shape)
+
     Returns:
         L_neuron: Scalar loss
     """
@@ -91,7 +93,7 @@ def compute_L_neuron(
         model_rates = model_rates[:, :, recorded_indices]
     else:
         model_rates = model_rates[:, :, :n_recorded]
-    
+
     # Trial-average
     if mask is not None:
         # Masked mean
@@ -101,24 +103,30 @@ def compute_L_neuron(
     else:
         model_psth = model_rates.mean(dim=0)   # [time, n_neurons]
         target_psth = target_rates.mean(dim=0)
-    
+
     # Temporal smoothing
     kernel_size = max(1, int(smooth_ms / bin_size_ms))
     model_psth = smooth_temporal(model_psth.unsqueeze(0), kernel_size, dim=1).squeeze(0)
     target_psth = smooth_temporal(target_psth.unsqueeze(0), kernel_size, dim=1).squeeze(0)
-    
-    # Z-score normalize per neuron (across time)
-    model_mean = model_psth.mean(dim=0, keepdim=True)
-    model_std = model_psth.std(dim=0, keepdim=True) + 1e-8
-    model_psth_norm = (model_psth - model_mean) / model_std
-    
-    target_mean = target_psth.mean(dim=0, keepdim=True)
-    target_std = target_psth.std(dim=0, keepdim=True) + 1e-8
-    target_psth_norm = (target_psth - target_mean) / target_std
-    
-    # MSE
-    L_neuron = ((model_psth_norm - target_psth_norm) ** 2).mean()
-    
+
+    if normalize:
+        # Z-score normalize per neuron (across time) - shape matching only
+        model_mean = model_psth.mean(dim=0, keepdim=True)
+        model_std = model_psth.std(dim=0, keepdim=True) + 1e-8
+        model_psth_norm = (model_psth - model_mean) / model_std
+
+        target_mean = target_psth.mean(dim=0, keepdim=True)
+        target_std = target_psth.std(dim=0, keepdim=True) + 1e-8
+        target_psth_norm = (target_psth - target_mean) / target_std
+
+        # MSE on normalized
+        L_neuron = ((model_psth_norm - target_psth_norm) ** 2).mean()
+    else:
+        # Raw MSE - model must match both scale AND shape
+        # Normalize by target variance for stable gradients
+        target_var = target_psth.var() + 1e-8
+        L_neuron = ((model_psth - target_psth) ** 2).mean() / target_var
+
     return L_neuron
 
 
@@ -270,18 +278,24 @@ class EIRNNLoss(nn.Module):
     def __init__(
         self,
         bin_size_ms: float = 25.0,
+        lambda_neuron: float = 1.0,
+        lambda_trial: float = 1.0,
         lambda_reg: float = 1e-4,
         lambda_sparse: float = 0.0,
         lambda_output: float = 0.0,
-        use_gradient_normalization: bool = True
+        use_gradient_normalization: bool = True,
+        normalize_psth: bool = True
     ):
         super().__init__()
         self.bin_size_ms = bin_size_ms
+        self.lambda_neuron = lambda_neuron
+        self.lambda_trial = lambda_trial
         self.lambda_reg = lambda_reg
         self.lambda_sparse = lambda_sparse
         self.lambda_output = lambda_output
         self.use_gradient_normalization = use_gradient_normalization
-        
+        self.normalize_psth = normalize_psth  # If False, use raw MSE (scale + shape)
+
         # Running statistics for gradient normalization
         self.register_buffer('loss_ema', torch.ones(4))  # [L_neuron, L_trial, L_reg, L_output]
         self.ema_decay = 0.99
@@ -305,9 +319,10 @@ class EIRNNLoss(nn.Module):
         """
         # Compute individual losses
         L_neuron = compute_L_neuron(
-            model_rates, target_rates, 
+            model_rates, target_rates,
             self.bin_size_ms, smooth_ms=8.0,
-            mask=mask, recorded_indices=recorded_indices
+            mask=mask, recorded_indices=recorded_indices,
+            normalize=self.normalize_psth
         )
         
         L_trial = compute_L_trial(
@@ -336,20 +351,26 @@ class EIRNNLoss(nn.Module):
             # Update EMA of loss magnitudes
             with torch.no_grad():
                 current_losses = torch.tensor([
-                    L_neuron.item(), L_trial.item(), 
+                    L_neuron.item(), L_trial.item(),
                     L_reg.item(), L_output.item()
                 ], device=self.loss_ema.device)
                 self.loss_ema = self.ema_decay * self.loss_ema + (1 - self.ema_decay) * current_losses
-            
+
             # Normalize by EMA (so gradients have similar magnitude)
             L_neuron_norm = L_neuron / (self.loss_ema[0] + 1e-8)
             L_trial_norm = L_trial / (self.loss_ema[1] + 1e-8)
             L_reg_norm = L_reg / (self.loss_ema[2] + 1e-8)
             L_output_norm = L_output / (self.loss_ema[3] + 1e-8)
-            
-            loss = L_neuron_norm + L_trial_norm + L_reg_norm + self.lambda_output * L_output_norm
+
+            loss = (self.lambda_neuron * L_neuron_norm +
+                    self.lambda_trial * L_trial_norm +
+                    L_reg_norm +
+                    self.lambda_output * L_output_norm)
         else:
-            loss = L_neuron + L_trial + L_reg + self.lambda_output * L_output
+            loss = (self.lambda_neuron * L_neuron +
+                    self.lambda_trial * L_trial +
+                    L_reg +
+                    self.lambda_output * L_output)
         
         components['total'] = loss.item()
         

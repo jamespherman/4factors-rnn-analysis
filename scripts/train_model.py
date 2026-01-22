@@ -199,21 +199,28 @@ def train(
     max_epochs: int = 1000,
     patience: int = 100,
     lr: float = 1e-3,
+    lambda_neuron: float = 1.0,
+    lambda_trial: float = 1.0,
     lambda_reg: float = 1e-4,
+    normalize_psth: bool = True,
     enforce_ratio: bool = True,
     device: str = 'cpu',
     seed: int = 42
 ):
     """
     Main training function.
-    
+
     Args:
         data_path: Path to exported .mat file
         output_dir: Directory for outputs
         max_epochs: Maximum training epochs
         patience: Early stopping patience
         lr: Learning rate
+        lambda_neuron: Weight for PSTH (L_neuron) loss
+        lambda_trial: Weight for trial-matching (L_trial) loss
         lambda_reg: Regularization strength
+        normalize_psth: If True, use z-score normalized PSTH loss (shape only).
+                       If False, use raw MSE (scale + shape).
         enforce_ratio: Whether to enforce 4:1 E:I ratio
         device: 'cpu' or 'cuda'
         seed: Random seed
@@ -265,7 +272,10 @@ def train(
     # Loss function
     loss_fn = EIRNNLoss(
         bin_size_ms=dataset.bin_size_ms,
-        lambda_reg=lambda_reg
+        lambda_neuron=lambda_neuron,
+        lambda_trial=lambda_trial,
+        lambda_reg=lambda_reg,
+        normalize_psth=normalize_psth
     )
     
     # Optimizer
@@ -280,7 +290,10 @@ def train(
         'max_epochs': max_epochs,
         'patience': patience,
         'lr': lr,
+        'lambda_neuron': lambda_neuron,
+        'lambda_trial': lambda_trial,
         'lambda_reg': lambda_reg,
+        'normalize_psth': normalize_psth,
         'enforce_ratio': enforce_ratio,
         'seed': seed,
         'n_train': len(train_idx),
@@ -397,20 +410,26 @@ def main():
     parser.add_argument('--epochs', type=int, default=1000, help='Max epochs')
     parser.add_argument('--patience', type=int, default=100, help='Early stopping patience')
     parser.add_argument('--lr', type=float, default=1e-3, help='Learning rate')
+    parser.add_argument('--lambda-neuron', type=float, default=1.0, help='Weight for PSTH loss')
+    parser.add_argument('--lambda-trial', type=float, default=1.0, help='Weight for trial-matching loss')
     parser.add_argument('--reg', type=float, default=1e-4, help='Regularization strength')
+    parser.add_argument('--raw-psth', action='store_true', help='Use raw MSE for PSTH loss (learn scale + shape)')
     parser.add_argument('--no-ratio', action='store_true', help='Disable 4:1 E:I ratio enforcement')
     parser.add_argument('--device', type=str, default='cpu', help='Device (cpu/cuda)')
     parser.add_argument('--seed', type=int, default=42, help='Random seed')
-    
+
     args = parser.parse_args()
-    
+
     train(
         data_path=args.data,
         output_dir=args.output,
         max_epochs=args.epochs,
         patience=args.patience,
         lr=args.lr,
+        lambda_neuron=args.lambda_neuron,
+        lambda_trial=args.lambda_trial,
         lambda_reg=args.reg,
+        normalize_psth=not args.raw_psth,
         enforce_ratio=not args.no_ratio,
         device=args.device,
         seed=args.seed

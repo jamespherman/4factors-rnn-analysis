@@ -6,27 +6,84 @@ See specs/DATA_SPEC.md for format details.
 
 import numpy as np
 import scipy.io as sio
+import h5py
 import torch
 from torch.utils.data import Dataset, DataLoader
 from typing import Optional, Dict, Tuple, List
 from pathlib import Path
 
 
+def _is_hdf5(filepath: str) -> bool:
+    """Check if file is HDF5 format (MATLAB v7.3)."""
+    # Try to open with h5py - this is the most reliable check
+    try:
+        with h5py.File(filepath, 'r') as f:
+            return True
+    except (OSError, IOError):
+        return False
+
+
+def _load_hdf5_mat(filepath: str) -> dict:
+    """
+    Load MATLAB v7.3 (HDF5) file.
+
+    Handles transposition from MATLAB column-major to Python row-major.
+    """
+    data = {}
+    with h5py.File(filepath, 'r') as f:
+        for key in f.keys():
+            val = f[key][()]
+
+            # Handle string fields (stored as uint16 arrays)
+            if key in ['session_name', 'export_date', 'pipeline_version']:
+                if val.dtype == np.uint16:
+                    # Transpose and decode as string
+                    chars = val.T.flatten().astype(np.uint8)
+                    data[key] = ''.join(chr(c) for c in chars if c != 0)
+                else:
+                    data[key] = val
+                continue
+
+            # Squeeze singleton dimensions
+            val = np.squeeze(val)
+
+            # Transpose arrays to match spec (MATLAB is column-major)
+            # firing_rates: HDF5 gives (trials, bins, neurons) -> need (neurons, bins, trials)
+            if key == 'firing_rates':
+                val = np.transpose(val, (2, 1, 0))
+            # input_target_loc: HDF5 gives (trials, bins, 4) -> need (4, bins, trials)
+            elif key == 'input_target_loc':
+                val = np.transpose(val, (2, 1, 0))
+            # 2D input arrays: HDF5 gives (trials, bins) -> need (bins, trials)
+            elif key.startswith('input_') and val.ndim == 2:
+                val = val.T
+
+            data[key] = val
+
+    return data
+
+
 def load_mat_file(filepath: str) -> dict:
     """
     Load exported .mat file from MATLAB pipeline.
-    
+
+    Handles both v5 (.mat) and v7.3 (HDF5) formats.
+
     Args:
         filepath: Path to .mat file
-    
+
     Returns:
         Dictionary with all data fields as numpy arrays
     """
+    if _is_hdf5(filepath):
+        return _load_hdf5_mat(filepath)
+
+    # Standard v5 .mat file
     data = sio.loadmat(filepath, squeeze_me=True, struct_as_record=False)
-    
+
     # Remove MATLAB metadata fields
     data = {k: v for k, v in data.items() if not k.startswith('__')}
-    
+
     return data
 
 
