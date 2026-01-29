@@ -300,7 +300,7 @@ def train(
     lr: float = 1e-3,
     lambda_neuron: float = 1.0,
     lambda_trial: float = 1.0,
-    lambda_reg: float = 1e-3,
+    lambda_reg: float = 1e-4,
     normalize_psth: bool = True,
     enforce_ratio: bool = True,
     device: str = 'cpu',

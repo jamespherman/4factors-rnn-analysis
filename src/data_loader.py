@@ -6,17 +6,68 @@ See specs/DATA_SPEC.md for format details.
 
 import numpy as np
 import scipy.io as sio
+import h5py
 import torch
 from torch.utils.data import Dataset, DataLoader
 from typing import Optional, Dict, Tuple, List
 from pathlib import Path
 
 
+def _is_hdf5(filepath: str) -> bool:
+    """Check if file is HDF5 format (MATLAB v7.3)."""
+    # Try to open with h5py - this is the most reliable check
+    try:
+        with h5py.File(filepath, 'r') as f:
+            return True
+    except (OSError, IOError):
+        return False
+
+
+def _load_hdf5_mat(filepath: str) -> dict:
+    """
+    Load MATLAB v7.3 (HDF5) file.
+
+    Handles transposition from MATLAB column-major to Python row-major.
+    """
+    data = {}
+    with h5py.File(filepath, 'r') as f:
+        for key in f.keys():
+            val = f[key][()]
+
+            # Handle string fields (stored as uint16 arrays)
+            if key in ['session_name', 'export_date', 'pipeline_version']:
+                if val.dtype == np.uint16:
+                    # Transpose and decode as string
+                    chars = val.T.flatten().astype(np.uint8)
+                    data[key] = ''.join(chr(c) for c in chars if c != 0)
+                else:
+                    data[key] = val
+                continue
+
+            # Squeeze singleton dimensions
+            val = np.squeeze(val)
+
+            # Transpose arrays to match spec (MATLAB is column-major)
+            # firing_rates: HDF5 gives (trials, bins, neurons) -> need (neurons, bins, trials)
+            if key == 'firing_rates':
+                val = np.transpose(val, (2, 1, 0))
+            # input_target_loc: HDF5 gives (trials, bins, 4) -> need (4, bins, trials)
+            elif key == 'input_target_loc':
+                val = np.transpose(val, (2, 1, 0))
+            # 2D input arrays: HDF5 gives (trials, bins) -> need (bins, trials)
+            elif key.startswith('input_') and val.ndim == 2:
+                val = val.T
+
+            data[key] = val
+
+    return data
+
+
 def load_mat_file(filepath: str) -> dict:
     """
     Load exported .mat file from MATLAB pipeline.
 
-    Handles both v7 (.mat) and v7.3 (HDF5) formats.
+    Handles both v5 (.mat) and v7.3 (HDF5) formats.
 
     Args:
         filepath: Path to .mat file
@@ -24,72 +75,16 @@ def load_mat_file(filepath: str) -> dict:
     Returns:
         Dictionary with all data fields as numpy arrays
     """
-    try:
-        # Try standard scipy.io first (for v7 and earlier)
-        data = sio.loadmat(filepath, squeeze_me=True, struct_as_record=False)
-        # Remove MATLAB metadata fields
-        data = {k: v for k, v in data.items() if not k.startswith('__')}
-    except NotImplementedError:
-        # v7.3 format requires h5py
-        import h5py
-        data = {}
-        with h5py.File(filepath, 'r') as f:
-            for key in f.keys():
-                if key.startswith('#'):
-                    continue
-                item = f[key]
-                if isinstance(item, h5py.Dataset):
-                    arr = item[()]
-                    # HDF5 stores in column-major order, transpose if needed
-                    if arr.ndim > 1:
-                        arr = arr.T
-                    # Convert bytes to string for string arrays
-                    if arr.dtype.kind == 'O' or arr.dtype == 'uint16':
-                        try:
-                            arr = np.array([
-                                ''.join(chr(c) for c in f[ref][:].flatten())
-                                for ref in arr.flatten()
-                            ]) if arr.dtype == 'O' else arr
-                        except:
-                            pass
-                    data[key] = np.squeeze(arr)
+    if _is_hdf5(filepath):
+        return _load_hdf5_mat(filepath)
+
+    # Standard v5 .mat file
+    data = sio.loadmat(filepath, squeeze_me=True, struct_as_record=False)
+
+    # Remove MATLAB metadata fields
+    data = {k: v for k, v in data.items() if not k.startswith('__')}
 
     return data
-
-
-def preprocess_firing_rates(firing_rates: np.ndarray, clip_percentile: float = 99.5) -> np.ndarray:
-    """
-    Preprocess firing rates: clip outliers, ensure non-negative.
-
-    Args:
-        firing_rates: [neurons, time, trials] or [trials, time, neurons] array
-        clip_percentile: Percentile for outlier clipping
-
-    Returns:
-        Preprocessed firing rates
-    """
-    # Handle NaN values for percentile calculation
-    valid_rates = firing_rates[~np.isnan(firing_rates)]
-
-    if len(valid_rates) == 0:
-        return firing_rates
-
-    # Compute clip threshold
-    clip_threshold = np.percentile(valid_rates, clip_percentile)
-
-    # Report clipping
-    n_clipped = (firing_rates > clip_threshold).sum()
-    if n_clipped > 0:
-        print(f"Clipping {n_clipped} values ({100*n_clipped/firing_rates.size:.3f}%) above {clip_threshold:.1f} sp/s")
-
-    # Clip (preserve NaN)
-    firing_rates = np.where(
-        np.isnan(firing_rates),
-        firing_rates,
-        np.clip(firing_rates, 0, clip_threshold)
-    )
-
-    return firing_rates
 
 
 def validate_data(data: dict) -> bool:
@@ -115,15 +110,15 @@ def validate_data(data: dict) -> bool:
         'bin_size_ms',
         # Task inputs (all required for consistent 14-dim input)
         'input_fixation_on', 'input_target_loc', 'input_go_signal', 'input_reward_on',
-        'input_eye_x', 'input_eye_y',  # Eye position (degrees, z-score normalized in Python)
         'input_is_face', 'input_is_nonface', 'input_is_bullseye',
         'input_high_salience', 'input_low_salience',
         # Trial labels
         'trial_reward', 'trial_location'
     ]
 
-    # Optional fields
-    optional = ['trial_duration_ms', 'trial_probability', 'trial_identity', 'trial_salience']
+    # Optional fields (eye position may not be available)
+    optional = ['input_eye_x', 'input_eye_y', 'trial_duration_ms',
+                'trial_probability', 'trial_identity', 'trial_salience']
     
     for field in required:
         assert field in data, f"Missing required field: {field}"
@@ -204,19 +199,18 @@ def construct_input_tensor(data: dict) -> np.ndarray:
     # 6: Reward on
     input_channels.append(data['input_reward_on'].T)
 
-    # 7-8: Eye position (required, in degrees - z-score normalize here)
-    # Falls back to zeros if data is all zeros/NaN (MATLAB hasn't populated yet)
-    eye_x = data['input_eye_x'].T
-    if np.all(np.isnan(eye_x)) or np.nanstd(eye_x) < 1e-8:
-        eye_x_norm = np.zeros((n_trials, n_bins))
-    else:
+    # 7-8: Eye position (optional - use zeros if not available)
+    if 'input_eye_x' in data and not np.all(np.isnan(data['input_eye_x'])):
+        eye_x = data['input_eye_x'].T
         eye_x_norm = (eye_x - np.nanmean(eye_x)) / (np.nanstd(eye_x) + 1e-8)
-
-    eye_y = data['input_eye_y'].T
-    if np.all(np.isnan(eye_y)) or np.nanstd(eye_y) < 1e-8:
-        eye_y_norm = np.zeros((n_trials, n_bins))
     else:
+        eye_x_norm = np.zeros((n_trials, n_bins))
+
+    if 'input_eye_y' in data and not np.all(np.isnan(data['input_eye_y'])):
+        eye_y = data['input_eye_y'].T
         eye_y_norm = (eye_y - np.nanmean(eye_y)) / (np.nanstd(eye_y) + 1e-8)
+    else:
+        eye_y_norm = np.zeros((n_trials, n_bins))
 
     input_channels.append(eye_x_norm)
     input_channels.append(eye_y_norm)
@@ -240,30 +234,20 @@ def construct_input_tensor(data: dict) -> np.ndarray:
     return inputs.astype(np.float32)
 
 
-def construct_target_tensor(data: dict, clip_outliers: bool = True) -> np.ndarray:
+def construct_target_tensor(data: dict) -> np.ndarray:
     """
     Construct target firing rate tensor.
-
-    Args:
-        data: Data dictionary with 'firing_rates' field
-        clip_outliers: Whether to clip outlier firing rates
-
+    
     Returns:
         targets: [n_trials, n_bins, n_neurons] array
     """
     # firing_rates is [n_neurons, n_bins, n_trials]
-    firing_rates = data['firing_rates'].copy()
-
-    # Clip outliers before transposing (Priority 3)
-    if clip_outliers:
-        firing_rates = preprocess_firing_rates(firing_rates, clip_percentile=99.5)
-
     # Transpose to [n_trials, n_bins, n_neurons]
-    targets = np.transpose(firing_rates, (2, 1, 0))
-
+    targets = np.transpose(data['firing_rates'], (2, 1, 0))
+    
     # Replace NaN with 0 (for padded regions)
     targets = np.nan_to_num(targets, nan=0.0)
-
+    
     return targets.astype(np.float32)
 
 
@@ -347,39 +331,13 @@ class RNNDataset(Dataset):
             'trial_idx': idx
         }
     
-    def get_all_trials(self, include_conditions: bool = False) -> dict:
-        """
-        Get all trials as a single batch (for trial-matching loss).
-
-        Args:
-            include_conditions: If True, include trial condition labels
-
-        Returns:
-            Dict with 'inputs', 'targets', 'mask', and optionally
-            'trial_conditions' and factor labels
-        """
-        result = {
+    def get_all_trials(self) -> dict:
+        """Get all trials as a single batch (for trial-matching loss)."""
+        return {
             'inputs': torch.tensor(self.inputs, dtype=torch.float32),
             'targets': torch.tensor(self.targets, dtype=torch.float32),
             'mask': torch.tensor(self.mask, dtype=torch.float32),
         }
-
-        if include_conditions:
-            result['trial_conditions'] = torch.tensor(
-                self.get_condition_labels(), dtype=torch.long
-            )
-            # Also include individual factor labels for selectivity analysis
-            result['trial_reward'] = torch.tensor(
-                self.get_reward_binary(), dtype=torch.long
-            )
-            result['trial_location'] = torch.tensor(
-                self.trial_location.astype(np.int64), dtype=torch.long
-            )
-            result['trial_salience'] = torch.tensor(
-                self.get_salience_binary(), dtype=torch.long
-            )
-
-        return result
     
     def get_neuron_info(self) -> dict:
         """Get neuron classification info for model construction."""
@@ -395,119 +353,6 @@ class RNNDataset(Dataset):
     def get_input_dim(self) -> int:
         """Get input dimension for model construction."""
         return self.inputs.shape[2]
-
-    def get_reward_binary(self) -> np.ndarray:
-        """
-        Get binary reward labels (0 = low, 1 = high).
-
-        Handles different encoding conventions in data files.
-
-        Returns:
-            [n_trials] array of 0/1 values
-        """
-        reward = self.trial_reward.copy()
-        # If encoded as 1/2, convert to 0/1
-        if reward.min() >= 1 and reward.max() <= 2:
-            return (reward - 1).astype(np.int64)
-        # If already 0/1
-        return reward.astype(np.int64)
-
-    def get_salience_binary(self) -> np.ndarray:
-        """
-        Get binary salience labels (0 = low, 1 = high).
-
-        Handles different encoding conventions and missing data.
-
-        Returns:
-            [n_trials] array of 0/1 values
-        """
-        salience = self.trial_salience.copy()
-        # If encoded as 1/2 or similar, convert to 0/1
-        unique_vals = np.unique(salience[~np.isnan(salience)])
-
-        if len(unique_vals) == 0:
-            # No salience data available, return zeros
-            return np.zeros(self.n_trials, dtype=np.int64)
-        elif len(unique_vals) <= 2:
-            # Binary encoding
-            if salience.min() >= 1:
-                return (salience - salience.min()).astype(np.int64)
-            return salience.astype(np.int64)
-        else:
-            # Multi-level, binarize by median
-            median = np.nanmedian(salience)
-            return (salience > median).astype(np.int64)
-
-    def get_location_index(self) -> np.ndarray:
-        """
-        Get location index (0-3 from 4 quadrants).
-
-        Returns:
-            [n_trials] array of 0-3 values
-        """
-        location = self.trial_location.copy()
-        # If encoded as 1-4, convert to 0-3
-        if location.min() >= 1:
-            return (location - 1).astype(np.int64)
-        return location.astype(np.int64)
-
-    def get_condition_labels(self) -> np.ndarray:
-        """
-        Create condition labels from factorial design.
-
-        Conditions are indexed as a single integer encoding all factors:
-            condition = location * 4 + reward * 2 + salience
-
-        where:
-            - location: 0-3 (from trial_location 1-4)
-            - reward: 0-1 (low/high)
-            - salience: 0-1 (low/high)
-
-        This gives 4 × 2 × 2 = 16 unique conditions (indices 0-15).
-
-        Returns:
-            [n_trials] array of condition indices (0-15)
-        """
-        location = self.get_location_index()  # 0-3
-        reward = self.get_reward_binary()      # 0-1
-        salience = self.get_salience_binary()  # 0-1
-
-        # Encode as single index: location * 4 + reward * 2 + salience
-        conditions = location * 4 + reward * 2 + salience
-
-        return conditions.astype(np.int64)
-
-    def get_condition_info(self) -> dict:
-        """
-        Get information about condition structure.
-
-        Returns:
-            Dict with condition counts and factor details
-        """
-        conditions = self.get_condition_labels()
-        unique, counts = np.unique(conditions, return_counts=True)
-
-        # Decode conditions back to factors
-        condition_factors = {}
-        for cond in unique:
-            location = cond // 4
-            reward = (cond % 4) // 2
-            salience = cond % 2
-            condition_factors[int(cond)] = {
-                'location': int(location),
-                'reward': int(reward),
-                'salience': int(salience),
-                'count': int(counts[unique == cond][0])
-            }
-
-        return {
-            'n_conditions': len(unique),
-            'conditions': condition_factors,
-            'total_trials': self.n_trials,
-            'min_trials_per_condition': int(counts.min()),
-            'max_trials_per_condition': int(counts.max()),
-            'mean_trials_per_condition': float(counts.mean())
-        }
 
 
 def train_val_split(
@@ -651,17 +496,17 @@ if __name__ == "__main__":
     train_idx, val_idx = train_val_split(dataset)
     print(f"\nTrain/val split: {len(train_idx)}/{len(val_idx)}")
 
-    # Test with all-zeros eye position (MATLAB hasn't populated yet)
-    print("\nTesting with all-zeros eye position...")
-    synthetic_data_zeros_eye = synthetic_data.copy()
-    synthetic_data_zeros_eye['input_eye_x'] = np.zeros((n_bins, n_trials))
-    synthetic_data_zeros_eye['input_eye_y'] = np.zeros((n_bins, n_trials))
-    dataset_zeros_eye = RNNDataset(synthetic_data_zeros_eye)
-    batch_zeros_eye = dataset_zeros_eye.get_all_trials()
-    assert batch_zeros_eye['inputs'].shape == (n_trials, n_bins, 14), "Input dim should still be 14"
-    # Check that eye channels (7, 8) are zeros when input is zeros
-    assert torch.all(batch_zeros_eye['inputs'][:, :, 7] == 0), "Eye X should be zeros"
-    assert torch.all(batch_zeros_eye['inputs'][:, :, 8] == 0), "Eye Y should be zeros"
-    print("  All-zeros eye position handled correctly (remains zeros)")
+    # Test with missing eye position (optional field)
+    print("\nTesting with missing eye position...")
+    synthetic_data_no_eye = synthetic_data.copy()
+    del synthetic_data_no_eye['input_eye_x']
+    del synthetic_data_no_eye['input_eye_y']
+    dataset_no_eye = RNNDataset(synthetic_data_no_eye)
+    batch_no_eye = dataset_no_eye.get_all_trials()
+    assert batch_no_eye['inputs'].shape == (n_trials, n_bins, 14), "Input dim should still be 14"
+    # Check that eye channels (7, 8) are zeros
+    assert torch.all(batch_no_eye['inputs'][:, :, 7] == 0), "Eye X should be zeros"
+    assert torch.all(batch_no_eye['inputs'][:, :, 8] == 0), "Eye Y should be zeros"
+    print("  Missing eye position handled correctly (filled with zeros)")
 
     print("\nAll tests passed!")
