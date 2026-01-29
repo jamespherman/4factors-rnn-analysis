@@ -1,0 +1,25 @@
+{
+  "best_val_corr": 0.3167053572614943,
+  "final_val_corr": 0.3080933936266434,
+  "epochs_trained": 500,
+  "tau_values": {},
+  "alpha_values": {
+    "alpha_e_mean": 0.5221734046936035,
+    "alpha_e_std": 0.054180387407541275,
+    "alpha_i_mean": 0.7181733846664429,
+    "alpha_i_std": 0.011248542927205563
+  },
+  "config": {
+    "name": "embed_28_alpha_neuron",
+    "loss_type": "correlation",
+    "input_embed_dim": 28,
+    "input_embed_type": "learnable",
+    "learnable_alpha": "neuron",
+    "alpha_init": 0.5,
+    "scheduler": "plateau",
+    "use_grad_balancing": true,
+    "ltrial_scale": 0.5,
+    "max_epochs": 500,
+    "patience": 100
+  }
+}

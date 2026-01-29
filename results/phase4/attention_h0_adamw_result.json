@@ -1,0 +1,28 @@
+{
+  "best_val_corr": 0.39874291947654017,
+  "final_val_corr": 0.38209710085219933,
+  "epochs_trained": 500,
+  "alpha_values": {
+    "alpha": 0.5
+  },
+  "h0_values": {
+    "mean": 0.2815127968788147,
+    "std": 0.1990157514810562,
+    "min": -0.41067200899124146,
+    "max": 0.6001189351081848
+  },
+  "config": {
+    "name": "attention_h0_adamw",
+    "input_embed_dim": 56,
+    "input_embed_type": "attention",
+    "attention_heads": 4,
+    "learnable_h0": true,
+    "h0_init": 0.1,
+    "optimizer": "adamw",
+    "weight_decay": 0.01,
+    "use_grad_balancing": true,
+    "ltrial_scale": 0.5,
+    "max_epochs": 500,
+    "patience": 100
+  }
+}

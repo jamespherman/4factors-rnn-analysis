@@ -1,0 +1,211 @@
+{
+  "timestamp": "2026-01-23T19:54:40.556779",
+  "data_path": "data/rnn_export_Newton_08_15_2025_SC.mat",
+  "phase2_best": 0.3449,
+  "target": 0.3614,
+  "results": {
+    "alpha_neuron_poisson": {
+      "best_val_corr": 0.30834500202158704,
+      "final_val_corr": 0.24284156417038366,
+      "epochs_trained": 355,
+      "tau_values": {},
+      "alpha_values": {
+        "alpha_e_mean": 0.5064828395843506,
+        "alpha_e_std": 0.058279864490032196,
+        "alpha_i_mean": 0.7294260859489441,
+        "alpha_i_std": 0.025130247697234154
+      },
+      "error": null
+    },
+    "alpha_neuron_lowrank50": {
+      "best_val_corr": 0.2782202356582393,
+      "final_val_corr": 0.2686052613310498,
+      "epochs_trained": 442,
+      "tau_values": {},
+      "alpha_values": {
+        "alpha_e_mean": 0.46416836977005005,
+        "alpha_e_std": 0.06051894649863243,
+        "alpha_i_mean": 0.7930022478103638,
+        "alpha_i_std": 0.016066433861851692
+      },
+      "error": null
+    },
+    "poisson_lowrank50": {
+      "best_val_corr": 0.292868584688397,
+      "final_val_corr": 0.27651429593126203,
+      "epochs_trained": 414,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "alpha_neuron_poisson_lowrank50": {
+      "best_val_corr": 0.2745953763824633,
+      "final_val_corr": 0.24187324436192642,
+      "epochs_trained": 387,
+      "tau_values": {},
+      "alpha_values": {
+        "alpha_e_mean": 0.48904192447662354,
+        "alpha_e_std": 0.06482858955860138,
+        "alpha_i_mean": 0.7729132771492004,
+        "alpha_i_std": 0.019633356481790543
+      },
+      "error": null
+    },
+    "alpha_neuron_poisson_actreg": {
+      "best_val_corr": 0.31054148280737126,
+      "final_val_corr": 0.30726156430847784,
+      "epochs_trained": 500,
+      "tau_values": {},
+      "alpha_values": {
+        "alpha_e_mean": 0.5002738237380981,
+        "alpha_e_std": 0.0540710873901844,
+        "alpha_i_mean": 0.7145171761512756,
+        "alpha_i_std": 0.019081871956586838
+      },
+      "error": null
+    },
+    "embed_28_learnable": {
+      "best_val_corr": 0.3340909562945953,
+      "final_val_corr": 0.3238321439357918,
+      "epochs_trained": 438,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "embed_56_learnable": {
+      "best_val_corr": 0.37621023972569945,
+      "final_val_corr": 0.3644494083122669,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "embed_28_random": {
+      "best_val_corr": 0.32449295966816977,
+      "final_val_corr": 0.32032736775504145,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "embed_time_lag": {
+      "best_val_corr": 0.33654110825429595,
+      "final_val_corr": 0.320020703766106,
+      "epochs_trained": 311,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "embed_28_alpha_neuron": {
+      "best_val_corr": 0.3167053572614943,
+      "final_val_corr": 0.3080933936266434,
+      "epochs_trained": 500,
+      "tau_values": {},
+      "alpha_values": {
+        "alpha_e_mean": 0.5221734046936035,
+        "alpha_e_std": 0.054180387407541275,
+        "alpha_i_mean": 0.7181733846664429,
+        "alpha_i_std": 0.011248542927205563
+      },
+      "error": null
+    },
+    "alpha_init_optimal": {
+      "best_val_corr": 0.3535606678010233,
+      "final_val_corr": 0.3471731170024512,
+      "epochs_trained": 500,
+      "tau_values": {},
+      "alpha_values": {
+        "alpha_e_mean": 0.5689007043838501,
+        "alpha_e_std": 0.07243399322032928,
+        "alpha_i_mean": 0.7117033004760742,
+        "alpha_i_std": 0.027850477024912834
+      },
+      "error": null
+    },
+    "fixed_alpha_optimal": {
+      "best_val_corr": 0.29013148475937456,
+      "final_val_corr": 0.2792341242228519,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "noise_0.05": {
+      "best_val_corr": 0.33768842316808406,
+      "final_val_corr": 0.3343153424079388,
+      "epochs_trained": 500,
+      "tau_values": {},
+      "alpha_values": {
+        "alpha_e_mean": 0.5327664017677307,
+        "alpha_e_std": 0.049799274653196335,
+        "alpha_i_mean": 0.7233150005340576,
+        "alpha_i_std": 0.024803325533866882
+      },
+      "error": null
+    },
+    "noise_0.15": {
+      "best_val_corr": 0.35013372565147177,
+      "final_val_corr": 0.33885878684472304,
+      "epochs_trained": 500,
+      "tau_values": {},
+      "alpha_values": {
+        "alpha_e_mean": 0.5379405617713928,
+        "alpha_e_std": 0.07588557153940201,
+        "alpha_i_mean": 0.7128124237060547,
+        "alpha_i_std": 0.03700818866491318
+      },
+      "error": null
+    },
+    "learnable_tau_pop_v2": {
+      "best_val_corr": 0.3461045337638649,
+      "final_val_corr": 0.3461045337638649,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau_e": 43.281280517578125,
+        "tau_i": 35.06996536254883
+      },
+      "alpha_values": {
+        "alpha_e": 0.5776169212425815,
+        "alpha_i": 0.712860698365487
+      },
+      "error": null
+    },
+    "alpha_neuron_poisson_optimal_init": {
+      "best_val_corr": 0.30073280822551113,
+      "final_val_corr": 0.245829024255694,
+      "epochs_trained": 331,
+      "tau_values": {},
+      "alpha_values": {
+        "alpha_e_mean": 0.5349534749984741,
+        "alpha_e_std": 0.05077264830470085,
+        "alpha_i_mean": 0.7141597270965576,
+        "alpha_i_std": 0.02647661603987217
+      },
+      "error": null
+    }
+  }
+}

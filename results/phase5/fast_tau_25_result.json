@@ -1,0 +1,30 @@
+{
+  "best_val_corr": 0.3842097915420159,
+  "final_val_corr": 0.3842097915420159,
+  "epochs_trained": 500,
+  "tau_values": {
+    "tau": 25.0
+  },
+  "alpha_values": {
+    "alpha": 1.0
+  },
+  "h0_values": {
+    "mean": 0.21791782975196838,
+    "std": 0.17464065551757812,
+    "min": -0.24667228758335114,
+    "max": 0.48919644951820374
+  },
+  "config": {
+    "input_embed_dim": 56,
+    "input_embed_type": "attention",
+    "attention_heads": 4,
+    "learnable_h0": true,
+    "h0_init": 0.1,
+    "use_grad_balancing": true,
+    "ltrial_scale": 0.5,
+    "name": "fast_tau_25",
+    "tau": 25.0,
+    "max_epochs": 500,
+    "patience": 100
+  }
+}

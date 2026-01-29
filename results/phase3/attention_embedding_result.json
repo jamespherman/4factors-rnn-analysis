@@ -1,0 +1,23 @@
+{
+  "best_val_corr": 0.3842531650230774,
+  "final_val_corr": 0.3764071065699635,
+  "epochs_trained": 500,
+  "tau_values": {
+    "tau": 50.0
+  },
+  "alpha_values": {
+    "alpha": 0.5
+  },
+  "config": {
+    "name": "attention_embedding",
+    "loss_type": "correlation",
+    "input_embed_dim": 56,
+    "input_embed_type": "attention",
+    "attention_heads": 4,
+    "scheduler": "plateau",
+    "use_grad_balancing": true,
+    "ltrial_scale": 0.5,
+    "max_epochs": 500,
+    "patience": 100
+  }
+}

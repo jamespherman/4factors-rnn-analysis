@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python src/model.py:*)",
+      "Bash(pip install:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(conda env:*)",
+      "Bash(pip3 list:*)",
+      "Bash(source .venv/bin/activate:*)"
+    ]
+  }
+}

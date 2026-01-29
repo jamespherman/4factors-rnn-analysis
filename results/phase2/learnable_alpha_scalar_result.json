@@ -1,0 +1,21 @@
+{
+  "best_val_corr": 0.3105426805824247,
+  "final_val_corr": 0.3063444681422015,
+  "epochs_trained": 500,
+  "tau_values": {},
+  "alpha_values": {
+    "alpha": 0.5636484622955322
+  },
+  "config": {
+    "name": "learnable_alpha_scalar",
+    "loss_type": "correlation",
+    "learnable_tau": "none",
+    "learnable_alpha": "scalar",
+    "alpha_init": 0.5,
+    "scheduler": "plateau",
+    "use_grad_balancing": true,
+    "ltrial_scale": 0.5,
+    "max_epochs": 500,
+    "patience": 100
+  }
+}

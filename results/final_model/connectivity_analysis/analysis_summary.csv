@@ -1,0 +1,2 @@
+n_e_neurons,n_i_neurons,best_k_clusters,cluster_silhouette,cluster_permutation_p,mean_gini,gini_vs_shuffle_p,mean_entropy,entropy_vs_shuffle_p,h0_ei_pval
+41,13,4,0.05099340155720711,0.504,0.3596793091361868,0.712,0.942905118408678,0.702,0.0024065715

@@ -1,0 +1,11 @@
+{
+  "reward_potent_mean": 0.8500816837172399,
+  "reward_potent_sem": 0.07967054994594538,
+  "reward_null_mean": 0.14991831628276023,
+  "reward_null_sem": 0.07967054994594543,
+  "salience_potent_mean": 0.7789922353571476,
+  "salience_potent_sem": 0.1110056715170448,
+  "salience_null_mean": 0.2210077646428524,
+  "salience_null_sem": 0.11100567151704478,
+  "n_sessions": 3
+}

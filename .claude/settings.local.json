@@ -1,11 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python src/model.py:*)",
-      "Bash(pip install:*)",
-      "Bash(python:*)",
-      "Bash(powershell:*)",
-      "Bash(dir:*)"
+      "Bash",
+      "Edit(*)",
+      "Write(*)"
     ]
   }
 }

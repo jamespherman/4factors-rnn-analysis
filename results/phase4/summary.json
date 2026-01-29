@@ -1,0 +1,71 @@
+{
+  "timestamp": "2026-01-24T13:36:15.394922",
+  "data_path": "data/rnn_export_Newton_08_15_2025_SC.mat",
+  "phase3_best": 0.3843,
+  "target": 0.4,
+  "results": {
+    "attention_learnable_h0": {
+      "best_val_corr": 0.40210794919583087,
+      "final_val_corr": 0.3980574306024349,
+      "epochs_trained": 500,
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "h0_values": {
+        "mean": 0.291475772857666,
+        "std": 0.20367418229579926,
+        "min": -0.4220910966396332,
+        "max": 0.6026106476783752
+      },
+      "error": null
+    },
+    "attention_adamw": {
+      "best_val_corr": 0.38784178538149267,
+      "final_val_corr": 0.37706149773922876,
+      "epochs_trained": 500,
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "h0_values": {},
+      "error": null
+    },
+    "attention_h0_adamw": {
+      "best_val_corr": 0.39874291947654017,
+      "final_val_corr": 0.38209710085219933,
+      "epochs_trained": 500,
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "h0_values": {
+        "mean": 0.2815127968788147,
+        "std": 0.1990157514810562,
+        "min": -0.41067200899124146,
+        "max": 0.6001189351081848
+      },
+      "error": null
+    },
+    "attention_alpha_neuron": {
+      "best_val_corr": 0.37893308261843534,
+      "final_val_corr": 0.3785322380930664,
+      "epochs_trained": 500,
+      "alpha_values": {
+        "alpha_e_mean": 0.5557084679603577,
+        "alpha_e_std": 0.045075852423906326,
+        "alpha_i_mean": 0.6811578273773193,
+        "alpha_i_std": 0.016985096037387848
+      },
+      "h0_values": {},
+      "error": null
+    },
+    "attention_baseline": {
+      "best_val_corr": 0.39074256850174266,
+      "final_val_corr": 0.38574385263995836,
+      "epochs_trained": 500,
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "h0_values": {},
+      "error": null
+    }
+  }
+}

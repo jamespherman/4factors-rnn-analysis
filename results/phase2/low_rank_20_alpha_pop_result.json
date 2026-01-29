@@ -1,0 +1,23 @@
+{
+  "best_val_corr": 0.3145177080319482,
+  "final_val_corr": 0.2973154600752767,
+  "epochs_trained": 386,
+  "tau_values": {},
+  "alpha_values": {
+    "alpha_e": 0.4776535928249359,
+    "alpha_i": 0.7751773595809937
+  },
+  "config": {
+    "name": "low_rank_20_alpha_pop",
+    "loss_type": "correlation",
+    "learnable_tau": "none",
+    "learnable_alpha": "population",
+    "alpha_init": 0.5,
+    "low_rank": 20,
+    "scheduler": "plateau",
+    "use_grad_balancing": true,
+    "ltrial_scale": 0.5,
+    "max_epochs": 500,
+    "patience": 100
+  }
+}

@@ -347,13 +347,39 @@ class RNNDataset(Dataset):
             'trial_idx': idx
         }
     
-    def get_all_trials(self) -> dict:
-        """Get all trials as a single batch (for trial-matching loss)."""
-        return {
+    def get_all_trials(self, include_conditions: bool = False) -> dict:
+        """
+        Get all trials as a single batch (for trial-matching loss).
+
+        Args:
+            include_conditions: If True, include trial condition labels
+
+        Returns:
+            Dict with 'inputs', 'targets', 'mask', and optionally
+            'trial_conditions' and factor labels
+        """
+        result = {
             'inputs': torch.tensor(self.inputs, dtype=torch.float32),
             'targets': torch.tensor(self.targets, dtype=torch.float32),
             'mask': torch.tensor(self.mask, dtype=torch.float32),
         }
+
+        if include_conditions:
+            result['trial_conditions'] = torch.tensor(
+                self.get_condition_labels(), dtype=torch.long
+            )
+            # Also include individual factor labels for selectivity analysis
+            result['trial_reward'] = torch.tensor(
+                self.get_reward_binary(), dtype=torch.long
+            )
+            result['trial_location'] = torch.tensor(
+                self.trial_location.astype(np.int64), dtype=torch.long
+            )
+            result['trial_salience'] = torch.tensor(
+                self.get_salience_binary(), dtype=torch.long
+            )
+
+        return result
     
     def get_neuron_info(self) -> dict:
         """Get neuron classification info for model construction."""
@@ -369,6 +395,119 @@ class RNNDataset(Dataset):
     def get_input_dim(self) -> int:
         """Get input dimension for model construction."""
         return self.inputs.shape[2]
+
+    def get_reward_binary(self) -> np.ndarray:
+        """
+        Get binary reward labels (0 = low, 1 = high).
+
+        Handles different encoding conventions in data files.
+
+        Returns:
+            [n_trials] array of 0/1 values
+        """
+        reward = self.trial_reward.copy()
+        # If encoded as 1/2, convert to 0/1
+        if reward.min() >= 1 and reward.max() <= 2:
+            return (reward - 1).astype(np.int64)
+        # If already 0/1
+        return reward.astype(np.int64)
+
+    def get_salience_binary(self) -> np.ndarray:
+        """
+        Get binary salience labels (0 = low, 1 = high).
+
+        Handles different encoding conventions and missing data.
+
+        Returns:
+            [n_trials] array of 0/1 values
+        """
+        salience = self.trial_salience.copy()
+        # If encoded as 1/2 or similar, convert to 0/1
+        unique_vals = np.unique(salience[~np.isnan(salience)])
+
+        if len(unique_vals) == 0:
+            # No salience data available, return zeros
+            return np.zeros(self.n_trials, dtype=np.int64)
+        elif len(unique_vals) <= 2:
+            # Binary encoding
+            if salience.min() >= 1:
+                return (salience - salience.min()).astype(np.int64)
+            return salience.astype(np.int64)
+        else:
+            # Multi-level, binarize by median
+            median = np.nanmedian(salience)
+            return (salience > median).astype(np.int64)
+
+    def get_location_index(self) -> np.ndarray:
+        """
+        Get location index (0-3 from 4 quadrants).
+
+        Returns:
+            [n_trials] array of 0-3 values
+        """
+        location = self.trial_location.copy()
+        # If encoded as 1-4, convert to 0-3
+        if location.min() >= 1:
+            return (location - 1).astype(np.int64)
+        return location.astype(np.int64)
+
+    def get_condition_labels(self) -> np.ndarray:
+        """
+        Create condition labels from factorial design.
+
+        Conditions are indexed as a single integer encoding all factors:
+            condition = location * 4 + reward * 2 + salience
+
+        where:
+            - location: 0-3 (from trial_location 1-4)
+            - reward: 0-1 (low/high)
+            - salience: 0-1 (low/high)
+
+        This gives 4 × 2 × 2 = 16 unique conditions (indices 0-15).
+
+        Returns:
+            [n_trials] array of condition indices (0-15)
+        """
+        location = self.get_location_index()  # 0-3
+        reward = self.get_reward_binary()      # 0-1
+        salience = self.get_salience_binary()  # 0-1
+
+        # Encode as single index: location * 4 + reward * 2 + salience
+        conditions = location * 4 + reward * 2 + salience
+
+        return conditions.astype(np.int64)
+
+    def get_condition_info(self) -> dict:
+        """
+        Get information about condition structure.
+
+        Returns:
+            Dict with condition counts and factor details
+        """
+        conditions = self.get_condition_labels()
+        unique, counts = np.unique(conditions, return_counts=True)
+
+        # Decode conditions back to factors
+        condition_factors = {}
+        for cond in unique:
+            location = cond // 4
+            reward = (cond % 4) // 2
+            salience = cond % 2
+            condition_factors[int(cond)] = {
+                'location': int(location),
+                'reward': int(reward),
+                'salience': int(salience),
+                'count': int(counts[unique == cond][0])
+            }
+
+        return {
+            'n_conditions': len(unique),
+            'conditions': condition_factors,
+            'total_trials': self.n_trials,
+            'min_trials_per_condition': int(counts.min()),
+            'max_trials_per_condition': int(counts.max()),
+            'mean_trials_per_condition': float(counts.mean())
+        }
 
 
 def train_val_split(

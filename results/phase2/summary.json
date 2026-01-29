@@ -1,0 +1,209 @@
+{
+  "timestamp": "2026-01-23T16:27:00.133234",
+  "data_path": "data/rnn_export_Newton_08_15_2025_SC.mat",
+  "results": {
+    "baseline": {
+      "best_val_corr": 0.29013148475937456,
+      "final_val_corr": 0.2792341242228519,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "poisson_ltrial": {
+      "best_val_corr": 0.3368941819095511,
+      "final_val_corr": 0.3267232439879693,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "learnable_alpha_scalar": {
+      "best_val_corr": 0.3105426805824247,
+      "final_val_corr": 0.3063444681422015,
+      "epochs_trained": 500,
+      "tau_values": {},
+      "alpha_values": {
+        "alpha": 0.5636484622955322
+      },
+      "error": null
+    },
+    "learnable_alpha_population": {
+      "best_val_corr": 0.3442587555878511,
+      "final_val_corr": 0.33635025794720924,
+      "epochs_trained": 500,
+      "tau_values": {},
+      "alpha_values": {
+        "alpha_e": 0.579804539680481,
+        "alpha_i": 0.7300383448600769
+      },
+      "error": null
+    },
+    "learnable_alpha_neuron": {
+      "best_val_corr": 0.34493661147877763,
+      "final_val_corr": 0.3380175088418194,
+      "epochs_trained": 451,
+      "tau_values": {},
+      "alpha_values": {
+        "alpha_e_mean": 0.5413375496864319,
+        "alpha_e_std": 0.06705508381128311,
+        "alpha_i_mean": 0.7215073704719543,
+        "alpha_i_std": 0.030390746891498566
+      },
+      "error": null
+    },
+    "learnable_tau_population_fixed": {
+      "best_val_corr": 0.02045109235585406,
+      "final_val_corr": -0.024264080316090286,
+      "epochs_trained": 163,
+      "tau_values": {
+        "tau_e": 50.8771858215332,
+        "tau_i": 21.380416870117188
+      },
+      "alpha_values": {
+        "alpha_e": 0.49137937950606986,
+        "alpha_i": 1.1692943197446166
+      },
+      "error": null
+    },
+    "learnable_tau_neuron_fixed": {
+      "best_val_corr": 0.023386418281698854,
+      "final_val_corr": 0.0018125946279857227,
+      "epochs_trained": 159,
+      "tau_values": {
+        "tau_e_mean": 50.21170425415039,
+        "tau_e_std": 0.7829273343086243,
+        "tau_i_mean": 20.970783233642578,
+        "tau_i_std": 0.11581023782491684
+      },
+      "alpha_values": {},
+      "error": null
+    },
+    "low_rank_10": {
+      "best_val_corr": 0.3166677620704055,
+      "final_val_corr": 0.30904425340342384,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "low_rank_20": {
+      "best_val_corr": 0.3227075705351801,
+      "final_val_corr": 0.310157200377504,
+      "epochs_trained": 379,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "low_rank_30": {
+      "best_val_corr": 0.3120400844079234,
+      "final_val_corr": 0.30816217672253643,
+      "epochs_trained": 421,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "low_rank_50": {
+      "best_val_corr": 0.333407088646596,
+      "final_val_corr": 0.3317832072008986,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "cosine_no_warmup": {
+      "best_val_corr": 0.28012468967475523,
+      "final_val_corr": 0.2761371314538741,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "cosine_warmup_50": {
+      "best_val_corr": 0.3051474291011797,
+      "final_val_corr": 0.30238638026602155,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "activity_reg_0.01": {
+      "best_val_corr": 0.2827850400895449,
+      "final_val_corr": 0.2713289541814491,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "activity_reg_0.001": {
+      "best_val_corr": 0.3171275107227245,
+      "final_val_corr": 0.3146545364955713,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "poisson_ltrial_alpha_pop": {
+      "best_val_corr": 0.3170810188080897,
+      "final_val_corr": 0.2467175983705309,
+      "epochs_trained": 438,
+      "tau_values": {},
+      "alpha_values": {
+        "alpha_e": 0.5579242706298828,
+        "alpha_i": 0.7239498496055603
+      },
+      "error": null
+    },
+    "low_rank_20_alpha_pop": {
+      "best_val_corr": 0.3145177080319482,
+      "final_val_corr": 0.2973154600752767,
+      "epochs_trained": 386,
+      "tau_values": {},
+      "alpha_values": {
+        "alpha_e": 0.4776535928249359,
+        "alpha_i": 0.7751773595809937
+      },
+      "error": null
+    }
+  }
+}

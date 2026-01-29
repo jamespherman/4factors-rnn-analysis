@@ -1,0 +1,4 @@
+test,description,n_sessions,n_consistent,proportion,replicated,n_significant,n_I_greater_than_E,combined_p,n_global,mean_eff_pct
+Gini vs shuffle consistency,Sessions with Gini not different from shuffled,3,3.0,1.0,True,,,,,
+h0 E/I difference meta-analysis,Combined p-value (Fisher method),3,,,True,1.0,3.0,0.006877008291252698,,
+Global inhibition (eff targets > 50%),Sessions with >50% effective targets,3,,,False,,,,2.0,52.88591260355029

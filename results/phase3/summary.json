@@ -1,0 +1,130 @@
+{
+  "timestamp": "2026-01-24T00:31:25.197727",
+  "data_path": "data/rnn_export_Newton_08_15_2025_SC.mat",
+  "phase2c_best": 0.3762,
+  "target": 0.4,
+  "stretch_target": 0.42,
+  "results": {
+    "embed_112_learnable": {
+      "best_val_corr": 0.3440153002577996,
+      "final_val_corr": 0.33885789877491845,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "embed_168_learnable": {
+      "best_val_corr": 0.31203037420583973,
+      "final_val_corr": 0.31015253019700345,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "deep_embed_56": {
+      "best_val_corr": 0.3630029399129931,
+      "final_val_corr": 0.3586618246210912,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "embed_56_higher_noise": {
+      "best_val_corr": 0.3733775738730265,
+      "final_val_corr": 0.36285611475585366,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "embed_56_alpha_neuron_optimal": {
+      "best_val_corr": 0.3622933479455102,
+      "final_val_corr": 0.35312186187852596,
+      "epochs_trained": 500,
+      "tau_values": {},
+      "alpha_values": {
+        "alpha_e_mean": 0.5325661897659302,
+        "alpha_e_std": 0.05006120353937149,
+        "alpha_i_mean": 0.6695441007614136,
+        "alpha_i_std": 0.02202741801738739
+      },
+      "error": null
+    },
+    "embed_56_lower_lr": {
+      "best_val_corr": 0.36943575048881067,
+      "final_val_corr": 0.36349780213447513,
+      "epochs_trained": 468,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "embed_56_adamw": {
+      "best_val_corr": 0.37476359480511434,
+      "final_val_corr": 0.36382361106119887,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "typed_embedding": {
+      "best_val_corr": 0.3305324202622554,
+      "final_val_corr": 0.32889520964650626,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "recurrent_embedding": {
+      "best_val_corr": 0.3733134916479,
+      "final_val_corr": 0.3699867135384317,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    },
+    "attention_embedding": {
+      "best_val_corr": 0.3842531650230774,
+      "final_val_corr": 0.3764071065699635,
+      "epochs_trained": 500,
+      "tau_values": {
+        "tau": 50.0
+      },
+      "alpha_values": {
+        "alpha": 0.5
+      },
+      "error": null
+    }
+  }
+}

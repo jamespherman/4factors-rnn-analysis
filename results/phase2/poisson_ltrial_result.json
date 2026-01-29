@@ -1,0 +1,23 @@
+{
+  "best_val_corr": 0.3368941819095511,
+  "final_val_corr": 0.3267232439879693,
+  "epochs_trained": 500,
+  "tau_values": {
+    "tau": 50.0
+  },
+  "alpha_values": {
+    "alpha": 0.5
+  },
+  "config": {
+    "name": "poisson_ltrial",
+    "loss_type": "correlation",
+    "learnable_tau": "none",
+    "learnable_alpha": "none",
+    "use_poisson_ltrial": true,
+    "scheduler": "plateau",
+    "use_grad_balancing": true,
+    "ltrial_scale": 0.5,
+    "max_epochs": 500,
+    "patience": 100
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "best_val_corr": 0.33654110825429595,
+  "final_val_corr": 0.320020703766106,
+  "epochs_trained": 311,
+  "tau_values": {
+    "tau": 50.0
+  },
+  "alpha_values": {
+    "alpha": 0.5
+  },
+  "config": {
+    "name": "embed_time_lag",
+    "loss_type": "correlation",
+    "input_embed_type": "time_lag",
+    "input_time_lags": [
+      1,
+      2,
+      3
+    ],
+    "scheduler": "plateau",
+    "use_grad_balancing": true,
+    "ltrial_scale": 0.5,
+    "max_epochs": 500,
+    "patience": 100
+  }
+}

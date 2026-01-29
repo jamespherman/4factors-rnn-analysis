@@ -1,0 +1,18 @@
+{
+  "best_val_corr": 0.29013148475937456,
+  "final_val_corr": 0.2792341242228519,
+  "epochs_trained": 500,
+  "tau_values": {
+    "tau": 50.0
+  },
+  "config": {
+    "name": "baseline",
+    "loss_type": "correlation",
+    "learnable_tau": "none",
+    "scheduler": "plateau",
+    "use_grad_balancing": true,
+    "ltrial_scale": 0.5,
+    "max_epochs": 500,
+    "patience": 100
+  }
+}

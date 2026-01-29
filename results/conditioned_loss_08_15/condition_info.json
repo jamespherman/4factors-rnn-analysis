@@ -1,0 +1,105 @@
+{
+  "n_conditions": 16,
+  "conditions": {
+    "0": {
+      "location": 0,
+      "reward": 0,
+      "salience": 0,
+      "count": 180
+    },
+    "1": {
+      "location": 0,
+      "reward": 0,
+      "salience": 1,
+      "count": 91
+    },
+    "2": {
+      "location": 0,
+      "reward": 1,
+      "salience": 0,
+      "count": 123
+    },
+    "3": {
+      "location": 0,
+      "reward": 1,
+      "salience": 1,
+      "count": 62
+    },
+    "4": {
+      "location": 1,
+      "reward": 0,
+      "salience": 0,
+      "count": 27
+    },
+    "5": {
+      "location": 1,
+      "reward": 0,
+      "salience": 1,
+      "count": 11
+    },
+    "6": {
+      "location": 1,
+      "reward": 1,
+      "salience": 0,
+      "count": 50
+    },
+    "7": {
+      "location": 1,
+      "reward": 1,
+      "salience": 1,
+      "count": 18
+    },
+    "8": {
+      "location": 2,
+      "reward": 0,
+      "salience": 0,
+      "count": 169
+    },
+    "9": {
+      "location": 2,
+      "reward": 0,
+      "salience": 1,
+      "count": 74
+    },
+    "10": {
+      "location": 2,
+      "reward": 1,
+      "salience": 0,
+      "count": 87
+    },
+    "11": {
+      "location": 2,
+      "reward": 1,
+      "salience": 1,
+      "count": 40
+    },
+    "12": {
+      "location": 3,
+      "reward": 0,
+      "salience": 0,
+      "count": 34
+    },
+    "13": {
+      "location": 3,
+      "reward": 0,
+      "salience": 1,
+      "count": 36
+    },
+    "14": {
+      "location": 3,
+      "reward": 1,
+      "salience": 0,
+      "count": 28
+    },
+    "15": {
+      "location": 3,
+      "reward": 1,
+      "salience": 1,
+      "count": 13
+    }
+  },
+  "total_trials": 1043,
+  "min_trials_per_condition": 11,
+  "max_trials_per_condition": 180,
+  "mean_trials_per_condition": 65.1875
+}

@@ -1,0 +1,19 @@
+{
+  "best_val_corr": 0.39074256850174266,
+  "final_val_corr": 0.38574385263995836,
+  "epochs_trained": 500,
+  "alpha_values": {
+    "alpha": 0.5
+  },
+  "h0_values": {},
+  "config": {
+    "name": "attention_baseline",
+    "input_embed_dim": 56,
+    "input_embed_type": "attention",
+    "attention_heads": 4,
+    "use_grad_balancing": true,
+    "ltrial_scale": 0.5,
+    "max_epochs": 500,
+    "patience": 100
+  }
+}

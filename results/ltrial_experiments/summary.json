@@ -1,0 +1,124 @@
+[
+  {
+    "name": "baseline_no_ltrial",
+    "config": {
+      "lambda_trial": 0.0,
+      "name": "baseline_no_ltrial"
+    },
+    "best_val_corr": 0.3298838270389633,
+    "final_epoch": 393
+  },
+  {
+    "name": "lambda_0.1_eps_0.1",
+    "config": {
+      "lambda_trial": 0.1,
+      "sinkhorn_epsilon": 0.1,
+      "name": "lambda_0.1_eps_0.1"
+    },
+    "best_val_corr": 0.31848646176776924,
+    "final_epoch": 499
+  },
+  {
+    "name": "lambda_0.3_eps_0.1",
+    "config": {
+      "lambda_trial": 0.3,
+      "sinkhorn_epsilon": 0.1,
+      "name": "lambda_0.3_eps_0.1"
+    },
+    "best_val_corr": 0.18774812462329948,
+    "final_epoch": 418
+  },
+  {
+    "name": "lambda_0.5_eps_0.1",
+    "config": {
+      "lambda_trial": 0.5,
+      "sinkhorn_epsilon": 0.1,
+      "name": "lambda_0.5_eps_0.1"
+    },
+    "best_val_corr": 0.17308064261695066,
+    "final_epoch": 116
+  },
+  {
+    "name": "lambda_1.0_eps_0.1",
+    "config": {
+      "lambda_trial": 1.0,
+      "sinkhorn_epsilon": 0.1,
+      "name": "lambda_1.0_eps_0.1"
+    },
+    "best_val_corr": 0.17136688837315844,
+    "final_epoch": 116
+  },
+  {
+    "name": "lambda_0.3_eps_0.5",
+    "config": {
+      "lambda_trial": 0.3,
+      "sinkhorn_epsilon": 0.5,
+      "name": "lambda_0.3_eps_0.5"
+    },
+    "best_val_corr": 0.17668122126796065,
+    "final_epoch": 133
+  },
+  {
+    "name": "lambda_0.3_eps_1.0",
+    "config": {
+      "lambda_trial": 0.3,
+      "sinkhorn_epsilon": 1.0,
+      "name": "lambda_0.3_eps_1.0"
+    },
+    "best_val_corr": 0.22813508951977426,
+    "final_epoch": 284
+  },
+  {
+    "name": "lambda_1.0_eps_0.5",
+    "config": {
+      "lambda_trial": 1.0,
+      "sinkhorn_epsilon": 0.5,
+      "name": "lambda_1.0_eps_0.5"
+    },
+    "best_val_corr": 0.16480504193060672,
+    "final_epoch": 130
+  },
+  {
+    "name": "lambda_1.0_eps_1.0",
+    "config": {
+      "lambda_trial": 1.0,
+      "sinkhorn_epsilon": 1.0,
+      "name": "lambda_1.0_eps_1.0"
+    },
+    "best_val_corr": 0.16289773244276745,
+    "final_epoch": 200
+  },
+  {
+    "name": "gradbal_eps_0.1",
+    "config": {
+      "lambda_trial": 1.0,
+      "sinkhorn_epsilon": 0.1,
+      "gradient_balancing": true,
+      "name": "gradbal_eps_0.1"
+    },
+    "best_val_corr": 0.3434344184460993,
+    "final_epoch": 499
+  },
+  {
+    "name": "gradbal_eps_0.5",
+    "config": {
+      "lambda_trial": 1.0,
+      "sinkhorn_epsilon": 0.5,
+      "gradient_balancing": true,
+      "name": "gradbal_eps_0.5"
+    },
+    "best_val_corr": 0.3040076090754888,
+    "final_epoch": 472
+  },
+  {
+    "name": "gradbal_eps_1.0",
+    "config": {
+      "lambda_trial": 1.0,
+      "sinkhorn_epsilon": 1.0,
+      "gradient_balancing": true,
+      "name": "gradbal_eps_1.0"
+    },
+    "best_val_corr": 0.32024790079475274,
+    "final_epoch": 499
+  }
+]

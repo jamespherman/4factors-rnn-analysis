@@ -1,0 +1,23 @@
+{
+  "best_val_corr": 0.3733134916479,
+  "final_val_corr": 0.3699867135384317,
+  "epochs_trained": 500,
+  "tau_values": {
+    "tau": 50.0
+  },
+  "alpha_values": {
+    "alpha": 0.5
+  },
+  "config": {
+    "name": "recurrent_embedding",
+    "loss_type": "correlation",
+    "input_embed_dim": 56,
+    "input_embed_type": "recurrent",
+    "gru_hidden_dim": 32,
+    "scheduler": "plateau",
+    "use_grad_balancing": true,
+    "ltrial_scale": 0.5,
+    "max_epochs": 500,
+    "patience": 100
+  }
+}

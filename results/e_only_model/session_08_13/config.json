@@ -1,0 +1,17 @@
+{
+  "data_path": "data/rnn_export_Newton_08_13_2025_SC.mat",
+  "model_type": "e_only",
+  "max_epochs": 500,
+  "patience": 100,
+  "lr": 0.001,
+  "lambda_trial": 0.5,
+  "lambda_reg": 0.0001,
+  "seed": 42,
+  "n_e_recorded": 10,
+  "n_i_recorded": 4,
+  "n_e_model": 160,
+  "n_i_model": 40,
+  "n_train": 330,
+  "n_val": 82,
+  "timestamp": "2026-01-25T19:39:15.785427"
+}

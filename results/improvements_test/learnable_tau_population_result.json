@@ -1,0 +1,21 @@
+{
+  "best_val_corr": 0.025500524503166727,
+  "final_val_corr": 0.006319499764045611,
+  "epochs_trained": 287,
+  "tau_values": {
+    "tau_e": 49.99068832397461,
+    "tau_i": 20.14222526550293
+  },
+  "config": {
+    "name": "learnable_tau_population",
+    "loss_type": "correlation",
+    "learnable_tau": "population",
+    "tau_e_init": 50.0,
+    "tau_i_init": 20.0,
+    "scheduler": "plateau",
+    "use_grad_balancing": true,
+    "ltrial_scale": 0.5,
+    "max_epochs": 500,
+    "patience": 100
+  }
+}

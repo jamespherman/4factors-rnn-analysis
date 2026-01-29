@@ -1,0 +1,24 @@
+{
+  "best_val_corr": 0.3171275107227245,
+  "final_val_corr": 0.3146545364955713,
+  "epochs_trained": 500,
+  "tau_values": {
+    "tau": 50.0
+  },
+  "alpha_values": {
+    "alpha": 0.5
+  },
+  "config": {
+    "name": "activity_reg_0.001",
+    "loss_type": "correlation",
+    "learnable_tau": "none",
+    "learnable_alpha": "none",
+    "scheduler": "plateau",
+    "use_grad_balancing": true,
+    "ltrial_scale": 0.5,
+    "use_activity_reg": true,
+    "lambda_activity": 0.001,
+    "max_epochs": 500,
+    "patience": 100
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "best_val_corr": 0.37476359480511434,
+  "final_val_corr": 0.36382361106119887,
+  "epochs_trained": 500,
+  "tau_values": {
+    "tau": 50.0
+  },
+  "alpha_values": {
+    "alpha": 0.5
+  },
+  "config": {
+    "name": "embed_56_adamw",
+    "loss_type": "correlation",
+    "input_embed_dim": 56,
+    "input_embed_type": "learnable",
+    "optimizer": "adamw",
+    "weight_decay": 0.01,
+    "scheduler": "plateau",
+    "use_grad_balancing": true,
+    "ltrial_scale": 0.5,
+    "max_epochs": 500,
+    "patience": 100
+  }
+}

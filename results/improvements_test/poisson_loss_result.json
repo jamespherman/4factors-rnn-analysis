@@ -1,0 +1,18 @@
+{
+  "best_val_corr": 0.17302757231842328,
+  "final_val_corr": 0.07996041951586735,
+  "epochs_trained": 500,
+  "tau_values": {
+    "tau": 50.0
+  },
+  "config": {
+    "name": "poisson_loss",
+    "loss_type": "poisson",
+    "learnable_tau": "none",
+    "scheduler": "plateau",
+    "use_grad_balancing": true,
+    "ltrial_scale": 0.5,
+    "max_epochs": 500,
+    "patience": 100
+  }
+}

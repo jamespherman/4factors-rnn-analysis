@@ -1,0 +1,23 @@
+{
+  "best_val_corr": 0.3051474291011797,
+  "final_val_corr": 0.30238638026602155,
+  "epochs_trained": 500,
+  "tau_values": {
+    "tau": 50.0
+  },
+  "alpha_values": {
+    "alpha": 0.5
+  },
+  "config": {
+    "name": "cosine_warmup_50",
+    "loss_type": "correlation",
+    "learnable_tau": "none",
+    "learnable_alpha": "none",
+    "scheduler": "cosine",
+    "warmup_epochs": 50,
+    "use_grad_balancing": true,
+    "ltrial_scale": 0.5,
+    "max_epochs": 500,
+    "patience": 100
+  }
+}

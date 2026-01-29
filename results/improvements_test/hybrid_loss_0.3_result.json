@@ -1,0 +1,19 @@
+{
+  "best_val_corr": 0.14993142877070914,
+  "final_val_corr": 0.017828617991053147,
+  "epochs_trained": 125,
+  "tau_values": {
+    "tau": 50.0
+  },
+  "config": {
+    "name": "hybrid_loss_0.3",
+    "loss_type": "hybrid",
+    "poisson_weight": 0.3,
+    "learnable_tau": "none",
+    "scheduler": "plateau",
+    "use_grad_balancing": true,
+    "ltrial_scale": 0.5,
+    "max_epochs": 500,
+    "patience": 100
+  }
+}

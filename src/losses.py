@@ -5,6 +5,8 @@ Implements:
 - L_neuron: Trial-averaged activity (PSTH) matching
 - L_trial: Single-trial variability matching (Sourmpis et al. 2023, 2026)
 - L_reg: Weight regularization
+- L_poisson: Poisson negative log-likelihood for spike count data
+- Activity regularization
 
 Based on Sourmpis et al. (2023) "Trial matching" and Sourmpis et al. (2026).
 """
@@ -13,6 +15,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
+import math
 from typing import Optional, Tuple, List
 
 
@@ -61,6 +64,62 @@ def smooth_temporal(x: torch.Tensor, kernel_size: int, dim: int = -2) -> torch.T
     x_smooth = x_smooth.movedim(-1, dim)
     
     return x_smooth
+
+
+def compute_psth_correlation_loss(
+    model_psth: torch.Tensor,
+    target_psth: torch.Tensor,
+    lambda_scale: float = 0.1,
+    lambda_var: float = 0.05
+) -> torch.Tensor:
+    """
+    Core PSTH correlation + scale + variance loss computation.
+
+    This is extracted from compute_L_neuron for reuse in conditioned loss.
+
+    Args:
+        model_psth: [time, n_neurons] - Model PSTH (already trial-averaged)
+        target_psth: [time, n_neurons] - Target PSTH (already trial-averaged)
+        lambda_scale: Weight for scale matching loss
+        lambda_var: Weight for variance matching loss
+
+    Returns:
+        loss: Scalar loss value
+    """
+    # === CORRELATION LOSS (shape matching) ===
+    # Center the signals
+    model_centered = model_psth - model_psth.mean(dim=0, keepdim=True)
+    target_centered = target_psth - target_psth.mean(dim=0, keepdim=True)
+
+    # Compute correlation per neuron
+    numerator = (model_centered * target_centered).sum(dim=0)
+    model_norm = (model_centered ** 2).sum(dim=0).sqrt().clamp(min=1e-6)
+    target_norm = (target_centered ** 2).sum(dim=0).sqrt().clamp(min=1e-6)
+
+    correlation = numerator / (model_norm * target_norm)
+
+    # Loss: minimize (1 - correlation), averaged across neurons
+    # Clamp correlation to [-1, 1] for numerical stability
+    correlation = torch.clamp(correlation, -1.0, 1.0)
+    L_corr = (1.0 - correlation).mean()
+
+    # === SCALE LOSS (magnitude matching) ===
+    # Penalize difference in mean firing rates
+    model_mean = model_psth.mean()
+    target_mean = target_psth.mean()
+    target_var = target_psth.var().clamp(min=1e-6)
+
+    L_scale = ((model_mean - target_mean) ** 2) / target_var
+
+    # === VARIANCE LOSS (dynamics magnitude) ===
+    # Encourage model to have similar temporal variance
+    model_var = model_psth.var(dim=0).mean()
+    target_var_per_neuron = target_psth.var(dim=0).mean()
+
+    L_var = ((model_var - target_var_per_neuron) ** 2) / (target_var_per_neuron ** 2 + 1e-6)
+
+    # Combine: prioritize correlation, but include scale and variance
+    return L_corr + lambda_scale * L_scale + lambda_var * L_var
 
 
 def compute_L_neuron(
@@ -151,30 +210,40 @@ def compute_L_neuron(
     return L_neuron
 
 
-def compute_L_trial(
+def compute_L_neuron_conditioned(
     model_rates: torch.Tensor,
     target_rates: torch.Tensor,
+    trial_conditions: torch.Tensor,
     bin_size_ms: float = 25.0,
-    smooth_ms: float = 32.0,
+    smooth_ms: float = 8.0,
     mask: Optional[torch.Tensor] = None,
-    recorded_indices: Optional[torch.Tensor] = None
-) -> torch.Tensor:
+    recorded_indices: Optional[torch.Tensor] = None,
+    lambda_scale: float = 0.1,
+    lambda_var: float = 0.05,
+    min_trials_per_condition: int = 3
+) -> Tuple[torch.Tensor, dict]:
     """
-    Compute trial-matching loss.
-    
-    Matches single-trial population trajectories between model and data
-    using greedy assignment (approximation to optimal transport).
-    
+    Compute PSTH loss separately for each experimental condition.
+
+    Instead of computing one grand-average PSTH across all trials, this function
+    computes separate PSTHs for each condition (e.g., location × reward × salience)
+    and enforces matching for each. This preserves factor selectivity in the model.
+
     Args:
-        model_rates: [batch, time, n_neurons] - RNN firing rates
-        target_rates: [batch, time, n_recorded] - Recorded firing rates
+        model_rates: [n_trials, n_time, n_neurons] model firing rates
+        target_rates: [n_trials, n_time, n_recorded] target firing rates
+        trial_conditions: [n_trials] integer condition label for each trial (0 to n_conditions-1)
         bin_size_ms: Bin size in milliseconds
         smooth_ms: Smoothing kernel size in milliseconds
-        mask: [batch, time] - Valid timesteps (1) vs padding (0)
+        mask: [n_trials, n_time] validity mask (optional)
         recorded_indices: Which model neurons correspond to recorded neurons
-    
+        lambda_scale: Weight for scale matching loss
+        lambda_var: Weight for variance matching loss
+        min_trials_per_condition: Minimum trials required per condition to compute loss
+
     Returns:
-        L_trial: Scalar loss
+        loss: Mean loss across all valid conditions
+        per_condition_loss: Dict of {condition: loss_value} for logging
     """
     # Select recorded neurons from model if needed
     n_recorded = target_rates.shape[2]
@@ -182,50 +251,440 @@ def compute_L_trial(
         model_rates = model_rates[:, :, recorded_indices]
     else:
         model_rates = model_rates[:, :, :n_recorded]
-    
+
+    # Apply mask if provided
+    if mask is not None:
+        mask_expanded = mask.unsqueeze(-1)
+        model_rates = model_rates * mask_expanded
+        target_rates = target_rates * mask_expanded
+
+    # Get unique conditions
+    unique_conditions = torch.unique(trial_conditions)
+    device = model_rates.device
+
+    # Temporal smoothing kernel size
+    kernel_size = max(1, int(smooth_ms / bin_size_ms))
+
+    # Compute loss for each condition
+    condition_losses = []
+    per_condition_loss = {}
+
+    for cond in unique_conditions:
+        # Get trial indices for this condition
+        cond_mask = trial_conditions == cond
+        n_trials_cond = cond_mask.sum().item()
+
+        # Skip conditions with too few trials
+        if n_trials_cond < min_trials_per_condition:
+            continue
+
+        # Extract trials for this condition
+        model_cond = model_rates[cond_mask]  # [n_trials_cond, time, neurons]
+        target_cond = target_rates[cond_mask]
+
+        # Compute condition-specific PSTH (trial average within condition)
+        model_psth_cond = model_cond.mean(dim=0)  # [time, neurons]
+        target_psth_cond = target_cond.mean(dim=0)
+
+        # Apply temporal smoothing
+        model_psth_cond = smooth_temporal(
+            model_psth_cond.unsqueeze(0), kernel_size, dim=1
+        ).squeeze(0)
+        target_psth_cond = smooth_temporal(
+            target_psth_cond.unsqueeze(0), kernel_size, dim=1
+        ).squeeze(0)
+
+        # Compute correlation-based loss for this condition
+        loss_cond = compute_psth_correlation_loss(
+            model_psth_cond, target_psth_cond,
+            lambda_scale=lambda_scale, lambda_var=lambda_var
+        )
+
+        condition_losses.append(loss_cond)
+        per_condition_loss[int(cond.item())] = loss_cond.item()
+
+    # Average across conditions (equal weighting)
+    if len(condition_losses) == 0:
+        # Fallback to regular L_neuron if no valid conditions
+        loss = compute_L_neuron(
+            model_rates, target_rates, bin_size_ms, smooth_ms,
+            mask=None,  # Already applied
+            recorded_indices=None,  # Already selected
+            lambda_scale=lambda_scale, lambda_var=lambda_var
+        )
+        per_condition_loss['fallback'] = loss.item()
+    else:
+        loss = torch.stack(condition_losses).mean()
+
+    return loss, per_condition_loss
+
+
+def compute_selectivity_index(
+    rates: torch.Tensor,
+    conditions: torch.Tensor,
+    factor_values: torch.Tensor
+) -> torch.Tensor:
+    """
+    Compute selectivity index (d-prime-like) for each neuron for a given factor.
+
+    Args:
+        rates: [n_trials, n_time, n_neurons] firing rates
+        conditions: [n_trials] condition labels (not used directly, for compatibility)
+        factor_values: [n_trials] binary factor values (0 or 1, e.g., low/high reward)
+
+    Returns:
+        selectivity: [n_neurons] selectivity index for each neuron
+    """
+    # Get trial-averaged rates for each neuron
+    mean_rates = rates.mean(dim=1)  # [n_trials, n_neurons]
+
+    # Split by factor level
+    low_mask = factor_values == 0
+    high_mask = factor_values == 1
+
+    if low_mask.sum() < 3 or high_mask.sum() < 3:
+        # Not enough trials for reliable estimate
+        return torch.zeros(rates.shape[2], device=rates.device)
+
+    low_rates = mean_rates[low_mask]  # [n_low, n_neurons]
+    high_rates = mean_rates[high_mask]  # [n_high, n_neurons]
+
+    # Compute d-prime: (mean_high - mean_low) / pooled_std
+    mean_low = low_rates.mean(dim=0)
+    mean_high = high_rates.mean(dim=0)
+    var_low = low_rates.var(dim=0)
+    var_high = high_rates.var(dim=0)
+
+    # Pooled standard deviation
+    n_low = low_rates.shape[0]
+    n_high = high_rates.shape[0]
+    pooled_var = ((n_low - 1) * var_low + (n_high - 1) * var_high) / (n_low + n_high - 2)
+    pooled_std = torch.sqrt(pooled_var.clamp(min=1e-6))
+
+    selectivity = (mean_high - mean_low) / pooled_std
+
+    return selectivity
+
+
+def compute_L_poisson(
+    model_rates: torch.Tensor,
+    target_rates: torch.Tensor,
+    bin_size_ms: float = 25.0,
+    smooth_ms: float = 8.0,
+    mask: Optional[torch.Tensor] = None,
+    recorded_indices: Optional[torch.Tensor] = None,
+    eps: float = 1e-8
+) -> torch.Tensor:
+    """
+    Compute Poisson negative log-likelihood loss.
+
+    Spike counts follow Poisson statistics where variance equals mean.
+    This loss properly handles the heteroscedasticity of neural data.
+
+    L_poisson = mean(model_rates - target_rates * log(model_rates + eps))
+
+    Args:
+        model_rates: [batch, time, n_neurons] - RNN firing rates
+        target_rates: [batch, time, n_recorded] - Recorded firing rates
+        bin_size_ms: Bin size in milliseconds
+        smooth_ms: Smoothing kernel size in milliseconds
+        mask: [batch, time] - Valid timesteps (1) vs padding (0)
+        recorded_indices: Which model neurons correspond to recorded neurons
+        eps: Small constant for numerical stability
+
+    Returns:
+        L_poisson: Scalar loss
+    """
+    # Select recorded neurons from model if needed
+    n_recorded = target_rates.shape[2]
+    if recorded_indices is not None:
+        model_rates = model_rates[:, :, recorded_indices]
+    else:
+        model_rates = model_rates[:, :, :n_recorded]
+
+    # Apply mask
+    if mask is not None:
+        mask_expanded = mask.unsqueeze(-1)
+        model_rates = model_rates * mask_expanded
+        target_rates = target_rates * mask_expanded
+
+    # Trial-average to get PSTH
+    model_psth = model_rates.mean(dim=0)  # [time, neurons]
+    target_psth = target_rates.mean(dim=0)
+
+    # Temporal smoothing
+    kernel_size = max(1, int(smooth_ms / bin_size_ms))
+    model_psth = smooth_temporal(model_psth.unsqueeze(0), kernel_size, dim=1).squeeze(0)
+    target_psth = smooth_temporal(target_psth.unsqueeze(0), kernel_size, dim=1).squeeze(0)
+
+    # Ensure positive model rates
+    model_psth = torch.clamp(model_psth, min=eps)
+
+    # Poisson NLL: λ - k * log(λ) where λ = model rate, k = target rate
+    L_poisson = (model_psth - target_psth * torch.log(model_psth + eps)).mean()
+
+    return L_poisson
+
+
+def compute_L_neuron_hybrid(
+    model_rates: torch.Tensor,
+    target_rates: torch.Tensor,
+    bin_size_ms: float = 25.0,
+    smooth_ms: float = 8.0,
+    mask: Optional[torch.Tensor] = None,
+    recorded_indices: Optional[torch.Tensor] = None,
+    poisson_weight: float = 0.5,
+    lambda_scale: float = 0.1,
+    lambda_var: float = 0.05
+) -> torch.Tensor:
+    """
+    Hybrid loss combining Poisson NLL (magnitude) with correlation (shape).
+
+    L_hybrid = poisson_weight * L_poisson + (1 - poisson_weight) * L_corr
+
+    This combines the statistical correctness of Poisson loss with the
+    shape-matching properties of correlation loss.
+
+    Args:
+        model_rates: [batch, time, n_neurons] - RNN firing rates
+        target_rates: [batch, time, n_recorded] - Recorded firing rates
+        bin_size_ms: Bin size in milliseconds
+        smooth_ms: Smoothing kernel size in milliseconds
+        mask: [batch, time] - Valid timesteps (1) vs padding (0)
+        recorded_indices: Which model neurons correspond to recorded neurons
+        poisson_weight: Weight for Poisson loss (0-1)
+        lambda_scale: Weight for scale loss in correlation component
+        lambda_var: Weight for variance loss in correlation component
+
+    Returns:
+        L_hybrid: Scalar loss
+    """
+    L_poisson = compute_L_poisson(
+        model_rates, target_rates, bin_size_ms, smooth_ms,
+        mask, recorded_indices
+    )
+
+    L_corr_based = compute_L_neuron(
+        model_rates, target_rates, bin_size_ms, smooth_ms,
+        mask, recorded_indices, lambda_scale, lambda_var
+    )
+
+    L_hybrid = poisson_weight * L_poisson + (1 - poisson_weight) * L_corr_based
+
+    return L_hybrid
+
+
+def compute_activity_regularization(
+    model_rates: torch.Tensor,
+    target_mean: float = 10.0,
+    target_max: float = 100.0,
+    lambda_mean: float = 0.01,
+    lambda_max: float = 0.001
+) -> torch.Tensor:
+    """
+    Regularize network activity to biologically plausible range.
+
+    Penalizes:
+    - Deviation from target mean firing rate
+    - Very high firing rates (above target_max)
+
+    Args:
+        model_rates: [batch, time, n_neurons] - RNN firing rates
+        target_mean: Target mean firing rate in sp/s
+        target_max: Maximum acceptable firing rate
+        lambda_mean: Weight for mean rate penalty
+        lambda_max: Weight for max rate penalty
+
+    Returns:
+        L_activity: Scalar regularization loss
+    """
+    # Mean rate penalty
+    mean_rate = model_rates.mean()
+    L_mean = lambda_mean * (mean_rate - target_mean) ** 2
+
+    # Max rate penalty (soft hinge loss for rates above target_max)
+    max_rates = model_rates.max(dim=1)[0].max(dim=0)[0]  # Max per neuron
+    excess = torch.relu(max_rates - target_max)
+    L_max = lambda_max * (excess ** 2).mean()
+
+    return L_mean + L_max
+
+
+def sinkhorn_assignment(
+    distances: torch.Tensor,
+    n_iters: int = 20,
+    epsilon: float = 0.1
+) -> torch.Tensor:
+    """
+    Sinkhorn-Knopp algorithm for differentiable optimal transport.
+    Returns soft assignment matrix that approximates bijective matching.
+
+    This enforces that each model trial matches to approximately one unique
+    target trial (and vice versa), preventing the degenerate collapse where
+    many model trials match to the same "easy" target.
+
+    Args:
+        distances: [n_trials, n_trials] pairwise distance matrix
+        n_iters: number of Sinkhorn iterations (default 20)
+        epsilon: entropy regularization (higher = softer assignment)
+
+    Returns:
+        P: [n_trials, n_trials] transport plan (doubly stochastic matrix)
+    """
+    # Convert distances to log-space cost matrix
+    log_K = -distances / epsilon
+
+    # Initialize dual variables
+    log_u = torch.zeros(distances.shape[0], device=distances.device)
+    log_v = torch.zeros(distances.shape[1], device=distances.device)
+
+    # Sinkhorn iterations (in log-space for numerical stability)
+    for _ in range(n_iters):
+        log_u = -torch.logsumexp(log_K + log_v[None, :], dim=1)
+        log_v = -torch.logsumexp(log_K + log_u[:, None], dim=0)
+
+    # Compute transport plan
+    log_P = log_K + log_u[:, None] + log_v[None, :]
+    P = torch.exp(log_P)
+
+    return P
+
+
+def compute_L_trial(
+    model_rates: torch.Tensor,
+    target_rates: torch.Tensor,
+    bin_size_ms: float = 25.0,
+    smooth_ms: float = 32.0,
+    mask: Optional[torch.Tensor] = None,
+    recorded_indices: Optional[torch.Tensor] = None,
+    sinkhorn_iters: int = 20,
+    sinkhorn_epsilon: float = 0.1,
+    use_poisson_distance: bool = False
+) -> torch.Tensor:
+    """
+    Compute trial-matching loss using optimal transport (Sinkhorn algorithm).
+
+    Matches single-trial population trajectories between model and data
+    using the Sinkhorn algorithm for differentiable optimal transport.
+    This enforces approximately bijective matching, preventing degenerate
+    collapse where many model trials match to the same target.
+
+    Args:
+        model_rates: [batch, time, n_neurons] - RNN firing rates
+        target_rates: [batch, time, n_recorded] - Recorded firing rates
+        bin_size_ms: Bin size in milliseconds
+        smooth_ms: Smoothing kernel size in milliseconds
+        mask: [batch, time] - Valid timesteps (1) vs padding (0)
+        recorded_indices: Which model neurons correspond to recorded neurons
+        sinkhorn_iters: Number of Sinkhorn iterations (default 20)
+        sinkhorn_epsilon: Entropy regularization for Sinkhorn (default 0.1)
+        use_poisson_distance: If True, use Poisson divergence instead of Euclidean
+            distance. This respects the natural variance structure of spike counts.
+
+    Returns:
+        L_trial: Scalar loss (optimal transport cost)
+    """
+    # Select recorded neurons from model if needed
+    n_recorded = target_rates.shape[2]
+    if recorded_indices is not None:
+        model_rates = model_rates[:, :, recorded_indices]
+    else:
+        model_rates = model_rates[:, :, :n_recorded]
+
     # Population-average activity per trial
     model_pop = model_rates.mean(dim=2)   # [batch, time]
     target_pop = target_rates.mean(dim=2)
-    
+
     # Apply mask if provided
     if mask is not None:
         model_pop = model_pop * mask
         target_pop = target_pop * mask
-    
+
     # Temporal smoothing (coarser than L_neuron)
     kernel_size = max(1, int(smooth_ms / bin_size_ms))
     model_pop = smooth_temporal(model_pop, kernel_size, dim=1)
     target_pop = smooth_temporal(target_pop, kernel_size, dim=1)
-    
-    # Z-score normalize across trials (per timepoint)
-    model_mean = model_pop.mean(dim=0, keepdim=True)
-    model_std = model_pop.std(dim=0, keepdim=True) + 1e-8
-    model_pop_norm = (model_pop - model_mean) / model_std
-    
-    target_mean = target_pop.mean(dim=0, keepdim=True)
-    target_std = target_pop.std(dim=0, keepdim=True) + 1e-8
-    target_pop_norm = (target_pop - target_mean) / target_std
-    
-    # Compute pairwise distances
-    # distances[i,j] = ||model_trial_i - target_trial_j||
-    distances = torch.cdist(model_pop_norm, target_pop_norm, p=2)  # [batch, batch]
-    
-    # Greedy matching (differentiable approximation)
-    # For each model trial, find closest target trial
-    # This is a soft approximation using softmin
-    
-    # Temperature for soft assignment
-    temperature = 0.1
-    
-    # Soft assignment weights
-    soft_weights = F.softmax(-distances / temperature, dim=1)  # [batch, batch]
-    
-    # Weighted distance (soft matching)
-    matched_distances = (soft_weights * distances).sum(dim=1)  # [batch]
-    
-    L_trial = matched_distances.mean()
-    
+
+    if use_poisson_distance:
+        # Poisson Bregman divergence as distance metric
+        # D(target || model) = target * log(target/model) - target + model
+        # This is always non-negative and equals 0 when target = model
+        eps = 1e-8
+        model_expanded = model_pop.unsqueeze(1)  # [batch, 1, time]
+        target_expanded = target_pop.unsqueeze(0)  # [1, batch, time]
+
+        # Ensure positive rates
+        model_expanded = torch.clamp(model_expanded, min=eps)
+        target_expanded = torch.clamp(target_expanded, min=eps)
+
+        # Bregman divergence for Poisson
+        # D(t || m) = t * log(t/m) - t + m = t * log(t) - t * log(m) - t + m
+        poisson_div = (
+            target_expanded * torch.log(target_expanded + eps)
+            - target_expanded * torch.log(model_expanded + eps)
+            - target_expanded + model_expanded
+        )
+        distances = poisson_div.sum(dim=2)  # [batch, batch]
+
+        # Normalize by number of time points for consistent scaling
+        n_time = model_pop.shape[1]
+        distances = distances / n_time
+    else:
+        # Original Euclidean distance on z-scored trajectories
+        # Z-score normalize across trials (per timepoint)
+        model_mean = model_pop.mean(dim=0, keepdim=True)
+        model_std = model_pop.std(dim=0, keepdim=True) + 1e-8
+        model_pop_norm = (model_pop - model_mean) / model_std
+
+        target_mean = target_pop.mean(dim=0, keepdim=True)
+        target_std = target_pop.std(dim=0, keepdim=True) + 1e-8
+        target_pop_norm = (target_pop - target_mean) / target_std
+
+        # Compute pairwise distances
+        # distances[i,j] = ||model_trial_i - target_trial_j||
+        distances = torch.cdist(model_pop_norm, target_pop_norm, p=2)  # [batch, batch]
+
+    # Compute optimal transport plan using Sinkhorn algorithm
+    # P is a doubly stochastic matrix (rows and columns sum to 1/n_trials)
+    P = sinkhorn_assignment(distances, n_iters=sinkhorn_iters, epsilon=sinkhorn_epsilon)
+
+    # Optimal transport cost: sum of (transport plan * distances)
+    # Normalized by n_trials for consistent scaling
+    n_trials = distances.shape[0]
+    L_trial = (P * distances).sum() / n_trials
+
     return L_trial
+
+
+def get_cosine_schedule_with_warmup(
+    optimizer: torch.optim.Optimizer,
+    num_warmup_steps: int,
+    num_training_steps: int,
+    min_lr_ratio: float = 0.01
+):
+    """
+    Create a learning rate scheduler with linear warmup and cosine decay.
+
+    Args:
+        optimizer: PyTorch optimizer
+        num_warmup_steps: Number of warmup steps
+        num_training_steps: Total number of training steps
+        min_lr_ratio: Minimum LR as fraction of initial LR
+
+    Returns:
+        LambdaLR scheduler
+    """
+    def lr_lambda(current_step: int) -> float:
+        if current_step < num_warmup_steps:
+            # Linear warmup
+            return float(current_step) / float(max(1, num_warmup_steps))
+        # Cosine decay
+        progress = float(current_step - num_warmup_steps) / float(
+            max(1, num_training_steps - num_warmup_steps)
+        )
+        return max(min_lr_ratio, 0.5 * (1.0 + math.cos(math.pi * progress)))
+
+    return torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda)
 
 
 def compute_L_reg(

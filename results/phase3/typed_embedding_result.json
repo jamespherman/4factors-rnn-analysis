@@ -1,0 +1,36 @@
+{
+  "best_val_corr": 0.3305324202622554,
+  "final_val_corr": 0.32889520964650626,
+  "epochs_trained": 500,
+  "tau_values": {
+    "tau": 50.0
+  },
+  "alpha_values": {
+    "alpha": 0.5
+  },
+  "config": {
+    "name": "typed_embedding",
+    "loss_type": "correlation",
+    "input_embed_dim": 56,
+    "input_embed_type": "typed",
+    "input_groups": [
+      [
+        0,
+        7
+      ],
+      [
+        7,
+        14
+      ]
+    ],
+    "group_embed_dims": [
+      28,
+      28
+    ],
+    "scheduler": "plateau",
+    "use_grad_balancing": true,
+    "ltrial_scale": 0.5,
+    "max_epochs": 500,
+    "patience": 100
+  }
+}

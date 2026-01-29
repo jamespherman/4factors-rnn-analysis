@@ -1,0 +1,81 @@
+[
+  {
+    "name": "gradbal_scale_0.5",
+    "config": {
+      "sinkhorn_epsilon": 0.1,
+      "ltrial_scale": 0.5,
+      "name": "gradbal_scale_0.5"
+    },
+    "best_val_corr": 0.3614241581432385
+  },
+  {
+    "name": "gradbal_eps_0.05",
+    "config": {
+      "sinkhorn_epsilon": 0.05,
+      "name": "gradbal_eps_0.05"
+    },
+    "best_val_corr": 0.3558632914926978
+  },
+  {
+    "name": "gradbal_scale_0.25",
+    "config": {
+      "sinkhorn_epsilon": 0.1,
+      "ltrial_scale": 0.25,
+      "name": "gradbal_scale_0.25"
+    },
+    "best_val_corr": 0.35497363886705624
+  },
+  {
+    "name": "gradbal_eps_0.2_scale_0.5",
+    "config": {
+      "sinkhorn_epsilon": 0.2,
+      "ltrial_scale": 0.5,
+      "name": "gradbal_eps_0.2_scale_0.5"
+    },
+    "best_val_corr": 0.34682912304660335
+  },
+  {
+    "name": "gradbal_eps_0.05_scale_0.5",
+    "config": {
+      "sinkhorn_epsilon": 0.05,
+      "ltrial_scale": 0.5,
+      "name": "gradbal_eps_0.05_scale_0.5"
+    },
+    "best_val_corr": 0.33544067502204866
+  },
+  {
+    "name": "gradbal_eps_0.2",
+    "config": {
+      "sinkhorn_epsilon": 0.2,
+      "name": "gradbal_eps_0.2"
+    },
+    "best_val_corr": 0.3315823613412392
+  },
+  {
+    "name": "gradbal_warmup_100",
+    "config": {
+      "sinkhorn_epsilon": 0.1,
+      "warmup_epochs": 100,
+      "name": "gradbal_warmup_100"
+    },
+    "best_val_corr": 0.3167606826585083
+  },
+  {
+    "name": "gradbal_warmup_50",
+    "config": {
+      "sinkhorn_epsilon": 0.1,
+      "warmup_epochs": 50,
+      "name": "gradbal_warmup_50"
+    },
+    "best_val_corr": 0.29489302708897946
+  },
+  {
+    "name": "gradbal_scale_2.0",
+    "config": {
+      "sinkhorn_epsilon": 0.1,
+      "ltrial_scale": 2.0,
+      "name": "gradbal_scale_2.0"
+    },
+    "best_val_corr": 0.22917755896058922
+  }
+]

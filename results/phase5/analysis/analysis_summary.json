@@ -1,0 +1,18 @@
+{
+  "best_model": "low_rank_50",
+  "best_val_corr": 0.39890245457295975,
+  "i_neuron_analysis": {
+    "n_e_neurons": 41,
+    "n_i_neurons": 13,
+    "mean_corr_e": 0.36592609806495824,
+    "mean_corr_i": 0.4963318771490872,
+    "mean_rate_e": 10.837787628173828,
+    "mean_rate_i": 21.090961456298828,
+    "top_input_for_i": "loc4"
+  },
+  "spectra_analysis": {
+    "mean_power_ratio": 0.09940505027770996,
+    "low_freq_ratio": 0.2936004400253296,
+    "high_freq_ratio": 0.002307379385456443
+  }
+}
