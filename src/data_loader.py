@@ -2,12 +2,11 @@
 Data loading utilities for exported .mat files from MATLAB pipeline.
 
 See specs/DATA_SPEC.md for format details.
-Supports input restructuring experiments per INPUT_RESTRUCTURING_SPEC.md.
 """
 
 import numpy as np
-import scipy.io as sio
 import h5py
+import scipy.io as sio
 import torch
 from torch.utils.data import Dataset, DataLoader
 from typing import Optional, Dict, Tuple, List, TYPE_CHECKING
@@ -91,6 +90,41 @@ def load_mat_file(filepath: str) -> dict:
     return data
 
 
+def preprocess_firing_rates(firing_rates: np.ndarray, clip_percentile: float = 99.5) -> np.ndarray:
+    """
+    Preprocess firing rates: clip outliers, ensure non-negative.
+
+    Args:
+        firing_rates: [neurons, time, trials] or [trials, time, neurons] array
+        clip_percentile: Percentile for outlier clipping
+
+    Returns:
+        Preprocessed firing rates
+    """
+    # Handle NaN values for percentile calculation
+    valid_rates = firing_rates[~np.isnan(firing_rates)]
+
+    if len(valid_rates) == 0:
+        return firing_rates
+
+    # Compute clip threshold
+    clip_threshold = np.percentile(valid_rates, clip_percentile)
+
+    # Report clipping
+    n_clipped = (firing_rates > clip_threshold).sum()
+    if n_clipped > 0:
+        print(f"Clipping {n_clipped} values ({100*n_clipped/firing_rates.size:.3f}%) above {clip_threshold:.1f} sp/s")
+
+    # Clip (preserve NaN)
+    firing_rates = np.where(
+        np.isnan(firing_rates),
+        firing_rates,
+        np.clip(firing_rates, 0, clip_threshold)
+    )
+
+    return firing_rates
+
+
 def validate_data(data: dict) -> bool:
     """
     Validate exported data structure.
@@ -120,7 +154,7 @@ def validate_data(data: dict) -> bool:
         'trial_reward', 'trial_location'
     ]
 
-    # Optional fields (eye position may not be available)
+    # Optional fields
     optional = ['input_eye_x', 'input_eye_y', 'trial_duration_ms',
                 'trial_probability', 'trial_identity', 'trial_salience']
     
@@ -203,18 +237,19 @@ def construct_input_tensor(data: dict) -> np.ndarray:
     # 6: Reward on
     input_channels.append(data['input_reward_on'].T)
 
-    # 7-8: Eye position (optional - use zeros if not available)
-    if 'input_eye_x' in data and not np.all(np.isnan(data['input_eye_x'])):
-        eye_x = data['input_eye_x'].T
-        eye_x_norm = (eye_x - np.nanmean(eye_x)) / (np.nanstd(eye_x) + 1e-8)
-    else:
+    # 7-8: Eye position (required, in degrees - z-score normalize here)
+    # Falls back to zeros if data is all zeros/NaN (MATLAB hasn't populated yet)
+    eye_x = data.get('input_eye_x', np.full((n_bins, n_trials), np.nan)).T
+    if np.all(np.isnan(eye_x)) or np.nanstd(eye_x) < 1e-8:
         eye_x_norm = np.zeros((n_trials, n_bins))
-
-    if 'input_eye_y' in data and not np.all(np.isnan(data['input_eye_y'])):
-        eye_y = data['input_eye_y'].T
-        eye_y_norm = (eye_y - np.nanmean(eye_y)) / (np.nanstd(eye_y) + 1e-8)
     else:
+        eye_x_norm = (eye_x - np.nanmean(eye_x)) / (np.nanstd(eye_x) + 1e-8)
+
+    eye_y = data.get('input_eye_y', np.full((n_bins, n_trials), np.nan)).T
+    if np.all(np.isnan(eye_y)) or np.nanstd(eye_y) < 1e-8:
         eye_y_norm = np.zeros((n_trials, n_bins))
+    else:
+        eye_y_norm = (eye_y - np.nanmean(eye_y)) / (np.nanstd(eye_y) + 1e-8)
 
     input_channels.append(eye_x_norm)
     input_channels.append(eye_y_norm)
@@ -238,22 +273,349 @@ def construct_input_tensor(data: dict) -> np.ndarray:
     return inputs.astype(np.float32)
 
 
-def construct_target_tensor(data: dict) -> np.ndarray:
+def construct_target_tensor(data: dict, clip_outliers: bool = True) -> np.ndarray:
     """
     Construct target firing rate tensor.
-    
+
+    Args:
+        data: Data dictionary with 'firing_rates' field
+        clip_outliers: Whether to clip outlier firing rates
+
     Returns:
         targets: [n_trials, n_bins, n_neurons] array
     """
     # firing_rates is [n_neurons, n_bins, n_trials]
+    firing_rates = data['firing_rates'].copy()
+
+    # Clip outliers before transposing (Priority 3)
+    if clip_outliers:
+        firing_rates = preprocess_firing_rates(firing_rates, clip_percentile=99.5)
+
     # Transpose to [n_trials, n_bins, n_neurons]
-    targets = np.transpose(data['firing_rates'], (2, 1, 0))
-    
+    targets = np.transpose(firing_rates, (2, 1, 0))
+
     # Replace NaN with 0 (for padded regions)
     targets = np.nan_to_num(targets, nan=0.0)
-    
+
     return targets.astype(np.float32)
 
+
+def construct_mask(data: dict) -> np.ndarray:
+    """
+    Construct validity mask for variable-length trials.
+    
+    Returns:
+        mask: [n_trials, n_bins] binary array (1 = valid, 0 = padding)
+    """
+    n_trials = int(data['n_trials'])
+    n_bins = int(data['n_time_bins'])
+    bin_size_ms = float(data['bin_size_ms'])
+    
+    mask = np.ones((n_trials, n_bins), dtype=np.float32)
+    
+    if 'trial_duration_ms' in data:
+        trial_durations = data['trial_duration_ms']
+        for i in range(n_trials):
+            valid_bins = int(trial_durations[i] / bin_size_ms)
+            mask[i, valid_bins:] = 0
+    
+    return mask
+
+
+class RNNDataset(Dataset):
+    """
+    PyTorch Dataset for RNN training.
+    
+    Each item is a single trial with:
+    - inputs: [n_bins, n_inputs]
+    - targets: [n_bins, n_neurons]  
+    - mask: [n_bins]
+    - trial_info: dict with trial-level labels
+    """
+    
+    def __init__(self, data: dict):
+        """
+        Initialize dataset from loaded data dictionary.
+        
+        Args:
+            data: Dictionary from load_mat_file()
+        """
+        self.n_trials = int(data['n_trials'])
+        self.n_neurons = int(data['n_neurons'])
+        self.n_bins = int(data['n_time_bins'])
+        self.bin_size_ms = float(data['bin_size_ms'])
+        
+        # Neuron classification
+        self.neuron_type = data['neuron_type']
+        self.exc_indices = np.where(self.neuron_type == 1)[0]
+        self.inh_indices = np.where(self.neuron_type == 2)[0]
+        self.n_exc = len(self.exc_indices)
+        self.n_inh = len(self.inh_indices)
+        
+        # Construct tensors
+        self.inputs = construct_input_tensor(data)    # [trials, bins, inputs]
+        self.targets = construct_target_tensor(data)  # [trials, bins, neurons]
+        self.mask = construct_mask(data)              # [trials, bins]
+        
+        # Trial-level labels
+        self.trial_reward = data['trial_reward']
+        self.trial_location = data['trial_location']
+        self.trial_probability = data.get('trial_probability', np.zeros(self.n_trials))
+        self.trial_identity = data.get('trial_identity', np.zeros(self.n_trials))
+        self.trial_salience = data.get('trial_salience', np.zeros(self.n_trials))
+        
+        # Store raw data for analysis
+        self._raw_data = data
+    
+    def __len__(self) -> int:
+        return self.n_trials
+    
+    def __getitem__(self, idx: int) -> dict:
+        return {
+            'inputs': torch.tensor(self.inputs[idx], dtype=torch.float32),
+            'targets': torch.tensor(self.targets[idx], dtype=torch.float32),
+            'mask': torch.tensor(self.mask[idx], dtype=torch.float32),
+            'trial_reward': int(self.trial_reward[idx]),
+            'trial_location': int(self.trial_location[idx]),
+            'trial_idx': idx
+        }
+    
+    def get_all_trials(self, include_conditions: bool = False) -> dict:
+        """
+        Get all trials as a single batch (for trial-matching loss).
+
+        Args:
+            include_conditions: If True, include trial condition labels
+
+        Returns:
+            Dict with 'inputs', 'targets', 'mask', and optionally
+            'trial_conditions' and factor labels
+        """
+        result = {
+            'inputs': torch.tensor(self.inputs, dtype=torch.float32),
+            'targets': torch.tensor(self.targets, dtype=torch.float32),
+            'mask': torch.tensor(self.mask, dtype=torch.float32),
+        }
+
+        if include_conditions:
+            result['trial_conditions'] = torch.tensor(
+                self.get_condition_labels(), dtype=torch.long
+            )
+            # Also include individual factor labels for selectivity analysis
+            result['trial_reward'] = torch.tensor(
+                self.get_reward_binary(), dtype=torch.long
+            )
+            result['trial_location'] = torch.tensor(
+                self.trial_location.astype(np.int64), dtype=torch.long
+            )
+            result['trial_salience'] = torch.tensor(
+                self.get_salience_binary(), dtype=torch.long
+            )
+
+        return result
+    
+    def get_neuron_info(self) -> dict:
+        """Get neuron classification info for model construction."""
+        return {
+            'n_exc': self.n_exc,
+            'n_inh': self.n_inh,
+            'n_total': self.n_neurons,
+            'exc_indices': self.exc_indices,
+            'inh_indices': self.inh_indices,
+            'neuron_type': self.neuron_type
+        }
+    
+    def get_input_dim(self) -> int:
+        """Get input dimension for model construction."""
+        return self.inputs.shape[2]
+
+    def get_reward_binary(self) -> np.ndarray:
+        """
+        Get binary reward labels (0 = low, 1 = high).
+
+        Handles different encoding conventions in data files.
+
+        Returns:
+            [n_trials] array of 0/1 values
+        """
+        reward = self.trial_reward.copy()
+        # If encoded as 1/2, convert to 0/1
+        if reward.min() >= 1 and reward.max() <= 2:
+            return (reward - 1).astype(np.int64)
+        # If already 0/1
+        return reward.astype(np.int64)
+
+    def get_salience_binary(self) -> np.ndarray:
+        """
+        Get binary salience labels (0 = low, 1 = high).
+
+        Handles different encoding conventions and missing data.
+
+        Returns:
+            [n_trials] array of 0/1 values
+        """
+        salience = self.trial_salience.copy()
+        # If encoded as 1/2 or similar, convert to 0/1
+        unique_vals = np.unique(salience[~np.isnan(salience)])
+
+        if len(unique_vals) == 0:
+            # No salience data available, return zeros
+            return np.zeros(self.n_trials, dtype=np.int64)
+        elif len(unique_vals) <= 2:
+            # Binary encoding
+            if salience.min() >= 1:
+                return (salience - salience.min()).astype(np.int64)
+            return salience.astype(np.int64)
+        else:
+            # Multi-level, binarize by median
+            median = np.nanmedian(salience)
+            return (salience > median).astype(np.int64)
+
+    def get_location_index(self) -> np.ndarray:
+        """
+        Get location index (0-3 from 4 quadrants).
+
+        Returns:
+            [n_trials] array of 0-3 values
+        """
+        location = self.trial_location.copy()
+        # If encoded as 1-4, convert to 0-3
+        if location.min() >= 1:
+            return (location - 1).astype(np.int64)
+        return location.astype(np.int64)
+
+    def get_condition_labels(self) -> np.ndarray:
+        """
+        Create condition labels from factorial design.
+
+        Conditions are indexed as a single integer encoding all factors:
+            condition = location * 4 + reward * 2 + salience
+
+        where:
+            - location: 0-3 (from trial_location 1-4)
+            - reward: 0-1 (low/high)
+            - salience: 0-1 (low/high)
+
+        This gives 4 × 2 × 2 = 16 unique conditions (indices 0-15).
+
+        Returns:
+            [n_trials] array of condition indices (0-15)
+        """
+        location = self.get_location_index()  # 0-3
+        reward = self.get_reward_binary()      # 0-1
+        salience = self.get_salience_binary()  # 0-1
+
+        # Encode as single index: location * 4 + reward * 2 + salience
+        conditions = location * 4 + reward * 2 + salience
+
+        return conditions.astype(np.int64)
+
+    def get_condition_info(self) -> dict:
+        """
+        Get information about condition structure.
+
+        Returns:
+            Dict with condition counts and factor details
+        """
+        conditions = self.get_condition_labels()
+        unique, counts = np.unique(conditions, return_counts=True)
+
+        # Decode conditions back to factors
+        condition_factors = {}
+        for cond in unique:
+            location = cond // 4
+            reward = (cond % 4) // 2
+            salience = cond % 2
+            condition_factors[int(cond)] = {
+                'location': int(location),
+                'reward': int(reward),
+                'salience': int(salience),
+                'count': int(counts[unique == cond][0])
+            }
+
+        return {
+            'n_conditions': len(unique),
+            'conditions': condition_factors,
+            'total_trials': self.n_trials,
+            'min_trials_per_condition': int(counts.min()),
+            'max_trials_per_condition': int(counts.max()),
+            'mean_trials_per_condition': float(counts.mean())
+        }
+
+
+def train_val_split(
+    dataset: RNNDataset,
+    val_fraction: float = 0.2,
+    stratify_by: str = 'reward',
+    seed: int = 42
+) -> Tuple[List[int], List[int]]:
+    """
+    Split dataset into train/validation indices.
+    
+    Args:
+        dataset: RNNDataset
+        val_fraction: Fraction of trials for validation
+        stratify_by: Field to stratify by ('reward', 'location', etc.)
+        seed: Random seed
+    
+    Returns:
+        train_indices, val_indices
+    """
+    np.random.seed(seed)
+    
+    n_trials = len(dataset)
+    indices = np.arange(n_trials)
+    
+    # Get stratification labels
+    if stratify_by == 'reward':
+        labels = dataset.trial_reward
+    elif stratify_by == 'location':
+        labels = dataset.trial_location
+    else:
+        labels = np.zeros(n_trials)
+    
+    # Stratified split
+    train_indices = []
+    val_indices = []
+    
+    for label in np.unique(labels):
+        label_indices = indices[labels == label]
+        np.random.shuffle(label_indices)
+        
+        n_val = int(len(label_indices) * val_fraction)
+        val_indices.extend(label_indices[:n_val])
+        train_indices.extend(label_indices[n_val:])
+    
+    return train_indices, val_indices
+
+
+def load_session(
+    filepath: str,
+    validate: bool = True
+) -> RNNDataset:
+    """
+    Load a session and create dataset.
+    
+    Args:
+        filepath: Path to exported .mat file
+        validate: Whether to run validation checks
+    
+    Returns:
+        RNNDataset
+    """
+    print(f"Loading {filepath}...")
+    data = load_mat_file(filepath)
+    
+    if validate:
+        validate_data(data)
+    
+    dataset = RNNDataset(data)
+    print(f"Created dataset with {len(dataset)} trials")
+    
+    return dataset
+
+
+# === Input restructuring (INPUT_RESTRUCTURING_SPEC.md) ===
 
 def find_target_onset_bin(input_target_loc: np.ndarray) -> int:
     """
@@ -428,182 +790,6 @@ def construct_restructured_input_tensor(
     return inputs
 
 
-def construct_mask(data: dict) -> np.ndarray:
-    """
-    Construct validity mask for variable-length trials.
-    
-    Returns:
-        mask: [n_trials, n_bins] binary array (1 = valid, 0 = padding)
-    """
-    n_trials = int(data['n_trials'])
-    n_bins = int(data['n_time_bins'])
-    bin_size_ms = float(data['bin_size_ms'])
-    
-    mask = np.ones((n_trials, n_bins), dtype=np.float32)
-    
-    if 'trial_duration_ms' in data:
-        trial_durations = data['trial_duration_ms']
-        for i in range(n_trials):
-            valid_bins = int(trial_durations[i] / bin_size_ms)
-            mask[i, valid_bins:] = 0
-    
-    return mask
-
-
-class RNNDataset(Dataset):
-    """
-    PyTorch Dataset for RNN training.
-    
-    Each item is a single trial with:
-    - inputs: [n_bins, n_inputs]
-    - targets: [n_bins, n_neurons]  
-    - mask: [n_bins]
-    - trial_info: dict with trial-level labels
-    """
-    
-    def __init__(self, data: dict):
-        """
-        Initialize dataset from loaded data dictionary.
-        
-        Args:
-            data: Dictionary from load_mat_file()
-        """
-        self.n_trials = int(data['n_trials'])
-        self.n_neurons = int(data['n_neurons'])
-        self.n_bins = int(data['n_time_bins'])
-        self.bin_size_ms = float(data['bin_size_ms'])
-        
-        # Neuron classification
-        self.neuron_type = data['neuron_type']
-        self.exc_indices = np.where(self.neuron_type == 1)[0]
-        self.inh_indices = np.where(self.neuron_type == 2)[0]
-        self.n_exc = len(self.exc_indices)
-        self.n_inh = len(self.inh_indices)
-        
-        # Construct tensors
-        self.inputs = construct_input_tensor(data)    # [trials, bins, inputs]
-        self.targets = construct_target_tensor(data)  # [trials, bins, neurons]
-        self.mask = construct_mask(data)              # [trials, bins]
-        
-        # Trial-level labels
-        self.trial_reward = data['trial_reward']
-        self.trial_location = data['trial_location']
-        self.trial_probability = data.get('trial_probability', np.zeros(self.n_trials))
-        self.trial_identity = data.get('trial_identity', np.zeros(self.n_trials))
-        self.trial_salience = data.get('trial_salience', np.zeros(self.n_trials))
-        
-        # Store raw data for analysis
-        self._raw_data = data
-    
-    def __len__(self) -> int:
-        return self.n_trials
-    
-    def __getitem__(self, idx: int) -> dict:
-        return {
-            'inputs': torch.tensor(self.inputs[idx], dtype=torch.float32),
-            'targets': torch.tensor(self.targets[idx], dtype=torch.float32),
-            'mask': torch.tensor(self.mask[idx], dtype=torch.float32),
-            'trial_reward': int(self.trial_reward[idx]),
-            'trial_location': int(self.trial_location[idx]),
-            'trial_idx': idx
-        }
-    
-    def get_all_trials(self) -> dict:
-        """Get all trials as a single batch (for trial-matching loss)."""
-        return {
-            'inputs': torch.tensor(self.inputs, dtype=torch.float32),
-            'targets': torch.tensor(self.targets, dtype=torch.float32),
-            'mask': torch.tensor(self.mask, dtype=torch.float32),
-        }
-    
-    def get_neuron_info(self) -> dict:
-        """Get neuron classification info for model construction."""
-        return {
-            'n_exc': self.n_exc,
-            'n_inh': self.n_inh,
-            'n_total': self.n_neurons,
-            'exc_indices': self.exc_indices,
-            'inh_indices': self.inh_indices,
-            'neuron_type': self.neuron_type
-        }
-    
-    def get_input_dim(self) -> int:
-        """Get input dimension for model construction."""
-        return self.inputs.shape[2]
-
-
-def train_val_split(
-    dataset: RNNDataset,
-    val_fraction: float = 0.2,
-    stratify_by: str = 'reward',
-    seed: int = 42
-) -> Tuple[List[int], List[int]]:
-    """
-    Split dataset into train/validation indices.
-    
-    Args:
-        dataset: RNNDataset
-        val_fraction: Fraction of trials for validation
-        stratify_by: Field to stratify by ('reward', 'location', etc.)
-        seed: Random seed
-    
-    Returns:
-        train_indices, val_indices
-    """
-    np.random.seed(seed)
-    
-    n_trials = len(dataset)
-    indices = np.arange(n_trials)
-    
-    # Get stratification labels
-    if stratify_by == 'reward':
-        labels = dataset.trial_reward
-    elif stratify_by == 'location':
-        labels = dataset.trial_location
-    else:
-        labels = np.zeros(n_trials)
-    
-    # Stratified split
-    train_indices = []
-    val_indices = []
-    
-    for label in np.unique(labels):
-        label_indices = indices[labels == label]
-        np.random.shuffle(label_indices)
-        
-        n_val = int(len(label_indices) * val_fraction)
-        val_indices.extend(label_indices[:n_val])
-        train_indices.extend(label_indices[n_val:])
-    
-    return train_indices, val_indices
-
-
-def load_session(
-    filepath: str,
-    validate: bool = True
-) -> RNNDataset:
-    """
-    Load a session and create dataset.
-    
-    Args:
-        filepath: Path to exported .mat file
-        validate: Whether to run validation checks
-    
-    Returns:
-        RNNDataset
-    """
-    print(f"Loading {filepath}...")
-    data = load_mat_file(filepath)
-    
-    if validate:
-        validate_data(data)
-    
-    dataset = RNNDataset(data)
-    print(f"Created dataset with {len(dataset)} trials")
-    
-    return dataset
-
-
 if __name__ == "__main__":
     # Test with synthetic data (no real file needed)
     print("Testing data loader with synthetic data...")
@@ -673,17 +859,17 @@ if __name__ == "__main__":
     train_idx, val_idx = train_val_split(dataset)
     print(f"\nTrain/val split: {len(train_idx)}/{len(val_idx)}")
 
-    # Test with missing eye position (optional field)
-    print("\nTesting with missing eye position...")
-    synthetic_data_no_eye = synthetic_data.copy()
-    del synthetic_data_no_eye['input_eye_x']
-    del synthetic_data_no_eye['input_eye_y']
-    dataset_no_eye = RNNDataset(synthetic_data_no_eye)
-    batch_no_eye = dataset_no_eye.get_all_trials()
-    assert batch_no_eye['inputs'].shape == (n_trials, n_bins, 14), "Input dim should still be 14"
-    # Check that eye channels (7, 8) are zeros
-    assert torch.all(batch_no_eye['inputs'][:, :, 7] == 0), "Eye X should be zeros"
-    assert torch.all(batch_no_eye['inputs'][:, :, 8] == 0), "Eye Y should be zeros"
-    print("  Missing eye position handled correctly (filled with zeros)")
+    # Test with all-zeros eye position (MATLAB hasn't populated yet)
+    print("\nTesting with all-zeros eye position...")
+    synthetic_data_zeros_eye = synthetic_data.copy()
+    synthetic_data_zeros_eye['input_eye_x'] = np.zeros((n_bins, n_trials))
+    synthetic_data_zeros_eye['input_eye_y'] = np.zeros((n_bins, n_trials))
+    dataset_zeros_eye = RNNDataset(synthetic_data_zeros_eye)
+    batch_zeros_eye = dataset_zeros_eye.get_all_trials()
+    assert batch_zeros_eye['inputs'].shape == (n_trials, n_bins, 14), "Input dim should still be 14"
+    # Check that eye channels (7, 8) are zeros when input is zeros
+    assert torch.all(batch_zeros_eye['inputs'][:, :, 7] == 0), "Eye X should be zeros"
+    assert torch.all(batch_zeros_eye['inputs'][:, :, 8] == 0), "Eye Y should be zeros"
+    print("  All-zeros eye position handled correctly (remains zeros)")
 
     print("\nAll tests passed!")

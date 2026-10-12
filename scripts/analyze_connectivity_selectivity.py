@@ -44,7 +44,9 @@ from src.analysis.connectivity_selectivity import (
 # ==============================================================================
 
 CONFIG = {
-    'data_path': 'data/rnn_export_Newton_08_15_2025_SC.mat',
+    # Feb 2026 results used the stale 06:31 export (14 E / 28 I); the canonical
+    # export is data/rnn_export_Newton_08_15_2025_SC.mat (41 E / 13 I)
+    'data_path': 'data/export_2026-01-22_0631/rnn_export_Newton_08_15_2025_SC.mat',
     'results_dir': 'results/biological_input_experiments',
     'output_dir': 'results/biological_input_experiments/connectivity_analysis',
 
@@ -72,6 +74,7 @@ CONFIG = {
 def load_trained_model(model_path: str, n_exc: int, n_inh: int, n_inputs: int, device: str = 'cpu') -> EIRNN:
     """Load a trained model from checkpoint."""
     model = create_model_from_data(
+        arch_version='feb2026',  # model code these results were trained with
         n_classic=n_exc,
         n_interneuron=n_inh,
         n_inputs=n_inputs,
@@ -622,6 +625,7 @@ def run_analysis():
 
     try:
         model_e1 = create_model_from_data(
+            arch_version='feb2026',  # model code these results were trained with
             n_classic=n_exc,
             n_interneuron=n_inh,
             n_inputs=n_biological_inputs,

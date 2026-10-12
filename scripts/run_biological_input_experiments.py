@@ -84,7 +84,9 @@ BASE_CONFIG = {
     'sinkhorn_epsilon': 0.1,
 
     # Paths
-    'data_path': 'data/rnn_export_Newton_08_15_2025_SC.mat',
+    # Feb 2026 results used the stale 06:31 export (14 E / 28 I); the canonical
+    # export is data/rnn_export_Newton_08_15_2025_SC.mat (41 E / 13 I)
+    'data_path': 'data/export_2026-01-22_0631/rnn_export_Newton_08_15_2025_SC.mat',
     'output_dir': 'results/biological_input_experiments',
 }
 
@@ -597,6 +599,7 @@ def run_baseline_experiment(config: Dict, device: str) -> Dict:
 
     # Create model
     model = create_model_from_data(
+        arch_version='feb2026',  # model code these results were trained with
         n_classic=n_exc,
         n_interneuron=n_inh,
         n_inputs=inputs.shape[2],  # 14 standard channels
@@ -748,6 +751,7 @@ def run_biological_experiment(config: Dict, device: str) -> Dict:
     bio_config['input_embed_type'] = 'linear'  # Use linear for compatibility
 
     model = create_model_from_data(
+        arch_version='feb2026',  # model code these results were trained with
         n_classic=n_exc,
         n_interneuron=n_inh,
         n_inputs=inputs_flat.shape[2],  # n_neurons * 6

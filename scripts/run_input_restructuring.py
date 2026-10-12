@@ -138,7 +138,9 @@ DEFAULT_CONFIG = {
     'print_every': 20,
 
     # Paths
-    'data_path': 'data/rnn_export_Newton_08_15_2025_SC.mat',
+    # Feb 2026 results used the stale 06:31 export (14 E / 28 I); the canonical
+    # export is data/rnn_export_Newton_08_15_2025_SC.mat (41 E / 13 I)
+    'data_path': 'data/export_2026-01-22_0631/rnn_export_Newton_08_15_2025_SC.mat',
     'output_dir': 'results/fit_quality_improvement',  # New output directory
 }
 
@@ -325,6 +327,7 @@ def train_single_experiment(
             use_embed_type = config.get('input_embed_type', 'attention')
 
     model = create_model_from_data(
+        arch_version='feb2026',  # model code these results were trained with
         n_classic=n_exc,
         n_interneuron=n_inh,
         n_inputs=model_n_inputs,
