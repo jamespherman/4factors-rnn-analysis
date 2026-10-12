@@ -1,0 +1,91 @@
+experiment_id,phase,dataset,best_val_corr,epochs_trained,best_epoch,learning_rate,max_epochs,patience,tau,noise_scale,input_embed_dim,input_embed_type,attention_heads,learnable_h0,learnable_alpha,learnable_tau,low_rank,use_grad_balancing,ltrial_scale,sinkhorn_epsilon,scheduler,notes
+baseline_no_ltrial,ltrial_v1,Newton_08_15_2025_SC,0.3299,393,393,0.001,500,100,50.0,0.1,,,,,,,,,,,plateau,L_trial disabled baseline
+lambda_0.1_eps_0.1,ltrial_v1,Newton_08_15_2025_SC,0.3185,499,499,0.001,500,100,50.0,0.1,,,,,,,,0.1,0.1,,plateau,Fixed lambda weighting
+lambda_0.3_eps_0.1,ltrial_v1,Newton_08_15_2025_SC,0.1877,418,418,0.001,500,100,50.0,0.1,,,,,,,,0.3,0.1,,plateau,Fixed lambda too strong
+lambda_0.5_eps_0.1,ltrial_v1,Newton_08_15_2025_SC,0.1731,116,116,0.001,500,100,50.0,0.1,,,,,,,,0.5,0.1,,plateau,Fixed lambda too strong
+lambda_1.0_eps_0.1,ltrial_v1,Newton_08_15_2025_SC,0.1714,116,116,0.001,500,100,50.0,0.1,,,,,,,,1.0,0.1,,plateau,Fixed lambda too strong
+lambda_0.3_eps_0.5,ltrial_v1,Newton_08_15_2025_SC,0.1767,133,133,0.001,500,100,50.0,0.1,,,,,,,,0.3,0.5,,plateau,Soft sinkhorn hurt
+lambda_0.3_eps_1.0,ltrial_v1,Newton_08_15_2025_SC,0.2281,284,284,0.001,500,100,50.0,0.1,,,,,,,,0.3,1.0,,plateau,Soft sinkhorn hurt
+lambda_1.0_eps_0.5,ltrial_v1,Newton_08_15_2025_SC,0.1648,130,130,0.001,500,100,50.0,0.1,,,,,,,,1.0,0.5,,plateau,Both params bad
+lambda_1.0_eps_1.0,ltrial_v1,Newton_08_15_2025_SC,0.1629,200,200,0.001,500,100,50.0,0.1,,,,,,,,1.0,1.0,,plateau,Both params bad
+gradbal_eps_0.1,ltrial_v1,Newton_08_15_2025_SC,0.3434,499,499,0.001,500,100,50.0,0.1,,,,,,,TRUE,,0.1,,plateau,Gradient balancing helps
+gradbal_eps_0.5,ltrial_v1,Newton_08_15_2025_SC,0.3040,472,472,0.001,500,100,50.0,0.1,,,,,,,TRUE,,0.5,,plateau,Soft sinkhorn hurt with GB
+gradbal_eps_1.0,ltrial_v1,Newton_08_15_2025_SC,0.3202,499,499,0.001,500,100,50.0,0.1,,,,,,,TRUE,,1.0,,plateau,Soft sinkhorn hurt with GB
+gradbal_scale_0.5,ltrial_v2,Newton_08_15_2025_SC,0.3614,500,500,0.001,500,100,50.0,0.1,,,,,,,TRUE,0.5,0.1,,plateau,BEST L_trial config
+gradbal_eps_0.05,ltrial_v2,Newton_08_15_2025_SC,0.3559,500,500,0.001,500,100,50.0,0.1,,,,,,,TRUE,,0.05,,plateau,Tight epsilon good
+gradbal_scale_0.25,ltrial_v2,Newton_08_15_2025_SC,0.3550,500,500,0.001,500,100,50.0,0.1,,,,,,,TRUE,0.25,0.1,,plateau,Lower scale good
+gradbal_eps_0.2_scale_0.5,ltrial_v2,Newton_08_15_2025_SC,0.3468,500,500,0.001,500,100,50.0,0.1,,,,,,,TRUE,0.5,0.2,,plateau,Looser epsilon ok
+gradbal_eps_0.05_scale_0.5,ltrial_v2,Newton_08_15_2025_SC,0.3354,500,500,0.001,500,100,50.0,0.1,,,,,,,TRUE,0.5,0.05,,plateau,Too tight epsilon
+gradbal_eps_0.2,ltrial_v2,Newton_08_15_2025_SC,0.3316,500,500,0.001,500,100,50.0,0.1,,,,,,,TRUE,,0.2,,plateau,
+gradbal_warmup_100,ltrial_v2,Newton_08_15_2025_SC,0.3168,500,500,0.001,500,100,50.0,0.1,,,,,,,TRUE,,0.1,,plateau,Warmup hurt
+gradbal_warmup_50,ltrial_v2,Newton_08_15_2025_SC,0.2949,500,500,0.001,500,100,50.0,0.1,,,,,,,TRUE,,0.1,,plateau,Warmup hurt
+gradbal_scale_2.0,ltrial_v2,Newton_08_15_2025_SC,0.2292,500,500,0.001,500,100,50.0,0.1,,,,,,,TRUE,2.0,0.1,,plateau,Too much L_trial
+baseline,phase2,Newton_08_15_2025_SC,0.2901,500,500,0.001,500,100,50.0,0.1,,,,,,,TRUE,0.5,0.1,,plateau,Phase 2 baseline
+poisson_ltrial,phase2,Newton_08_15_2025_SC,0.3369,500,500,0.001,500,100,50.0,0.1,,,,,,,TRUE,0.5,0.1,,plateau,Poisson Bregman divergence
+learnable_alpha_scalar,phase2,Newton_08_15_2025_SC,0.3105,500,500,0.001,500,100,50.0,0.1,,,,TRUE,,,,0.5,0.1,,plateau,Single alpha learned (0.56)
+learnable_alpha_population,phase2,Newton_08_15_2025_SC,0.3443,500,500,0.001,500,100,50.0,0.1,,,,TRUE,,,,0.5,0.1,,plateau,E:0.58 I:0.73
+learnable_alpha_neuron,phase2,Newton_08_15_2025_SC,0.3449,451,451,0.001,500,100,50.0,0.1,,,,TRUE,,,,0.5,0.1,,plateau,BEST Phase 2 (E:0.54 I:0.72)
+learnable_tau_population_fixed,phase2,Newton_08_15_2025_SC,0.0205,163,163,0.001,500,100,50.0,0.1,,,,,TRUE,,,0.5,0.1,,plateau,FAILED: tau<dt caused alpha>1
+learnable_tau_neuron_fixed,phase2,Newton_08_15_2025_SC,0.0234,159,159,0.001,500,100,50.0,0.1,,,,,TRUE,,,0.5,0.1,,plateau,FAILED: tau<dt caused alpha>1
+low_rank_10,phase2,Newton_08_15_2025_SC,0.3167,500,500,0.001,500,100,50.0,0.1,,,,,,,10,TRUE,0.5,0.1,,plateau,Low-rank constraint rank=10
+low_rank_20,phase2,Newton_08_15_2025_SC,0.3227,379,379,0.001,500,100,50.0,0.1,,,,,,,20,TRUE,0.5,0.1,,plateau,Low-rank constraint rank=20
+low_rank_30,phase2,Newton_08_15_2025_SC,0.3120,421,421,0.001,500,100,50.0,0.1,,,,,,,30,TRUE,0.5,0.1,,plateau,Low-rank constraint rank=30
+low_rank_50,phase2,Newton_08_15_2025_SC,0.3334,500,500,0.001,500,100,50.0,0.1,,,,,,,50,TRUE,0.5,0.1,,plateau,Low-rank constraint rank=50
+cosine_no_warmup,phase2,Newton_08_15_2025_SC,0.2801,500,500,0.001,500,100,50.0,0.1,,,,,,,,,0.5,0.1,,cosine,Cosine scheduler hurt
+cosine_warmup_50,phase2,Newton_08_15_2025_SC,0.3051,500,500,0.001,500,100,50.0,0.1,,,,,,,,,0.5,0.1,,cosine,Cosine with warmup slight help
+activity_reg_0.01,phase2,Newton_08_15_2025_SC,0.2828,500,500,0.001,500,100,50.0,0.1,,,,,,,,,0.5,0.1,,plateau,Activity reg too strong
+activity_reg_0.001,phase2,Newton_08_15_2025_SC,0.3171,500,500,0.001,500,100,50.0,0.1,,,,,,,,,0.5,0.1,,plateau,Activity reg mild benefit
+poisson_ltrial_alpha_pop,phase2,Newton_08_15_2025_SC,0.3171,438,438,0.001,500,100,50.0,0.1,,,,TRUE,,,,0.5,0.1,,plateau,Combination hurt both
+low_rank_20_alpha_pop,phase2,Newton_08_15_2025_SC,0.3145,386,386,0.001,500,100,50.0,0.1,,,,TRUE,,,20,TRUE,0.5,0.1,,plateau,Combination hurt both
+alpha_neuron_poisson,phase2c,Newton_08_15_2025_SC,0.3083,355,355,0.001,500,100,50.0,0.1,,,,TRUE,,,,0.5,0.1,,plateau,Combination hurt
+alpha_neuron_lowrank50,phase2c,Newton_08_15_2025_SC,0.2782,442,442,0.001,500,100,50.0,0.1,,,,TRUE,,,50,TRUE,0.5,0.1,,plateau,Combination hurt badly
+poisson_lowrank50,phase2c,Newton_08_15_2025_SC,0.2929,414,414,0.001,500,100,50.0,0.1,,,,,,,50,TRUE,0.5,0.1,,plateau,Combination hurt
+alpha_neuron_poisson_lowrank50,phase2c,Newton_08_15_2025_SC,0.2746,387,387,0.001,500,100,50.0,0.1,,,,TRUE,,,50,TRUE,0.5,0.1,,plateau,Triple combo worst
+alpha_neuron_poisson_actreg,phase2c,Newton_08_15_2025_SC,0.3105,500,500,0.001,500,100,50.0,0.1,,,,TRUE,,,,0.5,0.1,,plateau,Triple combo hurt
+embed_28_learnable,phase2c,Newton_08_15_2025_SC,0.3341,438,438,0.001,500,100,50.0,0.1,28,learnable,,,,,,TRUE,0.5,0.1,,plateau,2x embedding good
+embed_56_learnable,phase2c,Newton_08_15_2025_SC,0.3762,500,500,0.001,500,100,50.0,0.1,56,learnable,,,,,,TRUE,0.5,0.1,,plateau,BREAKTHROUGH: 4x embedding
+embed_28_random,phase2c,Newton_08_15_2025_SC,0.3245,500,500,0.001,500,100,50.0,0.1,28,random,,,,,,TRUE,0.5,0.1,,plateau,Random projection worse
+embed_time_lag,phase2c,Newton_08_15_2025_SC,0.3365,311,311,0.001,500,100,50.0,0.1,56,time_lag,,,,,,TRUE,0.5,0.1,,plateau,Time-lagged features
+embed_28_alpha_neuron,phase2c,Newton_08_15_2025_SC,0.3167,500,500,0.001,500,100,50.0,0.1,28,learnable,,TRUE,,,,TRUE,0.5,0.1,,plateau,Combination hurt
+alpha_init_optimal,phase2c,Newton_08_15_2025_SC,0.3536,500,500,0.001,500,100,50.0,0.1,,,,TRUE,,,,0.5,0.1,,plateau,Better alpha init helps
+fixed_alpha_optimal,phase2c,Newton_08_15_2025_SC,0.2901,500,500,0.001,500,100,50.0,0.1,,,,,,,,,0.5,0.1,,plateau,Same as baseline
+noise_0.05,phase2c,Newton_08_15_2025_SC,0.3377,500,500,0.001,500,100,50.0,0.05,,,,TRUE,,,,0.5,0.1,,plateau,Lower noise hurt
+noise_0.15,phase2c,Newton_08_15_2025_SC,0.3501,500,500,0.001,500,100,50.0,0.15,,,,TRUE,,,,0.5,0.1,,plateau,Higher noise helped slightly
+learnable_tau_pop_v2,phase2c,Newton_08_15_2025_SC,0.3461,500,500,0.001,500,100,50.0,0.1,,,,,TRUE,,,0.5,0.1,,plateau,Fixed TAU_MIN bug (tau_e=43 tau_i=35)
+alpha_neuron_poisson_optimal_init,phase2c,Newton_08_15_2025_SC,0.3007,331,331,0.001,500,100,50.0,0.1,,,,TRUE,,,,0.5,0.1,,plateau,Combination hurt
+embed_112_learnable,phase3,Newton_08_15_2025_SC,0.3440,500,500,0.001,500,100,50.0,0.1,112,learnable,,,,,,TRUE,0.5,0.1,,plateau,8x embedding hurt
+embed_168_learnable,phase3,Newton_08_15_2025_SC,0.3120,500,500,0.001,500,100,50.0,0.1,168,learnable,,,,,,TRUE,0.5,0.1,,plateau,12x embedding hurt badly
+deep_embed_56,phase3,Newton_08_15_2025_SC,0.3630,500,500,0.001,500,100,50.0,0.1,56,deep,,,,,,TRUE,0.5,0.1,,plateau,2-layer MLP (14->28->56)
+embed_56_higher_noise,phase3,Newton_08_15_2025_SC,0.3734,500,500,0.001,500,100,50.0,0.15,56,learnable,,,,,,TRUE,0.5,0.1,,plateau,Noise 0.15 slight benefit
+embed_56_alpha_neuron_optimal,phase3,Newton_08_15_2025_SC,0.3623,500,500,0.001,500,100,50.0,0.1,56,learnable,,TRUE,,,,TRUE,0.5,0.1,,plateau,Combination hurt
+embed_56_lower_lr,phase3,Newton_08_15_2025_SC,0.3694,468,468,0.0005,500,100,50.0,0.1,56,learnable,,,,,,TRUE,0.5,0.1,,plateau,Lower LR slight hurt
+embed_56_adamw,phase3,Newton_08_15_2025_SC,0.3748,500,500,0.001,500,100,50.0,0.1,56,learnable,,,,,,TRUE,0.5,0.1,,plateau,AdamW with weight decay
+typed_embedding,phase3,Newton_08_15_2025_SC,0.3305,500,500,0.001,500,100,50.0,0.1,56,typed,,,,,,TRUE,0.5,0.1,,plateau,Separate embeddings per group
+recurrent_embedding,phase3,Newton_08_15_2025_SC,0.3733,500,500,0.001,500,100,50.0,0.1,56,recurrent,,,,,,TRUE,0.5,0.1,,plateau,GRU preprocessing competitive
+attention_embedding,phase3,Newton_08_15_2025_SC,0.3843,500,500,0.001,500,100,50.0,0.1,56,attention,4,,,,,TRUE,0.5,0.1,,plateau,BEST Phase 3: Self-attention
+attention_baseline,phase4,Newton_08_15_2025_SC,0.3907,500,500,0.001,500,100,50.0,0.1,56,attention,4,,,,,TRUE,0.5,0.1,,plateau,Phase 3 config re-run
+attention_adamw,phase4,Newton_08_15_2025_SC,0.3878,500,500,0.001,500,100,50.0,0.1,56,attention,4,,,,,TRUE,0.5,0.1,,plateau,AdamW alone modest help
+attention_learnable_h0,phase4,Newton_08_15_2025_SC,0.4021,500,500,0.001,500,100,50.0,0.1,56,attention,4,TRUE,,,,TRUE,0.5,0.1,,plateau,TARGET ACHIEVED: learnable h0
+attention_h0_adamw,phase4,Newton_08_15_2025_SC,0.3987,500,500,0.001,500,100,50.0,0.1,56,attention,4,TRUE,,,,TRUE,0.5,0.1,,plateau,Combining h0+AdamW hurt
+attention_alpha_neuron,phase4,Newton_08_15_2025_SC,0.3789,500,500,0.001,500,100,50.0,0.1,56,attention,4,,TRUE,,,TRUE,0.5,0.1,,plateau,Learnable alpha hurt
+extended_training,phase5,Newton_08_15_2025_SC,0.4121,1000,1000,0.001,1000,200,50.0,0.1,56,attention,4,TRUE,,,,TRUE,0.5,0.1,,plateau,NEW BEST: 1000 epochs
+fast_tau_25,phase5,Newton_08_15_2025_SC,0.3840,500,500,0.001,500,100,25.0,0.1,56,attention,4,TRUE,,,,TRUE,0.5,0.1,,plateau,Faster tau hurt
+noise_0.3_phase5,phase5,Newton_08_15_2025_SC,0.3850,500,500,0.001,500,100,50.0,0.3,56,attention,4,TRUE,,,,TRUE,0.5,0.1,,plateau,Higher noise hurt
+noise_0.5_phase5,phase5,Newton_08_15_2025_SC,0.3840,500,500,0.001,500,100,50.0,0.5,56,attention,4,TRUE,,,,TRUE,0.5,0.1,,plateau,High noise hurt
+bypass_dale,phase5,Newton_08_15_2025_SC,0.3830,500,500,0.001,500,100,50.0,0.1,56,attention,4,TRUE,,,,TRUE,0.5,0.1,,plateau,Removing Dale constraint hurt
+learnable_tau_phase5,phase5,Newton_08_15_2025_SC,0.3880,500,500,0.001,500,100,50.0,0.1,56,attention,4,TRUE,,TRUE,,TRUE,0.5,0.1,,plateau,Learnable tau didn't help
+poisson_ltrial_phase5,phase5,Newton_08_15_2025_SC,0.3660,500,500,0.001,500,100,50.0,0.1,56,attention,4,TRUE,,,,TRUE,0.5,0.1,,plateau,Poisson hurt at high baseline
+low_rank_50_phase5,phase5,Newton_08_15_2025_SC,0.3990,500,500,0.001,500,100,50.0,0.1,56,attention,4,TRUE,,,50,TRUE,0.5,0.1,,plateau,Low-rank near baseline
+final_model,final,Newton_08_15_2025_SC,0.4070,1259,959,0.001,2000,300,50.0,0.1,56,attention,4,TRUE,,,,TRUE,0.5,0.1,,plateau,PRODUCTION: best overall
+replication_08_13,phase6,Newton_08_13_2025_SC,0.3232,667,367,0.001,2000,300,50.0,0.1,56,attention,4,TRUE,,,,TRUE,0.5,0.1,,plateau,Cross-session replication (10E 10I)
+replication_08_14,phase6,Newton_08_14_2025_SC,0.3608,827,527,0.001,2000,300,50.0,0.1,56,attention,4,TRUE,,,,TRUE,0.5,0.1,,plateau,Cross-session replication (25E 55I)
+replication_08_15,phase6,Newton_08_15_2025_SC,0.4070,1259,959,0.001,2000,300,50.0,0.1,56,attention,4,TRUE,,,,TRUE,0.5,0.1,,plateau,Primary session (52E 13I)
+E0_input_restructuring,input_restructuring,Newton_08_15_2025_SC,0.1646,500,500,0.001,500,100,50.0,0.1,,,,,,,,,,,plateau,Baseline: all neurons all factors
+E1_input_restructuring,input_restructuring,Newton_08_15_2025_SC,0.1763,500,500,0.001,500,100,50.0,0.1,,,,,,,,,,,plateau,Temporal fix: spatial from trial start
+E2_input_restructuring,input_restructuring,Newton_08_15_2025_SC,0.1585,500,500,0.001,500,100,50.0,0.1,,,,,,,,,,,plateau,Primary: RF-matched sparse inputs (avg 5 seeds)
+E3a_input_restructuring,input_restructuring,Newton_08_15_2025_SC,0.1649,500,500,0.001,500,100,50.0,0.1,,,,,,,,,,,plateau,Sparsity p=0.25 (avg 3 seeds)
+E3b_input_restructuring,input_restructuring,Newton_08_15_2025_SC,0.1703,500,500,0.001,500,100,50.0,0.1,,,,,,,,,,,plateau,Sparsity p=0.75 (avg 3 seeds)
+E4_input_restructuring,input_restructuring,Newton_08_15_2025_SC,0.1235,500,500,0.001,500,100,50.0,0.1,,,,,,,,,,,plateau,Replication different seeds (avg 5 seeds)
+E0_improved,fit_quality_improvement,Newton_08_15_2025_SC,0.1954,2000,1956,0.001,2000,300,50.0,0.1,56,attention,4,TRUE,,,,TRUE,0.5,,,plateau,Baseline with attention+h0 (42 neurons)
+E1_improved,fit_quality_improvement,Newton_08_15_2025_SC,0.2208,569,269,0.001,2000,300,50.0,0.1,56,linear,4,TRUE,,,,TRUE,0.5,,,plateau,Temporal fix with improvements
+E2_improved,fit_quality_improvement,Newton_08_15_2025_SC,0.2163,485,185,0.001,2000,300,50.0,0.1,56,linear,4,TRUE,,,,TRUE,0.5,,,plateau,Primary test with improvements

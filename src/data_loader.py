@@ -2,6 +2,7 @@
 Data loading utilities for exported .mat files from MATLAB pipeline.
 
 See specs/DATA_SPEC.md for format details.
+Supports input restructuring experiments per INPUT_RESTRUCTURING_SPEC.md.
 """
 
 import numpy as np
@@ -9,8 +10,11 @@ import scipy.io as sio
 import h5py
 import torch
 from torch.utils.data import Dataset, DataLoader
-from typing import Optional, Dict, Tuple, List
+from typing import Optional, Dict, Tuple, List, TYPE_CHECKING
 from pathlib import Path
+
+if TYPE_CHECKING:
+    from .input_assignment import InputAssignment
 
 
 def _is_hdf5(filepath: str) -> bool:
@@ -249,6 +253,179 @@ def construct_target_tensor(data: dict) -> np.ndarray:
     targets = np.nan_to_num(targets, nan=0.0)
     
     return targets.astype(np.float32)
+
+
+def find_target_onset_bin(input_target_loc: np.ndarray) -> int:
+    """
+    Find the first time bin where target appears (any location).
+
+    Args:
+        input_target_loc: [4, n_bins, n_trials] one-hot target location
+
+    Returns:
+        Median target onset bin across trials
+    """
+    # Sum across locations to get any-target signal
+    target_any = input_target_loc.sum(axis=0)  # [n_bins, n_trials]
+    # Find first non-zero bin per trial
+    first_onset_per_trial = (target_any > 0).argmax(axis=0)
+    return int(np.median(first_onset_per_trial))
+
+
+def infer_rf_locations(
+    data: dict,
+    visual_epoch_ms: Tuple[int, int] = (50, 250)
+) -> np.ndarray:
+    """
+    Infer receptive field location for each neuron based on spatial response profile.
+
+    For E units (classic SC neurons): RF = location with maximum visual response
+    For I units (putative interneurons): RF = 0 (no RF assignment)
+
+    Args:
+        data: Loaded session data dictionary
+        visual_epoch_ms: (start, end) of visual epoch relative to target onset
+
+    Returns:
+        rf_locations: [n_neurons] array of location indices (1-4 for E units, 0 for I units)
+    """
+    n_neurons = int(data['n_neurons'])
+    bin_size_ms = float(data['bin_size_ms'])
+
+    firing_rates = data['firing_rates']  # [n_neurons, n_bins, n_trials]
+    neuron_type = data['neuron_type']    # [n_neurons], 1=E, 2=I
+    trial_location = data['trial_location']  # [n_trials], 1-4
+
+    # Find target onset bin
+    target_loc = data['input_target_loc']  # [4, n_bins, n_trials]
+    target_onset_bin = find_target_onset_bin(target_loc)
+
+    # Visual epoch bins
+    epoch_start = target_onset_bin + int(visual_epoch_ms[0] / bin_size_ms)
+    epoch_end = target_onset_bin + int(visual_epoch_ms[1] / bin_size_ms)
+    epoch_end = min(epoch_end, firing_rates.shape[1])  # Clamp to data length
+
+    rf_locations = np.zeros(n_neurons, dtype=int)
+
+    for i in range(n_neurons):
+        if neuron_type[i] == 2:  # I unit - no RF
+            rf_locations[i] = 0
+            continue
+
+        # E unit - compute mean response per location
+        location_responses = np.zeros(4)
+        for loc in range(1, 5):
+            loc_trials = trial_location == loc
+            if loc_trials.sum() > 0:
+                loc_fr = firing_rates[i, epoch_start:epoch_end, loc_trials]
+                location_responses[loc - 1] = np.nanmean(loc_fr)
+
+        # RF = location with maximum response (1-indexed)
+        rf_locations[i] = np.argmax(location_responses) + 1
+
+    return rf_locations
+
+
+def construct_restructured_input_tensor(
+    data: dict,
+    assignment: 'InputAssignment'
+) -> np.ndarray:
+    """
+    Construct neuron-specific input tensor based on input assignment.
+
+    This creates inputs where different neurons receive different factor information
+    based on their RF location (for E units) and random assignment (for feature factors).
+
+    Args:
+        data: Loaded session data dictionary
+        assignment: InputAssignment specifying what each neuron receives
+
+    Returns:
+        inputs: [n_trials, n_bins, n_neurons, n_input_channels] tensor
+
+    Input channels (6 total):
+        0: reward_signal (RF-matched value for E, 0 for I)
+        1: probability_signal (RF-matched value for E, 0 for I)
+        2: target_signal (target_in_RF for E, global onset for I)
+        3: salience (if assigned, else 0)
+        4: identity (if assigned, else 0)
+        5: fixation_on (global, same for all neurons)
+    """
+    n_trials = int(data['n_trials'])
+    n_bins = int(data['n_time_bins'])
+    n_neurons = int(data['n_neurons'])
+
+    # Initialize output tensor
+    inputs = np.zeros((n_trials, n_bins, n_neurons, 6), dtype=np.float32)
+
+    # Extract trial-level factor values
+    trial_reward = data['trial_reward'].astype(float)  # [n_trials] 0/1
+    trial_probability = data.get('trial_probability', np.zeros(n_trials)).astype(float)
+    trial_location = data['trial_location']  # [n_trials] 1-4
+    trial_salience = data.get('trial_salience', np.zeros(n_trials)).astype(float)
+    trial_identity = data.get('trial_identity', np.zeros(n_trials)).astype(float)
+
+    # Extract temporal signals
+    fixation_on = data['input_fixation_on'].T  # [n_trials, n_bins]
+    target_loc = data['input_target_loc']      # [4, n_bins, n_trials]
+
+    # Find target onset bin
+    target_onset_bin = find_target_onset_bin(target_loc)
+
+    for i in range(n_neurons):
+        rf = assignment.rf_locations[i]
+        is_e = rf > 0  # E units have RF > 0, I units have RF = 0
+
+        for trial in range(n_trials):
+            loc = int(trial_location[trial])
+
+            # Channel 0: Reward signal
+            if assignment.receives_reward[i]:
+                if is_e:
+                    # E unit: reward value when target is at their RF
+                    reward_val = trial_reward[trial] if loc == rf else 0.0
+                else:
+                    # I unit with reward (unusual, but supported)
+                    reward_val = trial_reward[trial]
+
+                if assignment.spatial_from_trial_start:
+                    inputs[trial, :, i, 0] = reward_val
+                else:
+                    inputs[trial, target_onset_bin:, i, 0] = reward_val
+
+            # Channel 1: Probability signal
+            if assignment.receives_probability[i]:
+                if is_e:
+                    prob_val = trial_probability[trial] if loc == rf else 0.0
+                else:
+                    prob_val = trial_probability[trial]
+
+                if assignment.spatial_from_trial_start:
+                    inputs[trial, :, i, 1] = prob_val
+                else:
+                    inputs[trial, target_onset_bin:, i, 1] = prob_val
+
+            # Channel 2: Target signal
+            if is_e:
+                # E unit: target_in_RF (1 if target appeared at this neuron's RF)
+                target_in_rf = 1.0 if loc == rf else 0.0
+                inputs[trial, target_onset_bin:, i, 2] = target_in_rf
+            else:
+                # I unit: global target onset signal
+                inputs[trial, target_onset_bin:, i, 2] = 1.0
+
+            # Channel 3: Salience (sparse assignment)
+            if assignment.receives_salience[i]:
+                inputs[trial, target_onset_bin:, i, 3] = trial_salience[trial]
+
+            # Channel 4: Identity (sparse assignment)
+            if assignment.receives_identity[i]:
+                inputs[trial, target_onset_bin:, i, 4] = trial_identity[trial]
+
+            # Channel 5: Fixation (global, same for all neurons)
+            inputs[trial, :, i, 5] = fixation_on[trial]
+
+    return inputs
 
 
 def construct_mask(data: dict) -> np.ndarray:

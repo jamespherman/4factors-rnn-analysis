@@ -2,12 +2,92 @@
 Excitatory-Inhibitory RNN with Dale's Law constraints.
 
 Based on Song et al. (2016) and Sourmpis et al. (2026).
+
+Extended with:
+- Attention-based input embedding (Phase 3)
+- Learnable initial state h0 (Phase 4)
 """
 
 import torch
 import torch.nn as nn
 import numpy as np
 from typing import Optional, Tuple
+
+
+class InputEmbedding(nn.Module):
+    """
+    Learnable input embedding with multiple variants.
+
+    Types:
+    - 'linear': Simple learnable expansion (n_inputs → embed_dim)
+    - 'attention': Self-attention over input features (best performer)
+    - 'deep': Multi-layer MLP (n_inputs → hidden → embed_dim)
+    """
+
+    def __init__(
+        self,
+        n_inputs: int,
+        embed_dim: int,
+        embed_type: str = 'attention',
+        attention_heads: int = 4
+    ):
+        super().__init__()
+        self.n_inputs = n_inputs
+        self.embed_dim = embed_dim
+        self.embed_type = embed_type
+        self.attention_heads = attention_heads
+
+        if embed_type == 'linear':
+            self.embed = nn.Linear(n_inputs, embed_dim)
+        elif embed_type == 'attention':
+            # Self-attention: treat each input as a "token"
+            self.qkv_proj = nn.Linear(1, 3 * attention_heads, bias=False)
+            self.out_proj = nn.Linear(n_inputs * attention_heads, embed_dim)
+            # Initialize
+            nn.init.xavier_uniform_(self.qkv_proj.weight)
+            nn.init.xavier_uniform_(self.out_proj.weight)
+            nn.init.zeros_(self.out_proj.bias)
+        elif embed_type == 'deep':
+            hidden = (n_inputs + embed_dim) // 2
+            self.embed = nn.Sequential(
+                nn.Linear(n_inputs, hidden),
+                nn.ReLU(),
+                nn.Linear(hidden, embed_dim)
+            )
+        else:
+            raise ValueError(f"Unknown embed_type: {embed_type}")
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """
+        Forward pass.
+
+        Args:
+            x: [batch, time, n_inputs] - Input signals
+
+        Returns:
+            [batch, time, embed_dim] - Embedded inputs
+        """
+        if self.embed_type == 'linear':
+            return self.embed(x)
+        elif self.embed_type == 'attention':
+            batch, time, n_inp = x.shape
+            # Reshape to treat each input as a token: [batch*time, n_inputs, 1]
+            x_tokens = x.reshape(-1, n_inp, 1)
+            # QKV projection: [batch*time, n_inputs, 3*heads]
+            qkv = self.qkv_proj(x_tokens)
+            # Split into Q, K, V
+            q, k, v = qkv.chunk(3, dim=-1)  # Each [batch*time, n_inputs, heads]
+            # Compute attention weights
+            scale = self.attention_heads ** 0.5
+            attn = torch.softmax(torch.bmm(q, k.transpose(-2, -1)) / scale, dim=-1)
+            # Apply attention to values
+            out = torch.bmm(attn, v)  # [batch*time, n_inputs, heads]
+            # Flatten and project
+            out = out.reshape(batch * time, -1)  # [batch*time, n_inputs*heads]
+            out = self.out_proj(out)  # [batch*time, embed_dim]
+            return out.reshape(batch, time, -1)
+        elif self.embed_type == 'deep':
+            return self.embed(x)
 
 
 class EIRNN(nn.Module):
@@ -38,11 +118,16 @@ class EIRNN(nn.Module):
         dt: float = 25.0,
         noise_scale: float = 0.01,
         spectral_radius: float = 0.9,
+        input_embed_dim: Optional[int] = None,
+        input_embed_type: str = 'attention',
+        attention_heads: int = 4,
+        learnable_h0: bool = False,
+        h0_init: float = 0.1,
         device: str = 'cpu'
     ):
         """
         Initialize E-I RNN.
-        
+
         Args:
             n_exc: Number of excitatory units
             n_inh: Number of inhibitory units
@@ -52,10 +137,15 @@ class EIRNN(nn.Module):
             dt: Integration timestep in ms (should match data bin size)
             noise_scale: Standard deviation of noise
             spectral_radius: Target spectral radius for weight initialization
+            input_embed_dim: If set, expand inputs via embedding (e.g., 14→56)
+            input_embed_type: Type of embedding ('linear', 'attention', 'deep')
+            attention_heads: Number of attention heads (if embed_type='attention')
+            learnable_h0: Whether to learn initial hidden state
+            h0_init: Initial value for h0 if learnable
             device: 'cpu' or 'cuda'
         """
         super().__init__()
-        
+
         self.n_exc = n_exc
         self.n_inh = n_inh
         self.n_total = n_exc + n_inh
@@ -66,10 +156,29 @@ class EIRNN(nn.Module):
         self.alpha = dt / tau
         self.noise_scale = noise_scale
         self.spectral_radius = spectral_radius
-        
+
+        # Input embedding (Phase 3 improvement)
+        if input_embed_dim is not None:
+            self.input_embed = InputEmbedding(
+                n_inputs=n_inputs,
+                embed_dim=input_embed_dim,
+                embed_type=input_embed_type,
+                attention_heads=attention_heads
+            )
+            self.actual_n_inputs = input_embed_dim
+        else:
+            self.input_embed = None
+            self.actual_n_inputs = n_inputs
+
+        # Learnable initial state (Phase 4 improvement)
+        if learnable_h0:
+            self.h0 = nn.Parameter(torch.full((self.n_total,), h0_init))
+        else:
+            self.h0 = None
+
         # Learnable parameters (raw, unconstrained)
         self.W_rec_raw = nn.Parameter(torch.zeros(self.n_total, self.n_total))
-        self.W_in = nn.Parameter(torch.zeros(self.n_total, n_inputs))
+        self.W_in = nn.Parameter(torch.zeros(self.n_total, self.actual_n_inputs))
         self.W_out = nn.Parameter(torch.zeros(n_outputs, n_exc))  # Only E neurons
         self.b_out = nn.Parameter(torch.zeros(n_outputs))
         
@@ -132,19 +241,19 @@ class EIRNN(nn.Module):
         return W
     
     def forward(
-        self, 
-        inputs: torch.Tensor, 
+        self,
+        inputs: torch.Tensor,
         initial_state: Optional[torch.Tensor] = None,
         return_states: bool = False
     ) -> Tuple[torch.Tensor, torch.Tensor]:
         """
         Forward pass through the network.
-        
+
         Args:
             inputs: [batch, time, n_inputs] - Input signals
             initial_state: [batch, n_total] - Initial membrane potentials (optional)
             return_states: Whether to return membrane potentials (for analysis)
-        
+
         Returns:
             rates: [batch, time, n_total] - Firing rates
             outputs: [batch, time, n_outputs] - Output predictions (e.g., eye position)
@@ -152,13 +261,21 @@ class EIRNN(nn.Module):
         """
         batch_size, n_steps, _ = inputs.shape
         device = inputs.device
-        
+
+        # Apply input embedding if present
+        if self.input_embed is not None:
+            inputs = self.input_embed(inputs)
+
         # Initialize state
         if initial_state is None:
-            x = torch.zeros(batch_size, self.n_total, device=device)
+            if self.h0 is not None:
+                # Use learnable initial state
+                x = self.h0.unsqueeze(0).expand(batch_size, -1).clone()
+            else:
+                x = torch.zeros(batch_size, self.n_total, device=device)
         else:
             x = initial_state
-        
+
         # Get constrained weights
         W_rec = self.W_rec
         
@@ -252,24 +369,34 @@ def create_model_from_data(
     n_inputs: int,
     enforce_ratio: bool = True,
     target_ratio: float = 4.0,
+    input_embed_dim: Optional[int] = None,
+    input_embed_type: str = 'attention',
+    attention_heads: int = 4,
+    learnable_h0: bool = False,
+    h0_init: float = 0.1,
     **kwargs
 ) -> EIRNN:
     """
     Create model with appropriate E/I counts based on recorded neurons.
-    
+
     Args:
         n_classic: Number of classic SC neurons (assigned to E)
         n_interneuron: Number of putative interneurons (assigned to I)
         n_inputs: Number of input dimensions
         enforce_ratio: Whether to add hidden units for 4:1 ratio
         target_ratio: Target E:I ratio (default 4:1)
+        input_embed_dim: If set, expand inputs via embedding (e.g., 14→56)
+        input_embed_type: Type of embedding ('linear', 'attention', 'deep')
+        attention_heads: Number of attention heads (if embed_type='attention')
+        learnable_h0: Whether to learn initial hidden state
+        h0_init: Initial value for h0 if learnable
         **kwargs: Additional arguments passed to EIRNN
-    
+
     Returns:
         EIRNN model
     """
     n_recorded = n_classic + n_interneuron
-    
+
     if enforce_ratio:
         # Calculate total units needed to achieve target ratio
         # with at least n_classic E and n_interneuron I
@@ -303,34 +430,93 @@ def create_model_from_data(
     else:
         n_exc = n_classic
         n_inh = n_interneuron
-    
-    return EIRNN(n_exc=n_exc, n_inh=n_inh, n_inputs=n_inputs, **kwargs)
+
+    return EIRNN(
+        n_exc=n_exc,
+        n_inh=n_inh,
+        n_inputs=n_inputs,
+        input_embed_dim=input_embed_dim,
+        input_embed_type=input_embed_type,
+        attention_heads=attention_heads,
+        learnable_h0=learnable_h0,
+        h0_init=h0_init,
+        **kwargs
+    )
 
 
 if __name__ == "__main__":
     # Quick test
     print("Testing EIRNN...")
-    
+
+    # Test 1: Basic model (no embedding, no h0)
+    print("\n=== Test 1: Basic model ===")
     model = EIRNN(n_exc=80, n_inh=20, n_inputs=14, device='cpu')
-    
+
     # Verify constraints
     assert model.verify_constraints(), "Constraints violated!"
-    
+
     # Test forward pass
     batch_size = 32
     n_steps = 100
     inputs = torch.randn(batch_size, n_steps, 14)
-    
+
     rates, outputs = model(inputs)
-    
+
     print(f"Input shape: {inputs.shape}")
     print(f"Rates shape: {rates.shape}")
     print(f"Output shape: {outputs.shape}")
-    
+
     # Check weight submatrices
     weights = model.get_weight_submatrices()
     print(f"\nWeight submatrices:")
     for name, W in weights.items():
         print(f"  {name}: {W.shape}, range [{W.min():.3f}, {W.max():.3f}]")
-    
+
+    # Test 2: Model with attention embedding + learnable h0
+    print("\n=== Test 2: Attention embedding + learnable h0 ===")
+    model_advanced = EIRNN(
+        n_exc=80, n_inh=20, n_inputs=14,
+        input_embed_dim=56,
+        input_embed_type='attention',
+        attention_heads=4,
+        learnable_h0=True,
+        h0_init=0.1,
+        device='cpu'
+    )
+
+    assert model_advanced.verify_constraints(), "Constraints violated!"
+    assert model_advanced.input_embed is not None, "Input embedding not created"
+    assert model_advanced.h0 is not None, "Learnable h0 not created"
+    assert model_advanced.actual_n_inputs == 56, f"Expected 56, got {model_advanced.actual_n_inputs}"
+    assert model_advanced.h0.shape == (100,), f"h0 shape wrong: {model_advanced.h0.shape}"
+
+    rates2, outputs2 = model_advanced(inputs)
+
+    print(f"Input embedding type: {model_advanced.input_embed.embed_type}")
+    print(f"Actual n_inputs (after embedding): {model_advanced.actual_n_inputs}")
+    print(f"W_in shape: {model_advanced.W_in.shape}")
+    print(f"h0 shape: {model_advanced.h0.shape}")
+    print(f"h0 mean: {model_advanced.h0.mean().item():.3f}")
+    print(f"Rates shape: {rates2.shape}")
+
+    # Test 3: Test create_model_from_data with new params
+    print("\n=== Test 3: create_model_from_data with new params ===")
+    model_from_data = create_model_from_data(
+        n_classic=41,
+        n_interneuron=13,
+        n_inputs=14,
+        enforce_ratio=True,
+        input_embed_dim=56,
+        input_embed_type='attention',
+        attention_heads=4,
+        learnable_h0=True,
+        h0_init=0.1,
+        device='cpu'
+    )
+
+    assert model_from_data.input_embed is not None, "Input embedding not created"
+    assert model_from_data.h0 is not None, "Learnable h0 not created"
+    print("  Input embedding: OK")
+    print("  Learnable h0: OK")
+
     print("\nAll tests passed!")

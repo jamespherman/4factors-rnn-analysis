@@ -1,0 +1,439 @@
+======================================================================
+INPUT RESTRUCTURING EXPERIMENTS
+======================================================================
+Total experiments: 3
+Output directory: results\fit_quality_improvement
+Test mode: False
+
+Loading data from data/rnn_export_Newton_08_15_2025_SC.mat...
+Validation passed:
+  Neurons: 42 (14 E, 28 I)
+  Trials: 1337
+  Time bins: 227
+  Mean FR: 14.73 sp/s
+
+[1/3] Running E0_seed0...
+
+======================================================================
+EXPERIMENT: E0_seed0
+  Baseline: all neurons, all factors, at target onset
+======================================================================
+Device: cpu
+Neurons: 42 (14 E, 28 I)
+Trials: 1337, Time bins: 227
+
+Inferring RF locations...
+  E units with RF: 14
+    Location 1: 9 neurons
+    Location 2: 0 neurons
+    Location 3: 1 neurons
+    Location 4: 4 neurons
+
+Creating input assignment...
+InputAssignment: E0
+  Neurons: 42 (14 E, 28 I)
+  Sparsity p: 1.0
+  Seed: 0
+  Spatial from trial start: False
+  Receives reward: 42 neurons
+  Receives probability: 42 neurons
+  Receives salience: 42 neurons
+  Receives identity: 42 neurons
+
+Constructing inputs...
+  Input shape: (1337, 227, 14)
+  Train trials: 1070, Val trials: 267
+
+Creating model...
+Model configuration:
+  Recorded E (classic): 14
+  Recorded I (interneuron): 28
+  Hidden E: 98
+  Hidden I: 0
+  Total: 112 E + 28 I = 140
+  E:I ratio: 4.00
+  Model: 140 units (112 E, 28 I)
+  Input dim: 14
+  Input embedding: attention -> 56
+  Learnable h0: True
+
+Starting training...
+  Epoch   20 | loss: 2.0822 | val_corr: 0.0126 | best: 0.1632 | lr: 1.0e-03
+  Epoch   40 | loss: 1.6299 | val_corr: 0.1037 | best: 0.1632 | lr: 1.0e-03
+  Epoch   60 | loss: 1.6272 | val_corr: 0.1025 | best: 0.1632 | lr: 1.0e-03
+  Epoch   80 | loss: 1.3720 | val_corr: 0.1229 | best: 0.1632 | lr: 1.0e-03
+  Epoch  100 | loss: 1.5185 | val_corr: 0.1274 | best: 0.1632 | lr: 1.0e-03
+  Epoch  120 | loss: 1.2539 | val_corr: 0.1248 | best: 0.1632 | lr: 1.0e-03
+  Epoch  140 | loss: 1.2021 | val_corr: 0.1265 | best: 0.1632 | lr: 1.0e-03
+  Epoch  160 | loss: 1.1897 | val_corr: 0.1263 | best: 0.1632 | lr: 1.0e-03
+  Epoch  180 | loss: 1.2506 | val_corr: 0.0650 | best: 0.1632 | lr: 1.0e-03
+  Epoch  200 | loss: 1.2416 | val_corr: 0.1484 | best: 0.1632 | lr: 5.0e-04
+  Epoch  220 | loss: 1.4060 | val_corr: 0.1429 | best: 0.1632 | lr: 5.0e-04
+  Epoch  240 | loss: 1.2698 | val_corr: 0.1455 | best: 0.1632 | lr: 5.0e-04
+  Epoch  260 | loss: 1.2713 | val_corr: 0.1475 | best: 0.1632 | lr: 5.0e-04
+  Epoch  280 | loss: 1.3248 | val_corr: 0.1450 | best: 0.1686 | lr: 5.0e-04
+  Epoch  300 | loss: 1.3640 | val_corr: 0.1711 | best: 0.1686 | lr: 5.0e-04
+  Epoch  320 | loss: 1.3557 | val_corr: 0.1505 | best: 0.1733 | lr: 5.0e-04
+  Epoch  340 | loss: 1.3335 | val_corr: 0.1640 | best: 0.1733 | lr: 2.5e-04
+  Epoch  360 | loss: 1.3500 | val_corr: 0.1647 | best: 0.1733 | lr: 2.5e-04
+  Epoch  380 | loss: 1.3890 | val_corr: 0.1713 | best: 0.1770 | lr: 2.5e-04
+  Epoch  400 | loss: 1.3828 | val_corr: 0.1707 | best: 0.1770 | lr: 1.3e-04
+  Epoch  420 | loss: 1.3941 | val_corr: 0.1717 | best: 0.1770 | lr: 1.3e-04
+  Epoch  440 | loss: 1.3978 | val_corr: 0.1741 | best: 0.1770 | lr: 1.3e-04
+  Epoch  460 | loss: 1.4218 | val_corr: 0.1736 | best: 0.1770 | lr: 6.3e-05
+  Epoch  480 | loss: 1.4253 | val_corr: 0.1742 | best: 0.1770 | lr: 6.3e-05
+  Epoch  500 | loss: 1.4329 | val_corr: 0.1750 | best: 0.1770 | lr: 3.1e-05
+  Epoch  520 | loss: 1.4581 | val_corr: 0.1749 | best: 0.1770 | lr: 3.1e-05
+  Epoch  540 | loss: 1.4621 | val_corr: 0.1753 | best: 0.1770 | lr: 3.1e-05
+  Epoch  560 | loss: 1.4617 | val_corr: 0.1764 | best: 0.1770 | lr: 1.6e-05
+  Epoch  580 | loss: 1.4704 | val_corr: 0.1770 | best: 0.1771 | lr: 1.6e-05
+  Epoch  600 | loss: 1.4748 | val_corr: 0.1771 | best: 0.1774 | lr: 1.0e-05
+  Epoch  620 | loss: 1.4784 | val_corr: 0.1784 | best: 0.1777 | lr: 1.0e-05
+  Epoch  640 | loss: 1.4815 | val_corr: 0.1770 | best: 0.1784 | lr: 1.0e-05
+  Epoch  660 | loss: 1.4857 | val_corr: 0.1776 | best: 0.1788 | lr: 1.0e-05
+  Epoch  680 | loss: 1.4888 | val_corr: 0.1771 | best: 0.1788 | lr: 1.0e-05
+  Epoch  700 | loss: 1.4904 | val_corr: 0.1776 | best: 0.1788 | lr: 1.0e-05
+  Epoch  720 | loss: 1.4911 | val_corr: 0.1781 | best: 0.1791 | lr: 1.0e-05
+  Epoch  740 | loss: 1.4903 | val_corr: 0.1772 | best: 0.1791 | lr: 1.0e-05
+  Epoch  760 | loss: 1.4905 | val_corr: 0.1791 | best: 0.1801 | lr: 1.0e-05
+  Epoch  780 | loss: 1.5016 | val_corr: 0.1791 | best: 0.1801 | lr: 1.0e-05
+  Epoch  800 | loss: 1.4904 | val_corr: 0.1788 | best: 0.1801 | lr: 1.0e-05
+  Epoch  820 | loss: 1.4917 | val_corr: 0.1801 | best: 0.1801 | lr: 1.0e-05
+  Epoch  840 | loss: 1.5003 | val_corr: 0.1782 | best: 0.1801 | lr: 1.0e-05
+  Epoch  860 | loss: 1.4962 | val_corr: 0.1798 | best: 0.1808 | lr: 1.0e-05
+  Epoch  880 | loss: 1.4956 | val_corr: 0.1801 | best: 0.1808 | lr: 1.0e-05
+  Epoch  900 | loss: 1.4907 | val_corr: 0.1804 | best: 0.1808 | lr: 1.0e-05
+  Epoch  920 | loss: 1.4948 | val_corr: 0.1794 | best: 0.1813 | lr: 1.0e-05
+  Epoch  940 | loss: 1.4918 | val_corr: 0.1810 | best: 0.1813 | lr: 1.0e-05
+  Epoch  960 | loss: 1.4896 | val_corr: 0.1806 | best: 0.1819 | lr: 1.0e-05
+  Epoch  980 | loss: 1.4985 | val_corr: 0.1800 | best: 0.1819 | lr: 1.0e-05
+  Epoch 1000 | loss: 1.4925 | val_corr: 0.1809 | best: 0.1819 | lr: 1.0e-05
+  Epoch 1020 | loss: 1.4935 | val_corr: 0.1809 | best: 0.1822 | lr: 1.0e-05
+  Epoch 1040 | loss: 1.4943 | val_corr: 0.1808 | best: 0.1827 | lr: 1.0e-05
+  Epoch 1060 | loss: 1.4922 | val_corr: 0.1809 | best: 0.1827 | lr: 1.0e-05
+  Epoch 1080 | loss: 1.4916 | val_corr: 0.1809 | best: 0.1835 | lr: 1.0e-05
+  Epoch 1100 | loss: 1.4994 | val_corr: 0.1817 | best: 0.1835 | lr: 1.0e-05
+  Epoch 1120 | loss: 1.4928 | val_corr: 0.1812 | best: 0.1835 | lr: 1.0e-05
+  Epoch 1140 | loss: 1.4882 | val_corr: 0.1828 | best: 0.1835 | lr: 1.0e-05
+  Epoch 1160 | loss: 1.4921 | val_corr: 0.1818 | best: 0.1835 | lr: 1.0e-05
+  Epoch 1180 | loss: 1.4975 | val_corr: 0.1799 | best: 0.1835 | lr: 1.0e-05
+  Epoch 1200 | loss: 1.4943 | val_corr: 0.1787 | best: 0.1835 | lr: 1.0e-05
+  Epoch 1220 | loss: 1.5000 | val_corr: 0.1794 | best: 0.1835 | lr: 1.0e-05
+  Epoch 1240 | loss: 1.4973 | val_corr: 0.1824 | best: 0.1835 | lr: 1.0e-05
+  Epoch 1260 | loss: 1.4981 | val_corr: 0.1813 | best: 0.1837 | lr: 1.0e-05
+  Epoch 1280 | loss: 1.4927 | val_corr: 0.1817 | best: 0.1844 | lr: 1.0e-05
+  Epoch 1300 | loss: 1.4978 | val_corr: 0.1841 | best: 0.1845 | lr: 1.0e-05
+  Epoch 1320 | loss: 1.4943 | val_corr: 0.1821 | best: 0.1853 | lr: 1.0e-05
+  Epoch 1340 | loss: 1.4957 | val_corr: 0.1864 | best: 0.1853 | lr: 1.0e-05
+  Epoch 1360 | loss: 1.4998 | val_corr: 0.1820 | best: 0.1877 | lr: 1.0e-05
+  Epoch 1380 | loss: 1.4976 | val_corr: 0.1839 | best: 0.1877 | lr: 1.0e-05
+  Epoch 1400 | loss: 1.4964 | val_corr: 0.1839 | best: 0.1877 | lr: 1.0e-05
+  Epoch 1420 | loss: 1.4978 | val_corr: 0.1861 | best: 0.1877 | lr: 1.0e-05
+  Epoch 1440 | loss: 1.5012 | val_corr: 0.1877 | best: 0.1877 | lr: 1.0e-05
+  Epoch 1460 | loss: 1.4950 | val_corr: 0.1839 | best: 0.1877 | lr: 1.0e-05
+  Epoch 1480 | loss: 1.5024 | val_corr: 0.1835 | best: 0.1885 | lr: 1.0e-05
+  Epoch 1500 | loss: 1.4976 | val_corr: 0.1896 | best: 0.1885 | lr: 1.0e-05
+  Epoch 1520 | loss: 1.4964 | val_corr: 0.1842 | best: 0.1910 | lr: 1.0e-05
+  Epoch 1540 | loss: 1.4969 | val_corr: 0.1827 | best: 0.1910 | lr: 1.0e-05
+  Epoch 1560 | loss: 1.4967 | val_corr: 0.1835 | best: 0.1910 | lr: 1.0e-05
+  Epoch 1580 | loss: 1.4990 | val_corr: 0.1874 | best: 0.1910 | lr: 1.0e-05
+  Epoch 1600 | loss: 1.5012 | val_corr: 0.1860 | best: 0.1910 | lr: 1.0e-05
+  Epoch 1620 | loss: 1.4968 | val_corr: 0.1851 | best: 0.1910 | lr: 1.0e-05
+  Epoch 1640 | loss: 1.5008 | val_corr: 0.1860 | best: 0.1910 | lr: 1.0e-05
+  Epoch 1660 | loss: 1.4942 | val_corr: 0.1890 | best: 0.1910 | lr: 1.0e-05
+  Epoch 1680 | loss: 1.5006 | val_corr: 0.1897 | best: 0.1910 | lr: 1.0e-05
+  Epoch 1700 | loss: 1.4924 | val_corr: 0.1908 | best: 0.1910 | lr: 1.0e-05
+  Epoch 1720 | loss: 1.4956 | val_corr: 0.1882 | best: 0.1912 | lr: 1.0e-05
+  Epoch 1740 | loss: 1.4976 | val_corr: 0.1884 | best: 0.1914 | lr: 1.0e-05
+  Epoch 1760 | loss: 1.4998 | val_corr: 0.1903 | best: 0.1914 | lr: 1.0e-05
+  Epoch 1780 | loss: 1.4955 | val_corr: 0.1903 | best: 0.1914 | lr: 1.0e-05
+  Epoch 1800 | loss: 1.4930 | val_corr: 0.1894 | best: 0.1914 | lr: 1.0e-05
+  Epoch 1820 | loss: 1.4969 | val_corr: 0.1885 | best: 0.1920 | lr: 1.0e-05
+  Epoch 1840 | loss: 1.4925 | val_corr: 0.1913 | best: 0.1920 | lr: 1.0e-05
+  Epoch 1860 | loss: 1.4979 | val_corr: 0.1926 | best: 0.1926 | lr: 1.0e-05
+  Epoch 1880 | loss: 1.4944 | val_corr: 0.1883 | best: 0.1937 | lr: 1.0e-05
+  Epoch 1900 | loss: 1.4961 | val_corr: 0.1896 | best: 0.1947 | lr: 1.0e-05
+  Epoch 1920 | loss: 1.4943 | val_corr: 0.1912 | best: 0.1947 | lr: 1.0e-05
+  Epoch 1940 | loss: 1.4931 | val_corr: 0.1940 | best: 0.1947 | lr: 1.0e-05
+  Epoch 1960 | loss: 1.4936 | val_corr: 0.1924 | best: 0.1954 | lr: 1.0e-05
+  Epoch 1980 | loss: 1.4945 | val_corr: 0.1904 | best: 0.1954 | lr: 1.0e-05
+  Epoch 2000 | loss: 1.4974 | val_corr: 0.1932 | best: 0.1954 | lr: 1.0e-05
+
+Training complete:
+  Epochs: 2000
+  Best val correlation: 0.1954 (epoch 1956)
+  Time: 1:54:35
+
+Saving outputs...
+
+Computing emergent selectivity...
+
+Emergent selectivity summary:
+  reward: 0/0 significant (mean |sel|=0.0000)
+  probability: 0/0 significant (mean |sel|=0.0000)
+  salience: 0/0 significant (mean |sel|=0.0000)
+  identity: 0/0 significant (mean |sel|=0.0000)
+
+[2/3] Running E1_seed0...
+
+======================================================================
+EXPERIMENT: E1_seed0
+  Temporal fix: all neurons, spatial from trial start
+======================================================================
+Device: cpu
+Neurons: 42 (14 E, 28 I)
+Trials: 1337, Time bins: 227
+
+Inferring RF locations...
+  E units with RF: 14
+    Location 1: 9 neurons
+    Location 2: 0 neurons
+    Location 3: 1 neurons
+    Location 4: 4 neurons
+
+Creating input assignment...
+InputAssignment: E1
+  Neurons: 42 (14 E, 28 I)
+  Sparsity p: 1.0
+  Seed: 0
+  Spatial from trial start: True
+  Receives reward: 42 neurons
+  Receives probability: 42 neurons
+  Receives salience: 42 neurons
+  Receives identity: 42 neurons
+
+Constructing inputs...
+  Input shape: (1337, 227, 252)
+  Train trials: 1070, Val trials: 267
+
+Creating model...
+Model configuration:
+  Recorded E (classic): 14
+  Recorded I (interneuron): 28
+  Hidden E: 98
+  Hidden I: 0
+  Total: 112 E + 28 I = 140
+  E:I ratio: 4.00
+  Model: 140 units (112 E, 28 I)
+  Input dim: 252
+  Input embedding: linear -> 56
+  Learnable h0: True
+
+Starting training...
+  Epoch   20 | loss: 1.9046 | val_corr: 0.1538 | best: 0.1623 | lr: 1.0e-03
+  Epoch   40 | loss: 1.5507 | val_corr: 0.1662 | best: 0.1726 | lr: 1.0e-03
+  Epoch   60 | loss: 1.3904 | val_corr: 0.1589 | best: 0.1819 | lr: 1.0e-03
+  Epoch   80 | loss: 1.2726 | val_corr: 0.1538 | best: 0.1895 | lr: 1.0e-03
+  Epoch  100 | loss: 1.2482 | val_corr: 0.1906 | best: 0.1908 | lr: 1.0e-03
+  Epoch  120 | loss: 1.1816 | val_corr: 0.1771 | best: 0.1938 | lr: 1.0e-03
+  Epoch  140 | loss: 1.1850 | val_corr: 0.1859 | best: 0.1947 | lr: 1.0e-03
+  Epoch  160 | loss: 1.1669 | val_corr: 0.1645 | best: 0.1947 | lr: 1.0e-03
+  Epoch  180 | loss: 1.1645 | val_corr: 0.1797 | best: 0.2049 | lr: 5.0e-04
+  Epoch  200 | loss: 1.1989 | val_corr: 0.1741 | best: 0.2049 | lr: 5.0e-04
+  Epoch  220 | loss: 1.2404 | val_corr: 0.1869 | best: 0.2059 | lr: 5.0e-04
+  Epoch  240 | loss: 1.2382 | val_corr: 0.1955 | best: 0.2184 | lr: 2.5e-04
+  Epoch  260 | loss: 1.2405 | val_corr: 0.1890 | best: 0.2203 | lr: 2.5e-04
+  Epoch  280 | loss: 1.2646 | val_corr: 0.2019 | best: 0.2208 | lr: 1.3e-04
+  Epoch  300 | loss: 1.2909 | val_corr: 0.1938 | best: 0.2208 | lr: 1.3e-04
+  Epoch  320 | loss: 1.3072 | val_corr: 0.2022 | best: 0.2208 | lr: 1.3e-04
+  Epoch  340 | loss: 1.3297 | val_corr: 0.1963 | best: 0.2208 | lr: 6.3e-05
+  Epoch  360 | loss: 1.3529 | val_corr: 0.2039 | best: 0.2208 | lr: 6.3e-05
+  Epoch  380 | loss: 1.3668 | val_corr: 0.2094 | best: 0.2208 | lr: 6.3e-05
+  Epoch  400 | loss: 1.3840 | val_corr: 0.2042 | best: 0.2208 | lr: 3.1e-05
+  Epoch  420 | loss: 1.4033 | val_corr: 0.1997 | best: 0.2208 | lr: 3.1e-05
+  Epoch  440 | loss: 1.4178 | val_corr: 0.1972 | best: 0.2208 | lr: 1.6e-05
+  Epoch  460 | loss: 1.4269 | val_corr: 0.2036 | best: 0.2208 | lr: 1.6e-05
+  Epoch  480 | loss: 1.4400 | val_corr: 0.2044 | best: 0.2208 | lr: 1.6e-05
+  Epoch  500 | loss: 1.4472 | val_corr: 0.2021 | best: 0.2208 | lr: 1.0e-05
+  Epoch  520 | loss: 1.4553 | val_corr: 0.2012 | best: 0.2208 | lr: 1.0e-05
+  Epoch  540 | loss: 1.4599 | val_corr: 0.2025 | best: 0.2208 | lr: 1.0e-05
+  Epoch  560 | loss: 1.4697 | val_corr: 0.2013 | best: 0.2208 | lr: 1.0e-05
+  Early stopping at epoch 569
+
+Training complete:
+  Epochs: 569
+  Best val correlation: 0.2208 (epoch 269)
+  Time: 0:38:53
+
+Saving outputs...
+
+Computing emergent selectivity...
+
+Emergent selectivity summary:
+  reward: 0/0 significant (mean |sel|=0.0000)
+  probability: 0/0 significant (mean |sel|=0.0000)
+  salience: 0/0 significant (mean |sel|=0.0000)
+  identity: 0/0 significant (mean |sel|=0.0000)
+
+[3/3] Running E2_seed0...
+
+======================================================================
+EXPERIMENT: E2_seed0
+  Primary test: RF-matched spatial (E only), sparse features (p=0.5)
+======================================================================
+Device: cpu
+Neurons: 42 (14 E, 28 I)
+Trials: 1337, Time bins: 227
+
+Inferring RF locations...
+  E units with RF: 14
+    Location 1: 9 neurons
+    Location 2: 0 neurons
+    Location 3: 1 neurons
+    Location 4: 4 neurons
+
+Creating input assignment...
+InputAssignment: E2
+  Neurons: 42 (14 E, 28 I)
+  Sparsity p: 0.5
+  Seed: 0
+  Spatial from trial start: True
+  Receives reward: 14 neurons
+  Receives probability: 14 neurons
+  Receives salience: 15 neurons
+  Receives identity: 28 neurons
+
+Constructing inputs...
+  Input shape: (1337, 227, 252)
+  Train trials: 1070, Val trials: 267
+
+Creating model...
+Model configuration:
+  Recorded E (classic): 14
+  Recorded I (interneuron): 28
+  Hidden E: 98
+  Hidden I: 0
+  Total: 112 E + 28 I = 140
+  E:I ratio: 4.00
+  Model: 140 units (112 E, 28 I)
+  Input dim: 252
+  Input embedding: linear -> 56
+  Learnable h0: True
+
+Starting training...
+  Epoch   20 | loss: 1.8834 | val_corr: 0.1383 | best: 0.1400 | lr: 1.0e-03
+  Epoch   40 | loss: 1.5126 | val_corr: 0.1716 | best: 0.1683 | lr: 1.0e-03
+  Epoch   60 | loss: 1.3412 | val_corr: 0.1725 | best: 0.1804 | lr: 1.0e-03
+  Epoch   80 | loss: 1.2609 | val_corr: 0.1713 | best: 0.1804 | lr: 1.0e-03
+  Epoch  100 | loss: 1.2014 | val_corr: 0.1894 | best: 0.1916 | lr: 5.0e-04
+  Epoch  120 | loss: 1.1863 | val_corr: 0.1872 | best: 0.1964 | lr: 5.0e-04
+  Epoch  140 | loss: 1.1710 | val_corr: 0.1928 | best: 0.1971 | lr: 5.0e-04
+  Epoch  160 | loss: 1.1756 | val_corr: 0.1872 | best: 0.1971 | lr: 5.0e-04
+  Epoch  180 | loss: 1.1787 | val_corr: 0.1663 | best: 0.2044 | lr: 5.0e-04
+  Epoch  200 | loss: 1.1933 | val_corr: 0.1882 | best: 0.2163 | lr: 2.5e-04
+  Epoch  220 | loss: 1.2183 | val_corr: 0.1797 | best: 0.2163 | lr: 2.5e-04
+  Epoch  240 | loss: 1.2334 | val_corr: 0.1822 | best: 0.2163 | lr: 2.5e-04
+  Epoch  260 | loss: 1.2514 | val_corr: 0.1715 | best: 0.2163 | lr: 1.3e-04
+  Epoch  280 | loss: 1.2738 | val_corr: 0.1786 | best: 0.2163 | lr: 1.3e-04
+  Epoch  300 | loss: 1.3029 | val_corr: 0.1800 | best: 0.2163 | lr: 6.3e-05
+  Epoch  320 | loss: 1.5632 | val_corr: 0.1424 | best: 0.2163 | lr: 6.3e-05
+  Epoch  340 | loss: 1.3595 | val_corr: 0.1758 | best: 0.2163 | lr: 6.3e-05
+  Epoch  360 | loss: 1.3502 | val_corr: 0.1475 | best: 0.2163 | lr: 3.1e-05
+  Epoch  380 | loss: 1.3625 | val_corr: 0.1449 | best: 0.2163 | lr: 3.1e-05
+  Epoch  400 | loss: 1.3769 | val_corr: 0.1452 | best: 0.2163 | lr: 1.6e-05
+  Epoch  420 | loss: 1.3941 | val_corr: 0.1493 | best: 0.2163 | lr: 1.6e-05
+  Epoch  440 | loss: 1.4112 | val_corr: 0.1455 | best: 0.2163 | lr: 1.6e-05
+  Epoch  460 | loss: 1.4188 | val_corr: 0.1513 | best: 0.2163 | lr: 1.0e-05
+  Epoch  480 | loss: 1.4339 | val_corr: 0.1493 | best: 0.2163 | lr: 1.0e-05C:\Users\Matt\AppData\Local\Programs\Python\Python312\Lib\site-packages\numpy\_core\_methods.py:190: RuntimeWarning: overflow encountered in square
+  x = um.square(x, out=x)
+
+  Early stopping at epoch 485
+
+Training complete:
+  Epochs: 485
+  Best val correlation: 0.2163 (epoch 185)
+  Time: 0:32:17
+
+Saving outputs...
+
+Computing emergent selectivity...
+
+Emergent selectivity summary:
+  reward: 25/28 significant (mean |sel|=0.3474)
+  probability: 23/28 significant (mean |sel|=0.2649)
+  salience: 13/27 significant (mean |sel|=0.2508)
+  identity: 10/14 significant (mean |sel|=0.3125)
+
+Running ablation analysis...
+============================================================
+ABLATION ANALYSIS REPORT
+============================================================
+
+REWARD
+----------------------------------------
+
+  full_recurrence:
+    Original |emergent|: 0.3464
+    Ablated |emergent|:  0.1522
+    Reduction: 56.1%
+    Significant: 25 -> 8
+
+  ie_only:
+    Original |emergent|: 0.3466
+    Ablated |emergent|:  0.1281
+    Reduction: 63.0%
+    Significant: 25 -> 0
+
+PROBABILITY
+----------------------------------------
+
+  full_recurrence:
+    Original |emergent|: 0.2650
+    Ablated |emergent|:  0.1593
+    Reduction: 39.9%
+    Significant: 23 -> 9
+
+  ie_only:
+    Original |emergent|: 0.2649
+    Ablated |emergent|:  0.5713
+    Reduction: -115.7%
+    Significant: 23 -> 28
+
+SALIENCE
+----------------------------------------
+
+  full_recurrence:
+    Original |emergent|: 0.2519
+    Ablated |emergent|:  0.5479
+    Reduction: -117.4%
+    Significant: 13 -> 24
+
+  ie_only:
+    Original |emergent|: 0.2518
+    Ablated |emergent|:  0.0422
+    Reduction: 83.2%
+    Significant: 13 -> 0
+
+IDENTITY
+----------------------------------------
+
+  full_recurrence:
+    Original |emergent|: 0.3123
+    Ablated |emergent|:  0.4696
+    Reduction: -50.4%
+    Significant: 10 -> 11
+
+  ie_only:
+    Original |emergent|: 0.3129
+    Ablated |emergent|:  0.1541
+    Reduction: 50.8%
+    Significant: 10 -> 0
+
+============================================================
+
+SUMMARY BY ABLATION TYPE:
+  ie_only: mean reduction = 20.3%
+  full_recurrence: mean reduction = -18.0%
+
+======================================================================
+ALL EXPERIMENTS COMPLETE
+======================================================================
+Total time: 3:05:54
+
+Results:
+  E0_seed0: val_corr=0.1954, epochs=2000
+  E1_seed0: val_corr=0.2208, epochs=569
+  E2_seed0: val_corr=0.2163, epochs=485
+
+All results saved to: results\fit_quality_improvement
+Run 'python scripts/analyze_input_restructuring.py' for full analysis.

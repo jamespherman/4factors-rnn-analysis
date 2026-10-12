@@ -1,0 +1,106 @@
+{
+  "reward": {
+    "full_recurrence": {
+      "ablation_type": "full_recurrence",
+      "factor_name": "reward",
+      "original_mean_abs_emergent": 0.22135014039252174,
+      "original_n_significant": 25,
+      "original_p_value": 1.4171392344798504e-17,
+      "ablated_mean_abs_emergent": 0.12602508046530012,
+      "ablated_n_significant": 4,
+      "ablated_p_value": 0.8530216213892438,
+      "reduction_fraction": 0.43065280987932075,
+      "delta_n_significant": -21
+    },
+    "ie_only": {
+      "ablation_type": "ie_only",
+      "factor_name": "reward",
+      "original_mean_abs_emergent": 0.22130167871791742,
+      "original_n_significant": 25,
+      "original_p_value": 1.754283977783027e-17,
+      "ablated_mean_abs_emergent": 0.3428217621185526,
+      "ablated_n_significant": 28,
+      "ablated_p_value": 8.664310165991189e-172,
+      "reduction_fraction": -0.5491150546378409,
+      "delta_n_significant": 3
+    }
+  },
+  "probability": {
+    "full_recurrence": {
+      "ablation_type": "full_recurrence",
+      "factor_name": "probability",
+      "original_mean_abs_emergent": 0.14754467926506346,
+      "original_n_significant": 2,
+      "original_p_value": 5.688432472505601e-09,
+      "ablated_mean_abs_emergent": 0.20402014655650325,
+      "ablated_n_significant": 10,
+      "ablated_p_value": 0.17177053914989202,
+      "reduction_fraction": -0.3827685794753861,
+      "delta_n_significant": 8
+    },
+    "ie_only": {
+      "ablation_type": "ie_only",
+      "factor_name": "probability",
+      "original_mean_abs_emergent": 0.14735589380076797,
+      "original_n_significant": 2,
+      "original_p_value": 5.315250432545187e-09,
+      "ablated_mean_abs_emergent": 0.3586727119054189,
+      "ablated_n_significant": 28,
+      "ablated_p_value": 4.85616708346701e-173,
+      "reduction_fraction": -1.4340574554171623,
+      "delta_n_significant": 26
+    }
+  },
+  "salience": {
+    "full_recurrence": {
+      "ablation_type": "full_recurrence",
+      "factor_name": "salience",
+      "original_mean_abs_emergent": 0.07564981215243731,
+      "original_n_significant": 3,
+      "original_p_value": 0.06435286795482202,
+      "ablated_mean_abs_emergent": 0.46725397953164605,
+      "ablated_n_significant": 18,
+      "ablated_p_value": 0.5318497994770989,
+      "reduction_fraction": -5.176538529799799,
+      "delta_n_significant": 15
+    },
+    "ie_only": {
+      "ablation_type": "ie_only",
+      "factor_name": "salience",
+      "original_mean_abs_emergent": 0.07589576031765556,
+      "original_n_significant": 3,
+      "original_p_value": 0.06156651300217362,
+      "ablated_mean_abs_emergent": 0.0007432472632901717,
+      "ablated_n_significant": 0,
+      "ablated_p_value": 6.409636787809682e-79,
+      "reduction_fraction": 0.990206998912991,
+      "delta_n_significant": -3
+    }
+  },
+  "identity": {
+    "full_recurrence": {
+      "ablation_type": "full_recurrence",
+      "factor_name": "identity",
+      "original_mean_abs_emergent": 0.10519087226490531,
+      "original_n_significant": 3,
+      "original_p_value": 0.06830229178067067,
+      "ablated_mean_abs_emergent": 0.42695357763536096,
+      "ablated_n_significant": 16,
+      "ablated_p_value": 0.9227091703803528,
+      "reduction_fraction": -3.058846251984212,
+      "delta_n_significant": 13
+    },
+    "ie_only": {
+      "ablation_type": "ie_only",
+      "factor_name": "identity",
+      "original_mean_abs_emergent": 0.10518278898279333,
+      "original_n_significant": 3,
+      "original_p_value": 0.06712438571567178,
+      "ablated_mean_abs_emergent": 0.11764337254441053,
+      "ablated_n_significant": 0,
+      "ablated_p_value": 9.516579440300363e-101,
+      "reduction_fraction": -0.11846599317361317,
+      "delta_n_significant": -3
+    }
+  }
+}

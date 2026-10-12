@@ -1,0 +1,7 @@
+{
+  "experiment": "E1_seed0",
+  "best_val_correlation": 0.22079688626660848,
+  "best_epoch": 269,
+  "epochs_trained": 569,
+  "training_time_seconds": 2333.473244190216
+}
