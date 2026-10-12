@@ -19,6 +19,21 @@ Trial sets:
     val: held-out validation trials only (default)
     all: all trials
 
+Noise:
+    train: run each model with the recurrent noise it was trained with (default).
+           ROC selectivity depends on trial-to-trial variability, and the models
+           were fit to single-trial variability (L_trial) with this noise on.
+           Selectivity is computed per noise draw and averaged over draws.
+    off:   deterministic forward pass. Trials of the same condition then give
+           nearly identical rates, so ROC selectivity saturates toward +/-1.
+
+Observation:
+    poisson: recorded rates are raw spike counts per 25 ms bin x 40, so RNN rates
+             are passed through the same observation step (Poisson spike counts per
+             bin) before computing ROC selectivity (default). Even with training
+             noise, RNN within-condition variability is only ~10-15% of recorded.
+    rate:    use RNN rates directly.
+
 The location panel compares preferred vs opposite location, with the preferred
 location estimated on trials disjoint from the evaluated ones (training trials
 for 'val', even trials for 'all') to avoid circularity.
@@ -84,12 +99,15 @@ COLORS = {
 }
 
 
-def load_model(model_dir: Path, n_inputs: int, device: str = 'cpu'):
+def load_model(model_dir: Path, n_inputs: int, noise: str = 'train', device: str = 'cpu'):
     """
     Load a trained model and the recorded-neuron-to-unit mapping it was fit with.
 
+    Args:
+        noise: 'train' keeps the config's noise_scale, 'off' disables noise
+
     Returns:
-        model: EIRNN in eval mode with noise disabled
+        model: EIRNN in eval mode
         config: Model config dict
         recorded_units: [n_recorded] model unit fit to each recorded neuron, or None
             if the config doesn't record it (legacy models: unit j for neuron j)
@@ -107,7 +125,7 @@ def load_model(model_dir: Path, n_inputs: int, device: str = 'cpu'):
         n_inputs=n_inputs,
         dt=config.get('dt', 25.0),
         tau=config.get('tau', 50.0),
-        noise_scale=0.0,  # Disable noise for inference
+        noise_scale=config.get('noise_scale', 0.1) if noise == 'train' else 0.0,
         input_embed_dim=config.get('input_embed_dim', 56),
         input_embed_type=config.get('input_embed_type', 'attention'),
         attention_heads=config.get('attention_heads', 4),
@@ -123,16 +141,25 @@ def load_model(model_dir: Path, n_inputs: int, device: str = 'cpu'):
     return model, config, (np.array(recorded_units) if recorded_units is not None else None)
 
 
-def get_rnn_rates(model: EIRNN, dataset: RNNDataset, device: str = 'cpu') -> np.ndarray:
+def get_rnn_rates(model: EIRNN, dataset: RNNDataset, seed: int, device: str = 'cpu') -> np.ndarray:
     """Run forward pass and get RNN firing rates [n_trials, n_bins, n_units]."""
     inputs = dataset.get_all_trials()['inputs'].to(device)
+    torch.manual_seed(seed)
     with torch.no_grad():
         rates, _ = model(inputs)
     return rates.cpu().numpy()
 
 
-def process_session(session_id: str, model_dir: Path, trial_set: str, device: str = 'cpu') -> dict:
-    """Compute recorded and RNN selectivity for one session."""
+def sample_spike_rates(rates: np.ndarray, seed: int, bin_size_ms: float = 25.0) -> np.ndarray:
+    """Poisson spike counts per bin from rates (sp/s), returned as rates like the export."""
+    rng = np.random.default_rng(seed)
+    bin_s = bin_size_ms / 1000.0
+    return rng.poisson(np.clip(rates, 0, None) * bin_s) / bin_s
+
+
+def process_session(session_id: str, model_dir: Path, trial_set: str, noise: str = 'train',
+                    observation: str = 'poisson', n_draws: int = 10, device: str = 'cpu') -> dict:
+    """Compute recorded and RNN selectivity for one session (RNN averaged over noise draws)."""
     print(f"\nProcessing session {session_id} ({model_dir.relative_to(BASE_DIR)})...")
 
     data = load_mat_file(str(DATA_DIR / f'rnn_export_Newton_{session_id}_2025_SC.mat'))
@@ -141,7 +168,7 @@ def process_session(session_id: str, model_dir: Path, trial_set: str, device: st
     n_trials = data['firing_rates'].shape[2]
 
     dataset = RNNDataset(data)
-    model, config, recorded_units = load_model(model_dir, dataset.get_input_dim(), device)
+    model, config, recorded_units = load_model(model_dir, dataset.get_input_dim(), noise, device)
     if recorded_units is None:
         recorded_units = np.arange(len(neuron_type))
     assert len(recorded_units) == len(neuron_type), "Mapping doesn't cover all recorded neurons"
@@ -169,7 +196,14 @@ def process_session(session_id: str, model_dir: Path, trial_set: str, device: st
     # Visual-epoch rates
     onset_bins = get_target_onset_bins(data)
     recorded_rates = compute_window_rates(np.transpose(data['firing_rates'], (2, 1, 0)), onset_bins)
-    rnn_rates = compute_window_rates(get_rnn_rates(model, dataset, device)[:, :, recorded_units], onset_bins)
+    if noise == 'off' and observation == 'rate':
+        n_draws = 1
+    rnn_draws = []
+    for draw in range(n_draws):
+        rates = get_rnn_rates(model, dataset, draw, device)[:, :, recorded_units]
+        if observation == 'poisson':
+            rates = sample_spike_rates(rates, seed=draw)
+        rnn_draws.append(compute_window_rates(rates, onset_bins))
     print(f"  Trials with valid visual epoch: {(onset_bins >= 0).sum()}/{n_trials}; "
           f"evaluated on {trial_set} ({(eval_mask & (onset_bins >= 0)).sum()} usable)")
 
@@ -178,14 +212,19 @@ def process_session(session_id: str, model_dir: Path, trial_set: str, device: st
     preferred = compute_preferred_locations(recorded_rates, trial_location)
     loc_preferred = compute_preferred_locations(recorded_rates, trial_location, loc_pref_mask)
 
-    result = {'session': session_id, 'neuron_type': neuron_type, 'unit_is_e': unit_is_e}
-    for name, rates in [('recorded', recorded_rates), ('rnn', rnn_rates)]:
+    loc_mask = eval_mask_odd if trial_set == 'all' else eval_mask
+
+    def selectivity(rates: np.ndarray) -> dict:
         factors = compute_factor_selectivity(rates, data, preferred, eval_mask)
         sel = {f: factors[f]['selectivity'] for f in factors}
-        loc_mask = eval_mask_odd if trial_set == 'all' else eval_mask
         sel['location'] = compute_location_selectivity(
             rates, trial_location, loc_preferred['for_factors'], loc_mask)
-        result[name] = sel
+        return sel
+
+    rnn_sels = [selectivity(rates) for rates in rnn_draws]
+    result = {'session': session_id, 'neuron_type': neuron_type, 'unit_is_e': unit_is_e,
+              'recorded': selectivity(recorded_rates),
+              'rnn': {p: np.mean([s[p] for s in rnn_sels], axis=0) for p in PANELS}}
     return result
 
 
@@ -256,11 +295,18 @@ def main():
     parser.add_argument('--models', default='cond_target', choices=['legacy', 'cond', 'cond_target'])
     parser.add_argument('--seed', type=int, default=42, help='Seed of retrained models')
     parser.add_argument('--trials', default='val', choices=['val', 'all'])
+    parser.add_argument('--noise', default='train', choices=['train', 'off'],
+                        help="RNN recurrent noise: as in training (default) or off")
+    parser.add_argument('--observation', default='poisson', choices=['poisson', 'rate'],
+                        help='Pass RNN rates through Poisson spike sampling (default) or use rates')
+    parser.add_argument('--n-draws', type=int, default=10, help='Noise draws to average over')
     args = parser.parse_args()
 
     device = 'cpu'
     model_dirs = get_model_dirs(args.models, args.seed)
-    all_data = [process_session(s, model_dirs[s], args.trials, device) for s in SESSIONS]
+    all_data = [process_session(s, model_dirs[s], args.trials, args.noise, args.observation,
+                                args.n_draws, device)
+                for s in SESSIONS]
     stats = summarize(all_data)
 
     print("\nRecorded vs RNN selectivity (Pearson r, all neurons):")
@@ -269,12 +315,19 @@ def main():
               f"mean|rec|={s['mean_abs_recorded']:.3f}  mean|rnn|={s['mean_abs_rnn']:.3f}")
 
     label = args.models if args.models == 'legacy' else f'{args.models} (seed {args.seed})'
-    title = f"Models: {label}  |  trials: {'held-out validation' if args.trials == 'val' else 'all'}"
+    title = (f"Models: {label}  |  trials: {'held-out validation' if args.trials == 'val' else 'all'}"
+             f"  |  RNN noise: {'as trained' if args.noise == 'train' else 'off'}"
+             f"{', Poisson spikes' if args.observation == 'poisson' else ''}"
+             f" (mean of {args.n_draws} draws)")
     fig = create_figure(all_data, stats, title)
 
     stem = f'figure_recorded_vs_rnn_{args.models}_{args.trials}'
     if args.models != 'legacy':
         stem += f'_seed{args.seed}'
+    if args.noise == 'off':
+        stem += '_nonoise'
+    if args.observation == 'rate':
+        stem += '_rate'
     (OUTPUT_DIR / 'panel_data').mkdir(parents=True, exist_ok=True)
     fig.savefig(OUTPUT_DIR / f'{stem}.png', dpi=300, bbox_inches='tight', facecolor='white')
     fig.savefig(OUTPUT_DIR / f'{stem}.pdf', bbox_inches='tight', facecolor='white')
