@@ -254,6 +254,12 @@ class EIRNN(nn.Module):
         learnable_h0: bool = False,
         h0_init: float = 0.1,
         arch_version: str = 'jan2026',
+        n_context: int = 0,
+        context_mode: str = 'shared',
+        context_targets: str = 'all',
+        n_drift: int = 0,
+        ie_mode: str = 'free',
+        unit_locations: Optional[np.ndarray] = None,
         device: str = 'cpu'
     ):
         """
@@ -301,6 +307,23 @@ class EIRNN(nn.Module):
                 'feb2026' (Jan 29 - Feb 1 rebuild: rates are raw softplus outputs and
                 the embedding differs; see InputEmbedding). Only needed to load or
                 reproduce models from those experiments.
+            n_context: Number of task-context channels (block state), appended to the
+                inputs after the n_inputs task channels. They bypass the input
+                embedding and enter the recurrent units through W_ctx.
+            context_mode: 'shared' (one weight per context channel per population, E
+                and I: any unit-specific context effect must come from the recurrent
+                circuit) or 'free' (one weight per unit and channel)
+            context_targets: Units receiving context input: 'all', 'e' or 'i'
+            n_drift: Number of slow time-in-session channels, appended after the
+                context channels, with free per-unit weights (absorb recording drift)
+            ie_mode: I->E weight constraint:
+                'free':    unconstrained (Dale's law only)
+                'spatial': W[e, i] = -b_e * a_i * k[d(loc_e, loc_i)], d = 0, 1, 2 for
+                           same, adjacent, opposite location (factor-agnostic but
+                           spatially structured; needs unit_locations)
+                'global':  W[e, i] = -a_i (each I unit inhibits all E units equally)
+                'frozen':  fixed to the buffer W_EI_fixed (set with set_frozen_ie)
+            unit_locations: [n_total] location (1-4) per unit, for ie_mode='spatial'
             device: 'cpu' or 'cuda'
         """
         super().__init__()
@@ -319,6 +342,14 @@ class EIRNN(nn.Module):
         self.learnable_tau = learnable_tau
         self.learnable_alpha = learnable_alpha
         self.low_rank = low_rank
+        assert context_mode in ('shared', 'free'), f"Unknown context_mode: {context_mode}"
+        assert context_targets in ('all', 'e', 'i'), f"Unknown context_targets: {context_targets}"
+        assert ie_mode in ('free', 'spatial', 'global', 'frozen'), f"Unknown ie_mode: {ie_mode}"
+        self.n_context = n_context
+        self.context_mode = context_mode
+        self.context_targets = context_targets
+        self.n_drift = n_drift
+        self.ie_mode = ie_mode
 
         # === Input embedding (Cover's theorem) ===
         # Enable embedding for any non-default type or explicit embed_dim
@@ -429,6 +460,40 @@ class EIRNN(nn.Module):
 
         # Initialize weights
         self._initialize_weights()
+
+        # === Task context and drift inputs (bypass the embedding) ===
+        if n_context > 0:
+            target_mask = torch.zeros(self.n_total, 1)
+            if context_targets in ('all', 'e'):
+                target_mask[:n_exc] = 1
+            if context_targets in ('all', 'i'):
+                target_mask[n_exc:] = 1
+            self.register_buffer('ctx_target_mask', target_mask)
+            if context_mode == 'shared':
+                self.W_ctx_e = nn.Parameter(torch.zeros(n_context))
+                self.W_ctx_i = nn.Parameter(torch.zeros(n_context))
+            else:
+                self.W_ctx_free = nn.Parameter(torch.zeros(self.n_total, n_context))
+        if n_drift > 0:
+            self.W_drift = nn.Parameter(torch.zeros(self.n_total, n_drift))
+
+        # === I->E constraint ===
+        if ie_mode != 'free':
+            assert low_rank is None and not bypass_dale, "ie_mode needs full-rank Dale weights"
+            init_mag = torch.abs(self.W_rec_raw.data[:n_exc, n_exc:]).mean(dim=0)  # [n_inh]
+            if ie_mode in ('spatial', 'global'):
+                self.ie_a = nn.Parameter(init_mag.clone())
+            if ie_mode == 'spatial':
+                assert unit_locations is not None and len(unit_locations) == self.n_total, \
+                    "ie_mode='spatial' needs unit_locations for every unit"
+                loc = torch.as_tensor(np.asarray(unit_locations), dtype=torch.long)
+                diff = torch.abs(loc[:n_exc, None] - loc[None, n_exc:]) % 4
+                dist = torch.minimum(diff, 4 - diff)  # 0 same, 1 adjacent, 2 opposite
+                self.register_buffer('ie_dist', dist)
+                self.ie_b = nn.Parameter(torch.ones(n_exc))
+                self.ie_k = nn.Parameter(torch.ones(3))
+            if ie_mode == 'frozen':
+                self.register_buffer('W_EI_fixed', -torch.abs(self.W_rec_raw.data[:n_exc, n_exc:]).clone())
 
         self.to(device)
 
@@ -594,7 +659,40 @@ class EIRNN(nn.Module):
         else:
             # Apply Dale's law: |W| * sign_mask * diag_mask
             W = torch.abs(self.W_rec_raw) * self.sign_mask * self.diag_mask
+        if getattr(self, 'ie_mode', 'free') != 'free':
+            W = torch.cat([torch.cat([W[:self.n_exc, :self.n_exc], self.W_EI], dim=1),
+                           W[self.n_exc:]], dim=0)
         return W
+
+    @property
+    def W_EI(self) -> torch.Tensor:
+        """I->E block [n_exc, n_inh] under the ie_mode constraint (non-positive)."""
+        if self.ie_mode == 'global':
+            return -torch.abs(self.ie_a).unsqueeze(0).expand(self.n_exc, -1)
+        if self.ie_mode == 'spatial':
+            return -(torch.abs(self.ie_b)[:, None] * torch.abs(self.ie_a)[None, :]
+                     * torch.abs(self.ie_k)[self.ie_dist])
+        if self.ie_mode == 'frozen':
+            return self.W_EI_fixed
+        W = torch.abs(self.W_rec_raw) * self.sign_mask * self.diag_mask
+        return W[:self.n_exc, self.n_exc:]
+
+    def set_frozen_ie(self, W_EI: torch.Tensor):
+        """Set the fixed I->E block for ie_mode='frozen' (sign is forced negative)."""
+        assert self.ie_mode == 'frozen' and W_EI.shape == (self.n_exc, self.n_inh)
+        self.W_EI_fixed.copy_(-torch.abs(W_EI))
+
+    @property
+    def W_ctx(self) -> Optional[torch.Tensor]:
+        """Context input weights [n_total, n_context], or None."""
+        if getattr(self, 'n_context', 0) == 0:
+            return None
+        if self.context_mode == 'shared':
+            W = torch.cat([self.W_ctx_e.unsqueeze(0).expand(self.n_exc, -1),
+                           self.W_ctx_i.unsqueeze(0).expand(self.n_inh, -1)], dim=0)
+        else:
+            W = self.W_ctx_free
+        return W * self.ctx_target_mask
 
     def get_alpha(self, device: torch.device) -> torch.Tensor:
         """
@@ -720,6 +818,22 @@ class EIRNN(nn.Module):
         batch_size, n_steps, _ = inputs.shape
         device = inputs.device
 
+        # Context and drift channels follow the task channels and bypass the embedding
+        n_extra = getattr(self, 'n_context', 0) + getattr(self, 'n_drift', 0)
+        if n_extra > 0:
+            assert inputs.shape[-1] == self.n_inputs + n_extra, \
+                f"Expected {self.n_inputs} task + {n_extra} context/drift channels, got {inputs.shape[-1]}"
+            extra = inputs[:, :, self.n_inputs:]
+            inputs = inputs[:, :, :self.n_inputs]
+            W_extra = []
+            if self.n_context > 0:
+                W_extra.append(self.W_ctx)
+            if self.n_drift > 0:
+                W_extra.append(self.W_drift)
+            extra_input = torch.matmul(extra, torch.cat(W_extra, dim=1).T)  # [batch, time, n_total]
+        else:
+            extra_input = None
+
         # Apply input embedding if configured (Cover's theorem expansion)
         if self.input_embed is not None:
             inputs = self.input_embed(inputs)
@@ -754,6 +868,8 @@ class EIRNN(nn.Module):
 
             # External input
             ext_input = torch.matmul(inputs[:, t, :], self.W_in.T)
+            if extra_input is not None:
+                ext_input = ext_input + extra_input[:, t]
 
             # Noise (scaled by sqrt(alpha) for proper discrete-time variance)
             # Use mean alpha for noise scaling when per-neuron alpha is used
