@@ -2,10 +2,11 @@
 # Resubmit runs from a job list that have no summary.json, if none of that list's
 # jobs are queued or running. Runs that wrote to train.log in the last 15 min are
 # treated as running. Runs resume from their checkpoints.
-# Usage (from the project dir on CRC): bash slurm/resubmit_unfinished.sh slurm/jobs_pilot.txt [PACK]
+# Usage (from the project dir on CRC): bash slurm/resubmit_unfinished.sh slurm/jobs_pilot.txt [PACK] [SCRIPT]
 set -euo pipefail
 JOBS=$1
 PACK=${2:-8}
+SCRIPT=${3:-scripts/train_context.py}
 NAME=4f-$(basename "$JOBS" .txt)
 
 if [ -n "$(squeue -M gpu -u "$USER" -h -n "$NAME" -o %i)" ]; then
@@ -32,5 +33,5 @@ if [ "$N" -eq 0 ]; then
     exit 0
 fi
 NTASKS=$(( (N + PACK - 1) / PACK ))
-sbatch --job-name="$NAME" --array=1-"$NTASKS" --export=ALL,JOBS="$TODO",PACK="$PACK" slurm/train_gpu_pack.slurm >/dev/null
+sbatch --job-name="$NAME" --array=1-"$NTASKS" --export=ALL,JOBS="$TODO",PACK="$PACK",SCRIPT="$SCRIPT" slurm/train_gpu_pack.slurm >/dev/null
 echo "resubmitted $N runs as $NTASKS tasks"

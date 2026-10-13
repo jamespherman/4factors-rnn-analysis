@@ -172,6 +172,8 @@ def main():
     parser.add_argument('--seed', type=int, default=CONFIG['seed'])
     parser.add_argument('--output-dir', default=None)
     parser.add_argument('--max-epochs', type=int, default=None)
+    parser.add_argument('--device', default=None, help='Default: cuda if available')
+    parser.add_argument('--threads', type=int, default=None)
     parser.add_argument('--test', action='store_true', help='5-epoch smoke test')
     args = parser.parse_args()
 
@@ -188,7 +190,9 @@ def main():
 
     torch.manual_seed(config['seed'])
     np.random.seed(config['seed'])
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    device = args.device or ('cuda' if torch.cuda.is_available() else 'cpu')
+    if args.threads:
+        torch.set_num_threads(args.threads)
 
     # Data
     data = load_mat_file(config['data_path'])

@@ -1,0 +1,14 @@
+--session 08_14 --context none --lctx-scale 0 --n-drift 0 --test-fraction 0 --select-fraction 0.2 --seed 1 --output-dir results/fit_replicate/oldequiv/08_14_seed1
+--session 08_14 --context none --lctx-scale 0 --n-drift 0 --test-fraction 0 --select-fraction 0.2 --seed 2 --output-dir results/fit_replicate/oldequiv/08_14_seed2
+--session 08_14 --context none --lctx-scale 0 --n-drift 0 --test-fraction 0 --select-fraction 0.2 --seed 3 --output-dir results/fit_replicate/oldequiv/08_14_seed3
+--session 08_14 --context none --lctx-scale 0 --n-drift 0 --test-fraction 0 --select-fraction 0.2 --seed 4 --output-dir results/fit_replicate/oldequiv/08_14_seed4
+--session 08_14 --context none --lctx-scale 0 --n-drift 0 --test-fraction 0 --select-fraction 0.2 --seed 5 --output-dir results/fit_replicate/oldequiv/08_14_seed5
+--session 08_14 --context none --lctx-scale 0 --seed 4 --output-dir results/fit_ablation/noctxloss/08_14_seed4
+--session 08_14 --context none --lctx-scale 0 --seed 5 --output-dir results/fit_ablation/noctxloss/08_14_seed5
+--session 08_15 --context none --lctx-scale 0 --n-drift 0 --test-fraction 0 --select-fraction 0.2 --seed 1 --output-dir results/fit_replicate/oldequiv/08_15_seed1
+--session 08_15 --context none --lctx-scale 0 --n-drift 0 --test-fraction 0 --select-fraction 0.2 --seed 2 --output-dir results/fit_replicate/oldequiv/08_15_seed2
+--session 08_15 --context none --lctx-scale 0 --n-drift 0 --test-fraction 0 --select-fraction 0.2 --seed 3 --output-dir results/fit_replicate/oldequiv/08_15_seed3
+--session 08_15 --context none --lctx-scale 0 --n-drift 0 --test-fraction 0 --select-fraction 0.2 --seed 4 --output-dir results/fit_replicate/oldequiv/08_15_seed4
+--session 08_15 --context none --lctx-scale 0 --n-drift 0 --test-fraction 0 --select-fraction 0.2 --seed 5 --output-dir results/fit_replicate/oldequiv/08_15_seed5
+--session 08_15 --context none --lctx-scale 0 --seed 4 --output-dir results/fit_ablation/noctxloss/08_15_seed4
+--session 08_15 --context none --lctx-scale 0 --seed 5 --output-dir results/fit_ablation/noctxloss/08_15_seed5

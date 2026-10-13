@@ -1,0 +1,10 @@
+--session 08_14 --variant cond_target --seed 1 --output-dir results/fit_replicate/oldscript/08_14_seed1
+--session 08_14 --variant cond_target --seed 2 --output-dir results/fit_replicate/oldscript/08_14_seed2
+--session 08_14 --variant cond_target --seed 3 --output-dir results/fit_replicate/oldscript/08_14_seed3
+--session 08_14 --variant cond_target --seed 4 --output-dir results/fit_replicate/oldscript/08_14_seed4
+--session 08_14 --variant cond_target --seed 5 --output-dir results/fit_replicate/oldscript/08_14_seed5
+--session 08_15 --variant cond_target --seed 1 --output-dir results/fit_replicate/oldscript/08_15_seed1
+--session 08_15 --variant cond_target --seed 2 --output-dir results/fit_replicate/oldscript/08_15_seed2
+--session 08_15 --variant cond_target --seed 3 --output-dir results/fit_replicate/oldscript/08_15_seed3
+--session 08_15 --variant cond_target --seed 4 --output-dir results/fit_replicate/oldscript/08_15_seed4
+--session 08_15 --variant cond_target --seed 5 --output-dir results/fit_replicate/oldscript/08_15_seed5

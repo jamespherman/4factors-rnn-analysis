@@ -12,7 +12,7 @@
 #SBATCH --requeue
 #SBATCH --output=slurm/logs/%x_%A_%a.out
 # Run PACK training runs concurrently on one GPU. Array task i runs lines
-# (i-1)*PACK+1 .. i*PACK of $JOBS (arguments for scripts/train_context.py).
+# (i-1)*PACK+1 .. i*PACK of $JOBS (arguments for $SCRIPT, default scripts/train_context.py).
 # preempt bills nothing to the allocation. Preempted jobs are cancelled (PreemptMode=CANCEL);
 # slurm/resubmit_unfinished.sh resubmits unfinished runs, and each
 # resumes from its checkpoint (finished runs are skipped). The RTX PRO 6000 (Blackwell,
@@ -22,6 +22,7 @@
 module purge
 module load python/pytorch_251_311_cu124
 PACK=${PACK:-8}
+SCRIPT=${SCRIPT:-scripts/train_context.py}
 FIRST=$(( (SLURM_ARRAY_TASK_ID - 1) * PACK + 1 ))
 LAST=$(( FIRST + PACK - 1 ))
 echo "Task ${SLURM_ARRAY_TASK_ID} on $(hostname), lines ${FIRST}-${LAST}, restart ${SLURM_RESTART_COUNT:-0}"
@@ -36,7 +37,7 @@ for ARGS in "${LINES[@]}"; do
         PREV="$A"
     done
     mkdir -p "$OUT"
-    python scripts/train_context.py ${ARGS} --device cuda --threads 1 < /dev/null >> "${OUT}/train.log" 2>&1 &
+    python "$SCRIPT" ${ARGS} --device cuda --threads 1 < /dev/null >> "${OUT}/train.log" 2>&1 &
 done
 wait
 echo "Task ${SLURM_ARRAY_TASK_ID} finished"
