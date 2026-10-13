@@ -3,6 +3,7 @@
 #SBATCH --clusters=gpu
 #SBATCH --partition=preempt
 #SBATCH --gres=gpu:1
+#SBATCH --constraint=a100|l40s|h200|a40
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
@@ -12,8 +13,10 @@
 #SBATCH --output=slurm/logs/%x_%A_%a.out
 # Run PACK training runs concurrently on one GPU. Array task i runs lines
 # (i-1)*PACK+1 .. i*PACK of $JOBS (arguments for scripts/train_context.py).
-# preempt bills nothing to the allocation; preempted jobs are requeued and each
-# run resumes from its checkpoint (finished runs are skipped).
+# preempt bills nothing to the allocation. Preempted jobs are cancelled (PreemptMode=CANCEL);
+# slurm/resubmit_unfinished.sh resubmits unfinished runs, and each
+# resumes from its checkpoint (finished runs are skipped). The RTX PRO 6000 (Blackwell,
+# feature rtx6k) nodes are excluded: the cluster PyTorch 2.5.1/cu124 has no kernels for them.
 # Usage: sbatch --array=1-N --export=ALL,JOBS=slurm/jobs_pilot.txt,PACK=8 slurm/train_gpu_pack.slurm
 
 module purge
