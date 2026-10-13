@@ -104,7 +104,7 @@ def compute_window_rates(
             continue
         start = onset_bins[t] + start_offset
         end = onset_bins[t] + end_offset
-        if end > n_bins:
+        if start < 0 or end > n_bins:
             continue
         window_rates[t] = np.nanmean(rates[t, start:end], axis=0)
 
