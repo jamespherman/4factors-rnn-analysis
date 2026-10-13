@@ -92,6 +92,8 @@ def get_context_channels(data: dict, mode: str, onset_bins: np.ndarray, n_bins: 
 
 def get_drift_channels(n_trials: int, n_bins: int, n_drift: int) -> np.ndarray:
     """Legendre polynomials 1..n_drift of normalized trial index, constant within a trial."""
+    if n_drift == 0:
+        return np.zeros((n_trials, n_bins, 0), dtype=np.float32)
     x = np.linspace(-1, 1, n_trials)
     basis = np.stack([np.polynomial.legendre.Legendre.basis(k)(x) for k in range(1, n_drift + 1)], axis=1)
     return np.repeat(basis[:, None, :], n_bins, axis=1).astype(np.float32)
@@ -143,6 +145,12 @@ def main():
     parser.add_argument('--data', default=None, help='Export file (default: the session export)')
     parser.add_argument('--output-dir', required=True)
     parser.add_argument('--max-epochs', type=int, default=None)
+    parser.add_argument('--patience', type=int, default=None)
+    parser.add_argument('--lctx-scale', type=float, default=None,
+                        help='Weight of the context-conditioned losses (0 = off, also for selection)')
+    parser.add_argument('--n-drift', type=int, default=None, help='Number of drift channels (0 = none)')
+    parser.add_argument('--test-fraction', type=float, default=None)
+    parser.add_argument('--select-fraction', type=float, default=None)
     parser.add_argument('--threads', type=int, default=4)
     parser.add_argument('--device', default='cpu')
     parser.add_argument('--test', action='store_true', help='5-epoch smoke test')
@@ -152,8 +160,9 @@ def main():
     config.update(session=args.session, context=args.context, context_targets=args.context_targets,
                   ie_mode=args.ie_mode, frozen_from=args.frozen_from, hidden_i=args.hidden_i,
                   seed=args.seed, data_path=args.data or SESSION_FILES[args.session])
-    if args.max_epochs:
-        config['max_epochs'] = args.max_epochs
+    for key in ('max_epochs', 'patience', 'lctx_scale', 'n_drift', 'test_fraction', 'select_fraction'):
+        if getattr(args, key) is not None:
+            config[key] = getattr(args, key)
     if args.test:
         config.update(max_epochs=5, patience=3, checkpoint_every=2)
     out_dir = Path(args.output_dir)
@@ -324,7 +333,7 @@ def main():
             vcomp = {k: v.item() for k, v in losses(rates_rec_v, se).items()}
             if val_ref is None:
                 val_ref = dict(vcomp)
-            select = sum(vcomp[k] / (val_ref[k] + 1e-8) for k in vcomp)
+            select = sum(vcomp[k] / (val_ref[k] + 1e-8) for k in vcomp if scales[k] > 0)
             grand = grand_psth_correlation(rates_rec_v[se['idx']].cpu().numpy(),
                                            targets[se['idx']].cpu().numpy())
         scheduler.step(select)
