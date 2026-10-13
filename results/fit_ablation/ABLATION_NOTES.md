@@ -26,7 +26,26 @@ Recorded split-half reliability of this effect is 0.98.
 - `bare80` is nearly the old configuration yet fits worse. The remaining differences are the
   split (stratified by location x context vs by reward; 10% vs 20% selection set) and
   selection on validation losses normalized by their epoch-1 values vs raw sums.
-  `results/fit_replicate` tests this directly: the old script with new seeds (`oldscript`),
-  and `train_context.py` with the old split sizes and no drift or context losses (`oldequiv`).
+  `results/fit_replicate` tests this directly (below).
 - Held-out Poisson LL (x1000 per neuron per bin) varies more between seeds (about 40)
   than between configs, so it does not separate these configs.
+
+## Replication (`results/fit_replicate`, seeds 1-5, sessions 08_14 / 08_15)
+
+| Config | Spatial r per run (08_14 s1-5 / 08_15 s1-5) | Mean [min, max] |
+|---|---|---|
+| oldscript (`train_session.py --variant cond_target`, unchanged) | +0.17 +0.13 +0.25 +0.47 +0.35 / +0.36 -0.12 +0.35 +0.42 +0.46 | +0.28 [-0.12, +0.47] |
+| oldequiv (`train_context.py`, 80/20 split, no drift, no context losses) | +0.28 +0.08 +0.14 +0.32 +0.33 / +0.24 -0.35 -0.19 +0.31 +0.09 | +0.13 [-0.35, +0.33] |
+| noctxloss (drift on, context losses off, 70/15/15), seeds 1-5 | +0.27 +0.26 +0.25 +0.45 +0.38 / +0.36 +0.25 +0.33 +0.29 +0.37 | +0.32 [+0.25, +0.45] |
+
+Conclusions:
+- The old models' +0.44 on these sessions was partly lucky seeds: the unchanged old script
+  gives +0.28 with new seeds, and one run fails.
+- `noctxloss` is at least as good as the old script and the only setup without failed runs.
+  The drift input is what stabilizes it: every setup without drift has failed seeds.
+  A plausible reason is that without drift inputs, slow rate drift has to be absorbed by
+  the recurrent dynamics and the input weights.
+- Adopted for the context grid (`results/context_grid`, `slurm/jobs_grid.txt`): drift on,
+  context-conditioned losses off (`--lctx-scale 0`), 5 seeds x 3 sessions, plus `none_global`
+  and `none_spatial` baselines. `none_free_lc25` and `shared_free_lc25` check whether a
+  weak context loss (0.25) still lets the context effects be fit without hurting the fit.

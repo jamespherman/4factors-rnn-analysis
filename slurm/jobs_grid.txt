@@ -1,0 +1,180 @@
+--session 08_13 --context none --ie-mode free --lctx-scale 0 --seed 1 --output-dir results/context_grid/none_free/08_13_seed1
+--session 08_13 --context none --ie-mode global --lctx-scale 0 --seed 1 --output-dir results/context_grid/none_global/08_13_seed1
+--session 08_13 --context none --ie-mode spatial --lctx-scale 0 --seed 1 --output-dir results/context_grid/none_spatial/08_13_seed1
+--session 08_13 --context shared --ie-mode free --lctx-scale 0 --seed 1 --output-dir results/context_grid/shared_free/08_13_seed1
+--session 08_13 --context shared --ie-mode global --lctx-scale 0 --seed 1 --output-dir results/context_grid/shared_global/08_13_seed1
+--session 08_13 --context shared --ie-mode spatial --lctx-scale 0 --seed 1 --output-dir results/context_grid/shared_spatial/08_13_seed1
+--session 08_13 --context shared --context-targets i --ie-mode free --lctx-scale 0 --seed 1 --output-dir results/context_grid/sharedI_free/08_13_seed1
+--session 08_13 --context shared --context-targets e --ie-mode free --lctx-scale 0 --seed 1 --output-dir results/context_grid/sharedE_free/08_13_seed1
+--session 08_13 --context free --ie-mode free --lctx-scale 0 --seed 1 --output-dir results/context_grid/free_free/08_13_seed1
+--session 08_13 --context trialvalue --ie-mode free --lctx-scale 0 --seed 1 --output-dir results/context_grid/trialvalue_free/08_13_seed1
+--session 08_13 --context none --ie-mode free --lctx-scale 0.25 --seed 1 --output-dir results/context_grid/none_free_lc25/08_13_seed1
+--session 08_13 --context shared --ie-mode free --lctx-scale 0.25 --seed 1 --output-dir results/context_grid/shared_free_lc25/08_13_seed1
+--session 08_14 --context none --ie-mode free --lctx-scale 0 --seed 1 --output-dir results/context_grid/none_free/08_14_seed1
+--session 08_14 --context none --ie-mode global --lctx-scale 0 --seed 1 --output-dir results/context_grid/none_global/08_14_seed1
+--session 08_14 --context none --ie-mode spatial --lctx-scale 0 --seed 1 --output-dir results/context_grid/none_spatial/08_14_seed1
+--session 08_14 --context shared --ie-mode free --lctx-scale 0 --seed 1 --output-dir results/context_grid/shared_free/08_14_seed1
+--session 08_14 --context shared --ie-mode global --lctx-scale 0 --seed 1 --output-dir results/context_grid/shared_global/08_14_seed1
+--session 08_14 --context shared --ie-mode spatial --lctx-scale 0 --seed 1 --output-dir results/context_grid/shared_spatial/08_14_seed1
+--session 08_14 --context shared --context-targets i --ie-mode free --lctx-scale 0 --seed 1 --output-dir results/context_grid/sharedI_free/08_14_seed1
+--session 08_14 --context shared --context-targets e --ie-mode free --lctx-scale 0 --seed 1 --output-dir results/context_grid/sharedE_free/08_14_seed1
+--session 08_14 --context free --ie-mode free --lctx-scale 0 --seed 1 --output-dir results/context_grid/free_free/08_14_seed1
+--session 08_14 --context trialvalue --ie-mode free --lctx-scale 0 --seed 1 --output-dir results/context_grid/trialvalue_free/08_14_seed1
+--session 08_14 --context none --ie-mode free --lctx-scale 0.25 --seed 1 --output-dir results/context_grid/none_free_lc25/08_14_seed1
+--session 08_14 --context shared --ie-mode free --lctx-scale 0.25 --seed 1 --output-dir results/context_grid/shared_free_lc25/08_14_seed1
+--session 08_15 --context none --ie-mode free --lctx-scale 0 --seed 1 --output-dir results/context_grid/none_free/08_15_seed1
+--session 08_15 --context none --ie-mode global --lctx-scale 0 --seed 1 --output-dir results/context_grid/none_global/08_15_seed1
+--session 08_15 --context none --ie-mode spatial --lctx-scale 0 --seed 1 --output-dir results/context_grid/none_spatial/08_15_seed1
+--session 08_15 --context shared --ie-mode free --lctx-scale 0 --seed 1 --output-dir results/context_grid/shared_free/08_15_seed1
+--session 08_15 --context shared --ie-mode global --lctx-scale 0 --seed 1 --output-dir results/context_grid/shared_global/08_15_seed1
+--session 08_15 --context shared --ie-mode spatial --lctx-scale 0 --seed 1 --output-dir results/context_grid/shared_spatial/08_15_seed1
+--session 08_15 --context shared --context-targets i --ie-mode free --lctx-scale 0 --seed 1 --output-dir results/context_grid/sharedI_free/08_15_seed1
+--session 08_15 --context shared --context-targets e --ie-mode free --lctx-scale 0 --seed 1 --output-dir results/context_grid/sharedE_free/08_15_seed1
+--session 08_15 --context free --ie-mode free --lctx-scale 0 --seed 1 --output-dir results/context_grid/free_free/08_15_seed1
+--session 08_15 --context trialvalue --ie-mode free --lctx-scale 0 --seed 1 --output-dir results/context_grid/trialvalue_free/08_15_seed1
+--session 08_15 --context none --ie-mode free --lctx-scale 0.25 --seed 1 --output-dir results/context_grid/none_free_lc25/08_15_seed1
+--session 08_15 --context shared --ie-mode free --lctx-scale 0.25 --seed 1 --output-dir results/context_grid/shared_free_lc25/08_15_seed1
+--session 08_13 --context none --ie-mode free --lctx-scale 0 --seed 2 --output-dir results/context_grid/none_free/08_13_seed2
+--session 08_13 --context none --ie-mode global --lctx-scale 0 --seed 2 --output-dir results/context_grid/none_global/08_13_seed2
+--session 08_13 --context none --ie-mode spatial --lctx-scale 0 --seed 2 --output-dir results/context_grid/none_spatial/08_13_seed2
+--session 08_13 --context shared --ie-mode free --lctx-scale 0 --seed 2 --output-dir results/context_grid/shared_free/08_13_seed2
+--session 08_13 --context shared --ie-mode global --lctx-scale 0 --seed 2 --output-dir results/context_grid/shared_global/08_13_seed2
+--session 08_13 --context shared --ie-mode spatial --lctx-scale 0 --seed 2 --output-dir results/context_grid/shared_spatial/08_13_seed2
+--session 08_13 --context shared --context-targets i --ie-mode free --lctx-scale 0 --seed 2 --output-dir results/context_grid/sharedI_free/08_13_seed2
+--session 08_13 --context shared --context-targets e --ie-mode free --lctx-scale 0 --seed 2 --output-dir results/context_grid/sharedE_free/08_13_seed2
+--session 08_13 --context free --ie-mode free --lctx-scale 0 --seed 2 --output-dir results/context_grid/free_free/08_13_seed2
+--session 08_13 --context trialvalue --ie-mode free --lctx-scale 0 --seed 2 --output-dir results/context_grid/trialvalue_free/08_13_seed2
+--session 08_13 --context none --ie-mode free --lctx-scale 0.25 --seed 2 --output-dir results/context_grid/none_free_lc25/08_13_seed2
+--session 08_13 --context shared --ie-mode free --lctx-scale 0.25 --seed 2 --output-dir results/context_grid/shared_free_lc25/08_13_seed2
+--session 08_14 --context none --ie-mode free --lctx-scale 0 --seed 2 --output-dir results/context_grid/none_free/08_14_seed2
+--session 08_14 --context none --ie-mode global --lctx-scale 0 --seed 2 --output-dir results/context_grid/none_global/08_14_seed2
+--session 08_14 --context none --ie-mode spatial --lctx-scale 0 --seed 2 --output-dir results/context_grid/none_spatial/08_14_seed2
+--session 08_14 --context shared --ie-mode free --lctx-scale 0 --seed 2 --output-dir results/context_grid/shared_free/08_14_seed2
+--session 08_14 --context shared --ie-mode global --lctx-scale 0 --seed 2 --output-dir results/context_grid/shared_global/08_14_seed2
+--session 08_14 --context shared --ie-mode spatial --lctx-scale 0 --seed 2 --output-dir results/context_grid/shared_spatial/08_14_seed2
+--session 08_14 --context shared --context-targets i --ie-mode free --lctx-scale 0 --seed 2 --output-dir results/context_grid/sharedI_free/08_14_seed2
+--session 08_14 --context shared --context-targets e --ie-mode free --lctx-scale 0 --seed 2 --output-dir results/context_grid/sharedE_free/08_14_seed2
+--session 08_14 --context free --ie-mode free --lctx-scale 0 --seed 2 --output-dir results/context_grid/free_free/08_14_seed2
+--session 08_14 --context trialvalue --ie-mode free --lctx-scale 0 --seed 2 --output-dir results/context_grid/trialvalue_free/08_14_seed2
+--session 08_14 --context none --ie-mode free --lctx-scale 0.25 --seed 2 --output-dir results/context_grid/none_free_lc25/08_14_seed2
+--session 08_14 --context shared --ie-mode free --lctx-scale 0.25 --seed 2 --output-dir results/context_grid/shared_free_lc25/08_14_seed2
+--session 08_15 --context none --ie-mode free --lctx-scale 0 --seed 2 --output-dir results/context_grid/none_free/08_15_seed2
+--session 08_15 --context none --ie-mode global --lctx-scale 0 --seed 2 --output-dir results/context_grid/none_global/08_15_seed2
+--session 08_15 --context none --ie-mode spatial --lctx-scale 0 --seed 2 --output-dir results/context_grid/none_spatial/08_15_seed2
+--session 08_15 --context shared --ie-mode free --lctx-scale 0 --seed 2 --output-dir results/context_grid/shared_free/08_15_seed2
+--session 08_15 --context shared --ie-mode global --lctx-scale 0 --seed 2 --output-dir results/context_grid/shared_global/08_15_seed2
+--session 08_15 --context shared --ie-mode spatial --lctx-scale 0 --seed 2 --output-dir results/context_grid/shared_spatial/08_15_seed2
+--session 08_15 --context shared --context-targets i --ie-mode free --lctx-scale 0 --seed 2 --output-dir results/context_grid/sharedI_free/08_15_seed2
+--session 08_15 --context shared --context-targets e --ie-mode free --lctx-scale 0 --seed 2 --output-dir results/context_grid/sharedE_free/08_15_seed2
+--session 08_15 --context free --ie-mode free --lctx-scale 0 --seed 2 --output-dir results/context_grid/free_free/08_15_seed2
+--session 08_15 --context trialvalue --ie-mode free --lctx-scale 0 --seed 2 --output-dir results/context_grid/trialvalue_free/08_15_seed2
+--session 08_15 --context none --ie-mode free --lctx-scale 0.25 --seed 2 --output-dir results/context_grid/none_free_lc25/08_15_seed2
+--session 08_15 --context shared --ie-mode free --lctx-scale 0.25 --seed 2 --output-dir results/context_grid/shared_free_lc25/08_15_seed2
+--session 08_13 --context none --ie-mode free --lctx-scale 0 --seed 3 --output-dir results/context_grid/none_free/08_13_seed3
+--session 08_13 --context none --ie-mode global --lctx-scale 0 --seed 3 --output-dir results/context_grid/none_global/08_13_seed3
+--session 08_13 --context none --ie-mode spatial --lctx-scale 0 --seed 3 --output-dir results/context_grid/none_spatial/08_13_seed3
+--session 08_13 --context shared --ie-mode free --lctx-scale 0 --seed 3 --output-dir results/context_grid/shared_free/08_13_seed3
+--session 08_13 --context shared --ie-mode global --lctx-scale 0 --seed 3 --output-dir results/context_grid/shared_global/08_13_seed3
+--session 08_13 --context shared --ie-mode spatial --lctx-scale 0 --seed 3 --output-dir results/context_grid/shared_spatial/08_13_seed3
+--session 08_13 --context shared --context-targets i --ie-mode free --lctx-scale 0 --seed 3 --output-dir results/context_grid/sharedI_free/08_13_seed3
+--session 08_13 --context shared --context-targets e --ie-mode free --lctx-scale 0 --seed 3 --output-dir results/context_grid/sharedE_free/08_13_seed3
+--session 08_13 --context free --ie-mode free --lctx-scale 0 --seed 3 --output-dir results/context_grid/free_free/08_13_seed3
+--session 08_13 --context trialvalue --ie-mode free --lctx-scale 0 --seed 3 --output-dir results/context_grid/trialvalue_free/08_13_seed3
+--session 08_13 --context none --ie-mode free --lctx-scale 0.25 --seed 3 --output-dir results/context_grid/none_free_lc25/08_13_seed3
+--session 08_13 --context shared --ie-mode free --lctx-scale 0.25 --seed 3 --output-dir results/context_grid/shared_free_lc25/08_13_seed3
+--session 08_14 --context none --ie-mode free --lctx-scale 0 --seed 3 --output-dir results/context_grid/none_free/08_14_seed3
+--session 08_14 --context none --ie-mode global --lctx-scale 0 --seed 3 --output-dir results/context_grid/none_global/08_14_seed3
+--session 08_14 --context none --ie-mode spatial --lctx-scale 0 --seed 3 --output-dir results/context_grid/none_spatial/08_14_seed3
+--session 08_14 --context shared --ie-mode free --lctx-scale 0 --seed 3 --output-dir results/context_grid/shared_free/08_14_seed3
+--session 08_14 --context shared --ie-mode global --lctx-scale 0 --seed 3 --output-dir results/context_grid/shared_global/08_14_seed3
+--session 08_14 --context shared --ie-mode spatial --lctx-scale 0 --seed 3 --output-dir results/context_grid/shared_spatial/08_14_seed3
+--session 08_14 --context shared --context-targets i --ie-mode free --lctx-scale 0 --seed 3 --output-dir results/context_grid/sharedI_free/08_14_seed3
+--session 08_14 --context shared --context-targets e --ie-mode free --lctx-scale 0 --seed 3 --output-dir results/context_grid/sharedE_free/08_14_seed3
+--session 08_14 --context free --ie-mode free --lctx-scale 0 --seed 3 --output-dir results/context_grid/free_free/08_14_seed3
+--session 08_14 --context trialvalue --ie-mode free --lctx-scale 0 --seed 3 --output-dir results/context_grid/trialvalue_free/08_14_seed3
+--session 08_14 --context none --ie-mode free --lctx-scale 0.25 --seed 3 --output-dir results/context_grid/none_free_lc25/08_14_seed3
+--session 08_14 --context shared --ie-mode free --lctx-scale 0.25 --seed 3 --output-dir results/context_grid/shared_free_lc25/08_14_seed3
+--session 08_15 --context none --ie-mode free --lctx-scale 0 --seed 3 --output-dir results/context_grid/none_free/08_15_seed3
+--session 08_15 --context none --ie-mode global --lctx-scale 0 --seed 3 --output-dir results/context_grid/none_global/08_15_seed3
+--session 08_15 --context none --ie-mode spatial --lctx-scale 0 --seed 3 --output-dir results/context_grid/none_spatial/08_15_seed3
+--session 08_15 --context shared --ie-mode free --lctx-scale 0 --seed 3 --output-dir results/context_grid/shared_free/08_15_seed3
+--session 08_15 --context shared --ie-mode global --lctx-scale 0 --seed 3 --output-dir results/context_grid/shared_global/08_15_seed3
+--session 08_15 --context shared --ie-mode spatial --lctx-scale 0 --seed 3 --output-dir results/context_grid/shared_spatial/08_15_seed3
+--session 08_15 --context shared --context-targets i --ie-mode free --lctx-scale 0 --seed 3 --output-dir results/context_grid/sharedI_free/08_15_seed3
+--session 08_15 --context shared --context-targets e --ie-mode free --lctx-scale 0 --seed 3 --output-dir results/context_grid/sharedE_free/08_15_seed3
+--session 08_15 --context free --ie-mode free --lctx-scale 0 --seed 3 --output-dir results/context_grid/free_free/08_15_seed3
+--session 08_15 --context trialvalue --ie-mode free --lctx-scale 0 --seed 3 --output-dir results/context_grid/trialvalue_free/08_15_seed3
+--session 08_15 --context none --ie-mode free --lctx-scale 0.25 --seed 3 --output-dir results/context_grid/none_free_lc25/08_15_seed3
+--session 08_15 --context shared --ie-mode free --lctx-scale 0.25 --seed 3 --output-dir results/context_grid/shared_free_lc25/08_15_seed3
+--session 08_13 --context none --ie-mode free --lctx-scale 0 --seed 4 --output-dir results/context_grid/none_free/08_13_seed4
+--session 08_13 --context none --ie-mode global --lctx-scale 0 --seed 4 --output-dir results/context_grid/none_global/08_13_seed4
+--session 08_13 --context none --ie-mode spatial --lctx-scale 0 --seed 4 --output-dir results/context_grid/none_spatial/08_13_seed4
+--session 08_13 --context shared --ie-mode free --lctx-scale 0 --seed 4 --output-dir results/context_grid/shared_free/08_13_seed4
+--session 08_13 --context shared --ie-mode global --lctx-scale 0 --seed 4 --output-dir results/context_grid/shared_global/08_13_seed4
+--session 08_13 --context shared --ie-mode spatial --lctx-scale 0 --seed 4 --output-dir results/context_grid/shared_spatial/08_13_seed4
+--session 08_13 --context shared --context-targets i --ie-mode free --lctx-scale 0 --seed 4 --output-dir results/context_grid/sharedI_free/08_13_seed4
+--session 08_13 --context shared --context-targets e --ie-mode free --lctx-scale 0 --seed 4 --output-dir results/context_grid/sharedE_free/08_13_seed4
+--session 08_13 --context free --ie-mode free --lctx-scale 0 --seed 4 --output-dir results/context_grid/free_free/08_13_seed4
+--session 08_13 --context trialvalue --ie-mode free --lctx-scale 0 --seed 4 --output-dir results/context_grid/trialvalue_free/08_13_seed4
+--session 08_13 --context none --ie-mode free --lctx-scale 0.25 --seed 4 --output-dir results/context_grid/none_free_lc25/08_13_seed4
+--session 08_13 --context shared --ie-mode free --lctx-scale 0.25 --seed 4 --output-dir results/context_grid/shared_free_lc25/08_13_seed4
+--session 08_14 --context none --ie-mode free --lctx-scale 0 --seed 4 --output-dir results/context_grid/none_free/08_14_seed4
+--session 08_14 --context none --ie-mode global --lctx-scale 0 --seed 4 --output-dir results/context_grid/none_global/08_14_seed4
+--session 08_14 --context none --ie-mode spatial --lctx-scale 0 --seed 4 --output-dir results/context_grid/none_spatial/08_14_seed4
+--session 08_14 --context shared --ie-mode free --lctx-scale 0 --seed 4 --output-dir results/context_grid/shared_free/08_14_seed4
+--session 08_14 --context shared --ie-mode global --lctx-scale 0 --seed 4 --output-dir results/context_grid/shared_global/08_14_seed4
+--session 08_14 --context shared --ie-mode spatial --lctx-scale 0 --seed 4 --output-dir results/context_grid/shared_spatial/08_14_seed4
+--session 08_14 --context shared --context-targets i --ie-mode free --lctx-scale 0 --seed 4 --output-dir results/context_grid/sharedI_free/08_14_seed4
+--session 08_14 --context shared --context-targets e --ie-mode free --lctx-scale 0 --seed 4 --output-dir results/context_grid/sharedE_free/08_14_seed4
+--session 08_14 --context free --ie-mode free --lctx-scale 0 --seed 4 --output-dir results/context_grid/free_free/08_14_seed4
+--session 08_14 --context trialvalue --ie-mode free --lctx-scale 0 --seed 4 --output-dir results/context_grid/trialvalue_free/08_14_seed4
+--session 08_14 --context none --ie-mode free --lctx-scale 0.25 --seed 4 --output-dir results/context_grid/none_free_lc25/08_14_seed4
+--session 08_14 --context shared --ie-mode free --lctx-scale 0.25 --seed 4 --output-dir results/context_grid/shared_free_lc25/08_14_seed4
+--session 08_15 --context none --ie-mode free --lctx-scale 0 --seed 4 --output-dir results/context_grid/none_free/08_15_seed4
+--session 08_15 --context none --ie-mode global --lctx-scale 0 --seed 4 --output-dir results/context_grid/none_global/08_15_seed4
+--session 08_15 --context none --ie-mode spatial --lctx-scale 0 --seed 4 --output-dir results/context_grid/none_spatial/08_15_seed4
+--session 08_15 --context shared --ie-mode free --lctx-scale 0 --seed 4 --output-dir results/context_grid/shared_free/08_15_seed4
+--session 08_15 --context shared --ie-mode global --lctx-scale 0 --seed 4 --output-dir results/context_grid/shared_global/08_15_seed4
+--session 08_15 --context shared --ie-mode spatial --lctx-scale 0 --seed 4 --output-dir results/context_grid/shared_spatial/08_15_seed4
+--session 08_15 --context shared --context-targets i --ie-mode free --lctx-scale 0 --seed 4 --output-dir results/context_grid/sharedI_free/08_15_seed4
+--session 08_15 --context shared --context-targets e --ie-mode free --lctx-scale 0 --seed 4 --output-dir results/context_grid/sharedE_free/08_15_seed4
+--session 08_15 --context free --ie-mode free --lctx-scale 0 --seed 4 --output-dir results/context_grid/free_free/08_15_seed4
+--session 08_15 --context trialvalue --ie-mode free --lctx-scale 0 --seed 4 --output-dir results/context_grid/trialvalue_free/08_15_seed4
+--session 08_15 --context none --ie-mode free --lctx-scale 0.25 --seed 4 --output-dir results/context_grid/none_free_lc25/08_15_seed4
+--session 08_15 --context shared --ie-mode free --lctx-scale 0.25 --seed 4 --output-dir results/context_grid/shared_free_lc25/08_15_seed4
+--session 08_13 --context none --ie-mode free --lctx-scale 0 --seed 5 --output-dir results/context_grid/none_free/08_13_seed5
+--session 08_13 --context none --ie-mode global --lctx-scale 0 --seed 5 --output-dir results/context_grid/none_global/08_13_seed5
+--session 08_13 --context none --ie-mode spatial --lctx-scale 0 --seed 5 --output-dir results/context_grid/none_spatial/08_13_seed5
+--session 08_13 --context shared --ie-mode free --lctx-scale 0 --seed 5 --output-dir results/context_grid/shared_free/08_13_seed5
+--session 08_13 --context shared --ie-mode global --lctx-scale 0 --seed 5 --output-dir results/context_grid/shared_global/08_13_seed5
+--session 08_13 --context shared --ie-mode spatial --lctx-scale 0 --seed 5 --output-dir results/context_grid/shared_spatial/08_13_seed5
+--session 08_13 --context shared --context-targets i --ie-mode free --lctx-scale 0 --seed 5 --output-dir results/context_grid/sharedI_free/08_13_seed5
+--session 08_13 --context shared --context-targets e --ie-mode free --lctx-scale 0 --seed 5 --output-dir results/context_grid/sharedE_free/08_13_seed5
+--session 08_13 --context free --ie-mode free --lctx-scale 0 --seed 5 --output-dir results/context_grid/free_free/08_13_seed5
+--session 08_13 --context trialvalue --ie-mode free --lctx-scale 0 --seed 5 --output-dir results/context_grid/trialvalue_free/08_13_seed5
+--session 08_13 --context none --ie-mode free --lctx-scale 0.25 --seed 5 --output-dir results/context_grid/none_free_lc25/08_13_seed5
+--session 08_13 --context shared --ie-mode free --lctx-scale 0.25 --seed 5 --output-dir results/context_grid/shared_free_lc25/08_13_seed5
+--session 08_14 --context none --ie-mode free --lctx-scale 0 --seed 5 --output-dir results/context_grid/none_free/08_14_seed5
+--session 08_14 --context none --ie-mode global --lctx-scale 0 --seed 5 --output-dir results/context_grid/none_global/08_14_seed5
+--session 08_14 --context none --ie-mode spatial --lctx-scale 0 --seed 5 --output-dir results/context_grid/none_spatial/08_14_seed5
+--session 08_14 --context shared --ie-mode free --lctx-scale 0 --seed 5 --output-dir results/context_grid/shared_free/08_14_seed5
+--session 08_14 --context shared --ie-mode global --lctx-scale 0 --seed 5 --output-dir results/context_grid/shared_global/08_14_seed5
+--session 08_14 --context shared --ie-mode spatial --lctx-scale 0 --seed 5 --output-dir results/context_grid/shared_spatial/08_14_seed5
+--session 08_14 --context shared --context-targets i --ie-mode free --lctx-scale 0 --seed 5 --output-dir results/context_grid/sharedI_free/08_14_seed5
+--session 08_14 --context shared --context-targets e --ie-mode free --lctx-scale 0 --seed 5 --output-dir results/context_grid/sharedE_free/08_14_seed5
+--session 08_14 --context free --ie-mode free --lctx-scale 0 --seed 5 --output-dir results/context_grid/free_free/08_14_seed5
+--session 08_14 --context trialvalue --ie-mode free --lctx-scale 0 --seed 5 --output-dir results/context_grid/trialvalue_free/08_14_seed5
+--session 08_14 --context none --ie-mode free --lctx-scale 0.25 --seed 5 --output-dir results/context_grid/none_free_lc25/08_14_seed5
+--session 08_14 --context shared --ie-mode free --lctx-scale 0.25 --seed 5 --output-dir results/context_grid/shared_free_lc25/08_14_seed5
+--session 08_15 --context none --ie-mode free --lctx-scale 0 --seed 5 --output-dir results/context_grid/none_free/08_15_seed5
+--session 08_15 --context none --ie-mode global --lctx-scale 0 --seed 5 --output-dir results/context_grid/none_global/08_15_seed5
+--session 08_15 --context none --ie-mode spatial --lctx-scale 0 --seed 5 --output-dir results/context_grid/none_spatial/08_15_seed5
+--session 08_15 --context shared --ie-mode free --lctx-scale 0 --seed 5 --output-dir results/context_grid/shared_free/08_15_seed5
+--session 08_15 --context shared --ie-mode global --lctx-scale 0 --seed 5 --output-dir results/context_grid/shared_global/08_15_seed5
+--session 08_15 --context shared --ie-mode spatial --lctx-scale 0 --seed 5 --output-dir results/context_grid/shared_spatial/08_15_seed5
+--session 08_15 --context shared --context-targets i --ie-mode free --lctx-scale 0 --seed 5 --output-dir results/context_grid/sharedI_free/08_15_seed5
+--session 08_15 --context shared --context-targets e --ie-mode free --lctx-scale 0 --seed 5 --output-dir results/context_grid/sharedE_free/08_15_seed5
+--session 08_15 --context free --ie-mode free --lctx-scale 0 --seed 5 --output-dir results/context_grid/free_free/08_15_seed5
+--session 08_15 --context trialvalue --ie-mode free --lctx-scale 0 --seed 5 --output-dir results/context_grid/trialvalue_free/08_15_seed5
+--session 08_15 --context none --ie-mode free --lctx-scale 0.25 --seed 5 --output-dir results/context_grid/none_free_lc25/08_15_seed5
+--session 08_15 --context shared --ie-mode free --lctx-scale 0.25 --seed 5 --output-dir results/context_grid/shared_free_lc25/08_15_seed5

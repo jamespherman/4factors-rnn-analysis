@@ -46,9 +46,14 @@ SWITCH_K = 30
 
 
 def load_context_model(model_dir: Path, device: str = 'cpu'):
-    """Rebuild an EIRNN from a train_context.py config and load model_best.pt."""
+    """Rebuild an EIRNN from a train_context.py (or train_session.py) config and load model_best.pt."""
     with open(model_dir / 'config.json') as f:
         config = json.load(f)
+    # train_session.py configs: no context, drift or test split
+    for key, value in [('context', 'none'), ('n_context', 0), ('context_mode', 'shared'),
+                       ('context_targets', 'all'), ('n_drift', 0), ('ie_mode', 'free'),
+                       ('hidden_i', 0), ('test_idx', [])]:
+        config.setdefault(key, value)
     model = EIRNN(
         n_exc=config['n_exc'], n_inh=config['n_inh'], n_inputs=config['n_inputs'],
         dt=config['dt'], tau=config['tau'], noise_scale=config['noise_scale'],
@@ -57,7 +62,8 @@ def load_context_model(model_dir: Path, device: str = 'cpu'):
         learnable_h0=config['learnable_h0'], h0_init=config['h0_init'],
         n_context=config['n_context'], context_mode=config['context_mode'],
         context_targets=config['context_targets'], n_drift=config['n_drift'],
-        ie_mode=config['ie_mode'], unit_locations=np.array(config['unit_locations']), device=device)
+        ie_mode=config['ie_mode'],
+        unit_locations=np.array(config['unit_locations']) if 'unit_locations' in config else None, device=device)
     model.load_state_dict(torch.load(model_dir / 'model_best.pt', map_location=device, weights_only=False))
     model.eval()
     return model, config
@@ -157,7 +163,7 @@ def evaluate(model_dir: Path, sessions: dict) -> dict:
 
     # 1. Held-out Poisson log-likelihood
     counts = np.round(np.transpose(data['firing_rates'], (2, 1, 0)) * 0.025)
-    test = np.array(config['test_idx'])
+    test = np.array(config['test_idx'], dtype=np.int64)
     mask = RNNDataset(data).get_all_trials()['mask'].numpy()
     if mask.ndim == 3:
         mask = mask[:, :, 0]
