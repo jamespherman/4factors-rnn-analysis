@@ -304,25 +304,33 @@ def decode(X: np.ndarray, y: np.ndarray, groups: np.ndarray = None) -> float:
     return balanced_accuracy_score(y, pred)
 
 
-def rate_matched_e_subsets(sess: dict, rates: np.ndarray, n_draws: int) -> list:
-    """E-neuron subsets the size of the I population, matched to I firing rates."""
+def rate_matched_subsets(sess: dict, rates: np.ndarray, n_draws: int) -> list:
+    """
+    Equal-size, rate-matched I and E neuron sets: the smaller population whole, and for each
+    of its neurons one of the 3 nearest-rate neurons of the larger population.
+
+    Returns:
+        list of (i_cols, e_cols) per draw
+    """
     e_idx, i_idx = np.flatnonzero(sess['is_e']), np.flatnonzero(~sess['is_e'])
+    small, large = (i_idx, e_idx) if len(i_idx) <= len(e_idx) else (e_idx, i_idx)
     mean_rate = np.nanmean(rates, axis=0)
-    subsets = []
+    draws = []
     for _ in range(n_draws):
-        available = list(e_idx)
+        available = list(large)
         chosen = []
-        for i in RNG.permutation(i_idx):
+        for i in RNG.permutation(small):
             nearest = sorted(available, key=lambda e: abs(mean_rate[e] - mean_rate[i]))[:3]
             pick = nearest[RNG.integers(len(nearest))]
             chosen.append(pick)
             available.remove(pick)
-        subsets.append(np.array(chosen))
-    return subsets
+        chosen = np.array(chosen)
+        draws.append((small, chosen) if len(i_idx) <= len(e_idx) else (chosen, small))
+    return draws
 
 
 def decoding_analysis(sess: dict) -> dict:
-    """Decoding accuracy from I neurons vs rate-matched E subsets, per target variable."""
+    """Decoding accuracy from I neurons vs rate-matched E subsets (equal sizes), per target variable."""
     data, ctx, location = sess['data'], sess['context'], sess['location']
     identity = np.asarray(data['trial_identity']).ravel()
     salience = np.asarray(data['trial_salience']).ravel()
@@ -340,7 +348,9 @@ def decoding_analysis(sess: dict) -> dict:
     out = {}
     for name, (epoch, mask, labels, grouped) in targets.items():
         rates = sess[epoch]
-        valid = mask & ~np.isnan(rates).any(axis=1)
+        valid = mask & ~np.isnan(rates).all(axis=1)
+        # Unstable (masked) entries: the neuron's mean over its other valid trials
+        rates = np.where(np.isnan(rates), np.nanmean(rates[valid], axis=0), rates)
         y = labels[valid].astype(int)
         groups = ctx['reward_run'][valid] if grouped else None
         if len(np.unique(y)) < 2 or valid.sum() < 40:
@@ -349,8 +359,11 @@ def decoding_analysis(sess: dict) -> dict:
         def acc(cols, yy=y):
             return decode(rates[valid][:, cols], yy, groups)
 
+        draws = rate_matched_subsets(sess, rates[valid], N_E_DRAWS)
         entry = {'n_trials': int(valid.sum()), 'n_i': len(i_idx), 'acc_i': acc(i_idx),
-                 'acc_e_matched': [acc(c) for c in rate_matched_e_subsets(sess, rates[valid], N_E_DRAWS)]}
+                 'n_matched': len(draws[0][0]),
+                 'acc_i_matched': [acc(ic) for ic, _ in draws],
+                 'acc_e_matched': [acc(ec) for _, ec in draws]}
         if grouped:
             # Circular-shift null: same CV, labels shifted against rates (keeps run structure)
             full_y = labels.astype(float)
@@ -478,18 +491,20 @@ def main():
     print('A2 decoding...')
     lines += ['', '## A2. Decoding from recorded I neurons vs rate-matched E neurons', '',
               'Balanced accuracy. Context variables use the pre-target epoch, CV across reward-map '
-              f'runs, and a circular-shift null for I ({N_DECODE_SHIFTS} shifts). E: median '
-              f'[5th-95th percentile] over {N_E_DRAWS} rate-matched subsets of the I count.', '',
-              '| Session | Target | n I | I | Null I (mean) | p I vs null | E matched |',
-              '|---|---|---|---|---|---|---|']
+              f'runs, and a circular-shift null for I ({N_DECODE_SHIFTS} shifts). Matched: equal-size I '
+              'and E sets (the smaller population whole, the larger rate-matched to it); median '
+              f'[5th-95th percentile] over {N_E_DRAWS} draws.', '',
+              '| Session | Target | n I | I (all) | Null I (mean) | p I vs null | n matched | I matched | E matched |',
+              '|---|---|---|---|---|---|---|---|---|']
     for sess in sessions:
         dec = decoding_analysis(sess)
         results['decoding'][sess['id']] = dec
         for name, e in dec.items():
-            ea = np.array(e['acc_e_matched'])
             null = f"{np.mean(e['null_i']):.2f}" if 'null_i' in e else '-'
             p = f"{e['p_i_vs_null']:.2g}" if 'p_i_vs_null' in e else '-'
-            lines.append(f"| {sess['id']} | {name} | {e['n_i']} | {e['acc_i']:.2f} | {null} | {p} | "
+            ia, ea = np.array(e['acc_i_matched']), np.array(e['acc_e_matched'])
+            lines.append(f"| {sess['id']} | {name} | {e['n_i']} | {e['acc_i']:.2f} | {null} | {p} | {e['n_matched']} | "
+                         f"{np.median(ia):.2f} [{np.percentile(ia, 5):.2f}-{np.percentile(ia, 95):.2f}] | "
                          f"{np.median(ea):.2f} [{np.percentile(ea, 5):.2f}-{np.percentile(ea, 95):.2f}] |")
 
     report = '\n'.join(lines) + '\n'
