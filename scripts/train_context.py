@@ -47,11 +47,11 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from src.model import EIRNN
 from src.losses import compute_L_neuron_conditioned, compute_L_trial, compute_L_reg
-from src.data_loader import load_mat_file, RNNDataset, validate_data
+from src.data_loader import load_mat_file, RNNDataset, validate_data, select_trials
 from src.analysis.pipeline_selectivity import (
     get_target_onset_bins, compute_window_rates, compute_preferred_locations
 )
-from src.analysis.task_context import get_task_context
+from src.analysis.task_context import get_task_context, get_verified_success, apply_true_reward_times
 from train_session import (
     CONFIG as BASE_CONFIG, SESSION_FILES, get_recorded_unit_indices,
     get_stimulus_location_conditions, get_target_window_index, target_aligned,
@@ -146,6 +146,9 @@ def main():
     parser.add_argument('--ie-mode', default='free', choices=['free', 'spatial', 'global', 'frozen'])
     parser.add_argument('--frozen-from', default=None,
                         help="Model dir whose I->E block (permuted) is frozen for --ie-mode frozen")
+    parser.add_argument('--trials', default='all', choices=['all', 'verified'],
+                        help="'verified': successful trials with a verified PLDAPS match only, "
+                             "with the reward input at the true delivery time")
     parser.add_argument('--hidden-i', type=int, default=0, help='Extra unrecorded I units')
     parser.add_argument('--seed', type=int, default=1)
     parser.add_argument('--data', default=None, help='Export file (default: the session export)')
@@ -168,7 +171,7 @@ def main():
     config = dict(CONFIG)
     config.update(session=args.session, context=args.context, context_targets=args.context_targets,
                   ie_mode=args.ie_mode, frozen_from=args.frozen_from, hidden_i=args.hidden_i,
-                  seed=args.seed, data_path=args.data or SESSION_FILES[args.session])
+                  seed=args.seed, data_path=args.data or SESSION_FILES[args.session], trials=args.trials)
     for key in ('max_epochs', 'patience', 'lctx_scale', 'lwin_scale', 'n_drift', 'test_fraction', 'select_fraction'):
         if getattr(args, key) is not None:
             config[key] = getattr(args, key)
@@ -187,6 +190,10 @@ def main():
 
     # Data
     data = load_mat_file(config['data_path'])
+    if args.trials == 'verified':
+        keep, true_reward_ms = get_verified_success(f"Newton_{args.session}_2025_SC",
+                                                    data['firing_rates'].shape[-1])
+        data = apply_true_reward_times(select_trials(data, keep), true_reward_ms[keep])
     validate_data(data)
     dataset = RNNDataset(data)
     n_trials, n_bins = len(dataset), dataset.n_bins

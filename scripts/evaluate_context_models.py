@@ -143,7 +143,12 @@ def effects(sess: dict, min_trials: int = 5) -> dict:
 def evaluate(model_dir: Path, sessions: dict) -> dict:
     """Evaluate one trained model."""
     model, config = load_context_model(model_dir)
-    sess = sessions[config['session']]
+    key = (config['session'], config.get('trials', 'all'))
+    if key not in sessions:
+        sessions[key] = A.load_session(*key)
+    sess = sessions[key]
+    if 'effects' not in sess:
+        sess['effects'] = effects(sess)
     data = load_mat_file(config['data_path']) if 'synthetic' in config['data_path'] else sess['data']
     inputs = build_inputs(data, config)
     rec_units = np.array(config['recorded_unit_indices'])
@@ -199,8 +204,9 @@ def evaluate(model_dir: Path, sessions: dict) -> dict:
             diffs.append(np.nanmean(window[gain, j]) - np.nanmean(window[~gain, j]))
         decomposition[name] = np.array(diffs)
 
-    return {'config': {k: config[k] for k in ('session', 'context', 'context_targets', 'ie_mode', 'hidden_i', 'seed')},
-            'll': ll, 'effects': model_eff, 'decomposition': decomposition, 'recorded_split': rec_split}
+    return {'config': {k: config[k] for k in ('session', 'context', 'context_targets', 'ie_mode', 'hidden_i', 'seed', 'trials')},
+            'll': ll, 'effects': model_eff, 'decomposition': decomposition, 'recorded_split': rec_split,
+            'recorded': sess['effects']}
 
 
 def main():
@@ -209,8 +215,7 @@ def main():
     args = parser.parse_args()
     root = Path(args.root)
 
-    sessions = {s: A.load_session(s) for s in A.SESSIONS}
-    recorded_eff = {s: effects(sess) for s, sess in sessions.items()}
+    sessions = {}  # (session, trial set) -> loaded session, filled as models need them
 
     results = {}
     for model_dir in sorted(p.parent for p in root.glob('*/*/summary.json')):
@@ -232,7 +237,6 @@ def main():
              '| Variant | Seeds | Delta LL x1000 | Reward pre: model / rec / r | Block pre: model / rec / r '
              '| Prob vis: model / rec / r | Spatial r | I->E share of reward-context current |',
              '|---|---|---|---|---|---|---|---|']
-    rec_pooled = {k: np.concatenate([recorded_eff[s][k] for s in A.SESSIONS]) for k in recorded_eff['08_13']}
 
     def pooled(variant, seed_key):
         runs = [results[f'{variant}/{s}_seed{seed_key}'] for s in A.SESSIONS
@@ -251,7 +255,9 @@ def main():
             if base is not None:
                 entry['dll'] = 1000 * float(np.mean(np.concatenate([r['ll'] for r in runs])
                                                     - np.concatenate([b['ll'] for b in base])))
+            rec_pooled = {k: np.concatenate([r['recorded'][k] for r in runs]) for k in runs[0]['recorded']}
             for k in ('reward_pre', 'block_pre', 'prob_vis', 'spatial'):
+                entry[f'{k}_recorded'] = float(np.nanmean(rec_pooled[k]))
                 m = np.concatenate([r['effects'][k] for r in runs])
                 ok = ~np.isnan(m) & ~np.isnan(rec_pooled[k])
                 entry[f'{k}_model'] = float(np.nanmean(m))
@@ -273,7 +279,7 @@ def main():
             continue
         avg = {k: float(np.nanmean([e.get(k, np.nan) for e in per_seed])) for k in per_seed[0] if k != 'decomposition_mean'}
         summary[v] = {'n_seeds': len(per_seed), 'mean': avg, 'per_seed': per_seed}
-        rec = lambda k: np.nanmean(rec_pooled[k])
+        rec = lambda k: avg[f'{k}_recorded']
         lines.append(
             f"| {v} | {len(per_seed)} | {avg.get('dll', np.nan):+.2f} | "
             f"{avg['reward_pre_model']:+.2f} / {rec('reward_pre'):+.2f} / {avg['reward_pre_r']:+.2f} | "

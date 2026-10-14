@@ -14,7 +14,7 @@ same reward-map run.
 """
 
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict, Optional, Tuple
 
 import numpy as np
 
@@ -122,3 +122,52 @@ def match_raw_trials(data: dict, session_name: str) -> Optional[Dict[str, np.nda
 
     return {'halfBlock': half_block, 'blockNumber': block_number, 'targetLocIdx': loc,
             'export_to_raw': np.array(export_to_raw)}
+
+
+TRIAL_AUDIT_DIR = Path(__file__).parent.parent.parent / 'data' / 'trial_audit'
+
+
+def get_verified_success(session_name: str, n_trials: int) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Successful export trials with a verified PLDAPS match, and their true reward times.
+
+    The export keeps every trial with a 'reward' strobe, but that code is also sent at the
+    end of every trial, so it includes fixation breaks and trials whose event times are
+    unreliable. Its reward time (= trial_duration_ms and the input_reward_on onset) is the
+    end-of-trial strobe dump, about 648 ms (high reward) or 456 ms (low) after the real
+    delivery. data/trial_audit/{session}_trial_audit.csv comes from the
+    4factors-analysis-pipeline audit (2026-10-13); export_row (1-based) gives the export order.
+
+    Returns:
+        keep: [n_trials] bool, trialEndState 21 and match_verified
+        true_reward_ms: [n_trials] real reward delivery relative to fixOn (the export's
+            t = 0); only meaningful where keep is True
+    """
+    path = TRIAL_AUDIT_DIR / f'{session_name}_trial_audit.csv'
+    assert path.exists(), f"Missing trial audit {path}"
+    audit = np.genfromtxt(path, delimiter=',', names=True)
+    rows = audit[~np.isnan(audit['export_row'])]
+    rows = rows[np.argsort(rows['export_row'])]
+    assert len(rows) == n_trials and np.all(rows['export_row'] == np.arange(1, n_trials + 1)),         f"Trial audit doesn't cover the {n_trials} export trials"
+    keep = (rows['match_verified'] == 1) & (rows['trialEndState_pipeline'] == 21) & (rows['nev_success'] == 1)
+    return keep, rows['true_reward_ms_rel_fixOn']
+
+
+def apply_true_reward_times(data: dict, true_reward_ms: np.ndarray) -> dict:
+    """
+    Move the reward input to the real delivery time and end each trial there
+    (the export ends trials at its reward time).
+    """
+    assert not np.any(np.isnan(true_reward_ms)), "True reward time missing for some trials"
+    time_axis = np.asarray(data['time_axis']).ravel()
+    reward_on = np.asarray(data['input_reward_on'])
+    n_bins, n_trials = reward_on.shape
+    duration_bins = int((reward_on > 0).sum(axis=0).max())
+    shifted = np.zeros_like(reward_on)
+    for t in range(n_trials):
+        onset = int(np.searchsorted(time_axis, true_reward_ms[t]))
+        shifted[onset:onset + duration_bins, t] = 1
+    out = dict(data)
+    out['input_reward_on'] = shifted
+    out['trial_duration_ms'] = np.asarray(true_reward_ms, dtype=float)
+    return out
