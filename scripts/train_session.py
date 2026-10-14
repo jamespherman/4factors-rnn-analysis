@@ -46,6 +46,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from src.model import create_model_from_data
 from src.losses import compute_L_neuron_conditioned, compute_L_trial, compute_L_reg
 from src.data_loader import load_mat_file, RNNDataset, validate_data, train_val_split
+from src.sessions import DEFAULT_SESSIONS, session_name
 from src.analysis.pipeline_selectivity import get_target_onset_bins
 
 CONFIG = {
@@ -84,11 +85,7 @@ CONFIG = {
     'checkpoint_every': 250,
 }
 
-SESSION_FILES = {
-    '08_13': 'data/rnn_export_Newton_08_13_2025_SC.mat',
-    '08_14': 'data/rnn_export_Newton_08_14_2025_SC.mat',
-    '08_15': 'data/rnn_export_Newton_08_15_2025_SC.mat',
-}
+SESSION_FILES = {s: f'data/rnn_export_{session_name(s)}.mat' for s in DEFAULT_SESSIONS}
 
 
 def get_recorded_unit_indices(neuron_type: np.ndarray, n_exc: int) -> np.ndarray:

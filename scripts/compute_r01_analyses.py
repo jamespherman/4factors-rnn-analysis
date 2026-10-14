@@ -37,7 +37,7 @@ from src.data_loader import load_session, load_mat_file
 # Configuration
 # ============================================================================
 
-BASE_DIR = Path("/Users/jph/Library/CloudStorage/OneDrive-UniversityofPittsburgh/Code/4factors-rnn-analysis")
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Session files
 SESSIONS = {

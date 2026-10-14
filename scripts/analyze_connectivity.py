@@ -32,7 +32,7 @@ plt.style.use('seaborn-v0_8-whitegrid')
 sns.set_palette("colorblind")
 
 # Paths
-BASE_DIR = Path("/Users/jph/Library/CloudStorage/OneDrive-UniversityofPittsburgh/Code/4factors-rnn-analysis")
+BASE_DIR = Path(__file__).resolve().parent.parent
 WEIGHTS_DIR = BASE_DIR / "results/final_model/weights"
 OUTPUTS_DIR = BASE_DIR / "results/final_model/outputs"
 METRICS_DIR = BASE_DIR / "results/final_model/metrics"

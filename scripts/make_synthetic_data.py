@@ -6,7 +6,8 @@ A teacher network (a model fitted with scripts/train_context.py) is run on a rea
 session's trials (task, context and drift inputs, with recurrent noise); spike
 counts for the recorded units are drawn from Poisson distributions with the
 teacher's rates and written in the export format, so students can be fit with
-train_context.py --data <file> exactly as on real data.
+train_context.py --data <file> exactly as on real data. The file holds the
+teacher's trial set (e.g. verified trials only), so students use --trials all.
 
 Teacher manipulations:
     --ctx-scale g        multiply the teacher's context input weights by g
@@ -35,7 +36,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent))
 
-from src.data_loader import load_mat_file
+from src.sessions import load_export
 from evaluate_context_models import load_context_model, build_inputs
 
 
@@ -50,7 +51,7 @@ def main():
 
     teacher_dir = Path(args.teacher)
     model, config = load_context_model(teacher_dir)
-    data = load_mat_file(config['data_path'])
+    data = load_export(config['session'], config.get('trials', 'all'), path=config['data_path'])
     inputs = build_inputs(data, config)
 
     with torch.no_grad():
@@ -80,7 +81,7 @@ def main():
     sio.savemat(out, synthetic, do_compression=True)
     meta = {'teacher': str(teacher_dir), 'ctx_scale': args.ctx_scale, 'ie_transform': args.ie_transform,
             'seed': args.seed, 'teacher_config': {k: config[k] for k in
-                                                   ('session', 'context', 'context_targets', 'ie_mode', 'seed')}}
+                                                   ('session', 'context', 'context_targets', 'ie_mode', 'seed', 'trials')}}
     out.with_suffix('.json').write_text(json.dumps(meta, indent=2))
     print(f"Wrote {out}: mean rate {synthetic['firing_rates'].mean():.1f} sp/s "
           f"(real {np.nanmean(data['firing_rates']):.1f})")

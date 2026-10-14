@@ -13,7 +13,7 @@ from scipy import stats
 import h5py
 
 # Paths
-BASE_DIR = Path("/Users/jph/Library/CloudStorage/OneDrive-UniversityofPittsburgh/Code/4factors-rnn-analysis")
+BASE_DIR = Path(__file__).resolve().parent.parent
 CONDITIONED_WEIGHTS_DIR = BASE_DIR / "results/conditioned_loss_08_15/weights"
 ORIGINAL_WEIGHTS_DIR = BASE_DIR / "results/final_model/weights"
 DATA_FILE = BASE_DIR / "data/rnn_export_Newton_08_15_2025_SC.mat"

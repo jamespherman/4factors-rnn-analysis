@@ -51,9 +51,10 @@ from src.data_loader import load_mat_file, RNNDataset, validate_data, select_tri
 from src.analysis.pipeline_selectivity import (
     get_target_onset_bins, compute_window_rates, compute_preferred_locations
 )
-from src.analysis.task_context import get_task_context, get_verified_success, apply_true_reward_times
+from src.analysis.task_context import get_task_context
+from src.sessions import export_path, load_export
 from train_session import (
-    CONFIG as BASE_CONFIG, SESSION_FILES, get_recorded_unit_indices,
+    CONFIG as BASE_CONFIG, get_recorded_unit_indices,
     get_stimulus_location_conditions, get_target_window_index, target_aligned,
     grand_psth_correlation
 )
@@ -140,15 +141,17 @@ def get_unit_locations(data: dict, rec_units: np.ndarray, n_total: int) -> np.nd
 
 def main():
     parser = argparse.ArgumentParser(description='Train E-I RNN with task-context inputs')
-    parser.add_argument('--session', required=True, choices=sorted(SESSION_FILES))
+    parser.add_argument('--session', required=True,
+                        help="Session, e.g. 08_13 (Newton), Feynman_08_12 or a full pipeline name")
     parser.add_argument('--context', required=True, choices=['none', 'shared', 'free', 'trialvalue'])
     parser.add_argument('--context-targets', default='all', choices=['all', 'e', 'i'])
     parser.add_argument('--ie-mode', default='free', choices=['free', 'spatial', 'global', 'frozen'])
     parser.add_argument('--frozen-from', default=None,
                         help="Model dir whose I->E block (permuted) is frozen for --ie-mode frozen")
     parser.add_argument('--trials', default='all', choices=['all', 'verified'],
-                        help="'verified': successful trials with a verified PLDAPS match only, "
-                             "with the reward input at the true delivery time")
+                        help="'verified': successful trials only, with true event times "
+                             "(src/sessions.py). Use 'all' for synthetic --data files, which "
+                             "already hold the teacher's trial set")
     parser.add_argument('--hidden-i', type=int, default=0, help='Extra unrecorded I units')
     parser.add_argument('--seed', type=int, default=1, help='Initialization (and default split) seed')
     parser.add_argument('--split-seed', type=int, default=None,
@@ -174,7 +177,7 @@ def main():
     config = dict(CONFIG)
     config.update(session=args.session, context=args.context, context_targets=args.context_targets,
                   ie_mode=args.ie_mode, frozen_from=args.frozen_from, hidden_i=args.hidden_i,
-                  seed=args.seed, data_path=args.data or SESSION_FILES[args.session], trials=args.trials,
+                  seed=args.seed, data_path=args.data or f'data/{export_path(args.session).name}', trials=args.trials,
                   split_seed=args.seed if args.split_seed is None else args.split_seed)
     for key in ('max_epochs', 'patience', 'lctx_scale', 'lwin_scale', 'n_drift', 'test_fraction', 'select_fraction'):
         if getattr(args, key) is not None:
@@ -193,11 +196,7 @@ def main():
     device = args.device
 
     # Data
-    data = load_mat_file(config['data_path'])
-    if args.trials == 'verified':
-        keep, true_reward_ms = get_verified_success(f"Newton_{args.session}_2025_SC",
-                                                    data['firing_rates'].shape[-1])
-        data = apply_true_reward_times(select_trials(data, keep), true_reward_ms[keep])
+    data = load_export(args.session, args.trials, path=config['data_path'])
     validate_data(data)
     dataset = RNNDataset(data)
     n_trials, n_bins = len(dataset), dataset.n_bins

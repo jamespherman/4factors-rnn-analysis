@@ -143,13 +143,17 @@ def effects(sess: dict, min_trials: int = 5) -> dict:
 def evaluate(model_dir: Path, sessions: dict) -> dict:
     """Evaluate one trained model."""
     model, config = load_context_model(model_dir)
-    key = (config['session'], config.get('trials', 'all'))
+    # Synthetic sessions (recovery test): the 'recorded' activity is the teacher's, so effects
+    # and likelihoods are computed against the synthetic file itself
+    synthetic = 'synthetic' in config['data_path']
+    key = config['data_path'] if synthetic else (config['session'], config.get('trials', 'all'))
     if key not in sessions:
-        sessions[key] = A.load_session(*key)
+        sessions[key] = (A.session_from_data(load_mat_file(config['data_path']), config['session'])
+                         if synthetic else A.load_session(*key))
     sess = sessions[key]
     if 'effects' not in sess:
         sess['effects'] = effects(sess)
-    data = load_mat_file(config['data_path']) if 'synthetic' in config['data_path'] else sess['data']
+    data = sess['data']
     inputs = build_inputs(data, config)
     rec_units = np.array(config['recorded_unit_indices'])
     n_exc = config['n_exc']
@@ -240,9 +244,9 @@ def main():
              '|---|---|---|---|---|---|---|---|']
 
     def pooled(variant, seed_key):
-        runs = [results[f'{variant}/{s}_seed{seed_key}'] for s in A.SESSIONS
+        runs = [results[f'{variant}/{s}_seed{seed_key}'] for s in run_sessions
                 if f'{variant}/{s}_seed{seed_key}' in results]
-        return runs if len(runs) == len(A.SESSIONS) else None
+        return runs if len(runs) == len(run_sessions) else None
 
     def summarize_runs(runs, base):
         """Effects, held-out checks and delta LL for one run per session, pooled over sessions."""
@@ -272,6 +276,7 @@ def main():
         return entry
 
     seeds_all = sorted({k.split('_seed')[-1] for k in results})
+    run_sessions = sorted({r['config']['session'] for r in results.values()})
     summary = {}
     for v in variants:
         per_seed = []
@@ -312,18 +317,18 @@ def main():
         session = run.split('_seed')[0]
         if not np.isnan(r['select_ll']) and r['select_ll'] > best.get((v, session), (None, -np.inf))[1]:
             best[(v, session)] = (key, r['select_ll'])
-    best_runs = {v: [results[best[(v, s)][0]] for s in A.SESSIONS if (v, s) in best] for v in variants}
-    if len(best_runs.get(baseline, [])) == len(A.SESSIONS):
+    best_runs = {v: [results[best[(v, s)][0]] for s in run_sessions if (v, s) in best] for v in variants}
+    if len(best_runs.get(baseline, [])) == len(run_sessions):
         lines += ['', 'Best restart per variant and session (highest selection-set log-likelihood); '
                   'held-out r / ceiling as above:', '',
                   '| Variant | Delta LL x1000 | Reward pre r | Block pre r | Spatial r (all trials) | Chosen seeds |',
                   '|---|---|---|---|---|---|']
         for v in variants:
-            if len(best_runs[v]) != len(A.SESSIONS):
+            if len(best_runs[v]) != len(run_sessions):
                 continue
             e = summarize_runs(best_runs[v], best_runs[baseline])
             summary.setdefault(v, {})['best_restart'] = e
-            seeds = ' '.join(best[(v, s)][0].split('_seed')[-1] for s in A.SESSIONS)
+            seeds = ' '.join(best[(v, s)][0].split('_seed')[-1] for s in run_sessions)
             lines.append(f"| {v} | {e.get('dll', np.nan):+.2f} | "
                          f"{e.get('reward_pre_r_test', np.nan):+.2f} / {e.get('reward_pre_ceiling_test', np.nan):+.2f} | "
                          f"{e.get('block_pre_r_test', np.nan):+.2f} / {e.get('block_pre_ceiling_test', np.nan):+.2f} | "

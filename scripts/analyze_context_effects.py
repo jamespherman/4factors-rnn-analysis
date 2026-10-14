@@ -40,22 +40,21 @@ from sklearn.preprocessing import StandardScaler
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.data_loader import load_mat_file, select_trials
+from src.data_loader import load_mat_file
+from src.sessions import DEFAULT_SESSIONS, session_name, load_export
 from src.analysis.pipeline_selectivity import (
     get_target_onset_bins, compute_window_rates, compute_preferred_locations, get_factor_masks
 )
 from src.analysis.roc_selectivity import compute_roc_auc
 from src.analysis.task_context import (
-    get_verified_success, apply_true_reward_times,
     get_task_context, location_rewarded, location_frequent, get_switches, match_raw_trials
 )
 
 warnings.filterwarnings('ignore', category=RuntimeWarning)
 
 BASE_DIR = Path(__file__).parent.parent
-DATA_DIR = BASE_DIR / 'data'
 OUTPUT_DIR = BASE_DIR / 'results' / 'context_analysis'
-SESSIONS = ['08_13', '08_14', '08_15']
+SESSIONS = DEFAULT_SESSIONS
 
 PRE_WINDOW_MS = (-300.0, 0.0)
 SWITCH_K = (15, 30)
@@ -69,16 +68,15 @@ def load_session(session_id: str, trials: str = 'all') -> dict:
     """
     Load export, window rates, context and preferred locations for one session.
 
-    trials: 'all' exported trials, or 'verified' (successful trials with a verified
-        PLDAPS match; see task_context.get_verified_success)
+    trials: 'all' exported trials, or 'verified' (successful trials only; see
+        src/sessions.py)
     """
-    name = f'Newton_{session_id}_2025_SC'
-    data = load_mat_file(str(DATA_DIR / f'rnn_export_{name}.mat'))
-    if trials == 'verified':
-        keep, true_reward_ms = get_verified_success(name, data['firing_rates'].shape[-1])
-        data = apply_true_reward_times(select_trials(data, keep), true_reward_ms[keep])
-    else:
-        assert trials == 'all', f"Unknown trial set: {trials}"
+    return session_from_data(load_export(session_id, trials), session_id)
+
+
+def session_from_data(data: dict, session_id: str) -> dict:
+    """Window rates, context and preferred locations for a loaded (or synthetic) export."""
+    name = session_name(session_id)
     rates = np.transpose(data['firing_rates'], (2, 1, 0))
     onset = get_target_onset_bins(data)
     vis = compute_window_rates(rates, onset)

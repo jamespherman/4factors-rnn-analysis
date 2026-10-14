@@ -18,8 +18,6 @@ from typing import Dict, Optional, Tuple
 
 import numpy as np
 
-PIPELINE_PROCESSED = (Path(__file__).parent.parent.parent.parent
-                      / '4factors-analysis-pipeline' / 'data' / 'processed')
 
 
 def get_task_context(data: dict) -> Dict[str, np.ndarray]:
@@ -93,7 +91,8 @@ def match_raw_trials(data: dict, session_name: str) -> Optional[Dict[str, np.nda
     """
     import h5py
 
-    path = PIPELINE_PROCESSED / session_name / f'{session_name}_session_data.mat'
+    from src.sessions import processed_dir
+    path = processed_dir() / session_name / f'{session_name}_session_data.mat'
     if not path.exists():
         return None
     with h5py.File(path, 'r') as f:

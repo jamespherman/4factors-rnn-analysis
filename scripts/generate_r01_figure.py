@@ -28,7 +28,7 @@ import json
 # Configuration
 # ============================================================================
 
-BASE_DIR = Path("/Users/jph/Library/CloudStorage/OneDrive-UniversityofPittsburgh/Code/4factors-rnn-analysis")
+BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / 'results/r01_figure/panel_data'
 OUTPUT_DIR = BASE_DIR / 'results/r01_figure'
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

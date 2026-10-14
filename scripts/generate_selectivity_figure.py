@@ -21,7 +21,7 @@ from src.model import create_model_from_data
 from src.data_loader import load_session, train_val_split
 
 # Paths
-BASE_DIR = Path("/Users/jph/Library/CloudStorage/OneDrive-UniversityofPittsburgh/Code/4factors-rnn-analysis")
+BASE_DIR = Path(__file__).resolve().parent.parent
 MODEL_DIR = BASE_DIR / "results/conditioned_loss_08_15"
 DATA_FILE = BASE_DIR / "data/rnn_export_Newton_08_15_2025_SC.mat"
 OUTPUT_DIR = MODEL_DIR / "figures"
