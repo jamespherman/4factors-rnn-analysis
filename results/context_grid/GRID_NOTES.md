@@ -1,5 +1,7 @@
 # Context grid (2026-10-13)
 
+> **Superseded (2026-10-13):** computed on all exported trials, including fixation breaks and trials with unreliable event times (about 30-50% of trials). See `data/trial_audit` and `--trials verified`; verified-trial results are in `results/context_analysis_verified` and `results/verified_gate`.
+
 Setup from `results/fit_ablation/ABLATION_NOTES.md`: drift on, context-conditioned losses off,
 3 sessions x 5 seeds per variant. Full table in `evaluation_report.md`.
 

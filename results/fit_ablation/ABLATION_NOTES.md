@@ -1,5 +1,7 @@
 # Fit ablation (2026-10-13)
 
+> **Superseded (2026-10-13):** computed on all exported trials, including fixation breaks and trials with unreliable event times (about 30-50% of trials). See `data/trial_audit` and `--trials verified`; verified-trial results are in `results/context_analysis_verified` and `results/verified_gate`.
+
 Why: the context pilot (`results/context_pilot`) fit spatial selectivity poorly and
 inconsistently across seeds, worse than the earlier `results/retrained/cond_target` models.
 Each config below changes the pilot's `none_free` setup (no context input, context-conditioned
