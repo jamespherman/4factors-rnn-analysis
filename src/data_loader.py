@@ -66,6 +66,24 @@ def _load_hdf5_mat(filepath: str) -> dict:
     return data
 
 
+def select_trials(data: dict, keep: np.ndarray) -> dict:
+    """
+    Subset an export to the trials in boolean mask keep (trial axis is last for
+    firing_rates, input_* and trial_* fields).
+    """
+    n_trials = data['firing_rates'].shape[-1]
+    keep = np.asarray(keep, dtype=bool)
+    assert keep.shape == (n_trials,), "keep must be a mask over trials"
+    out = dict(data)
+    for key, value in data.items():
+        if key == 'firing_rates' or key.startswith('input_') or key.startswith('trial_'):
+            value = np.asarray(value)
+            assert value.shape[-1] == n_trials, f"{key}: trial axis is not last"
+            out[key] = value[..., keep]
+    out['n_trials'] = float(keep.sum())
+    return out
+
+
 def load_mat_file(filepath: str) -> dict:
     """
     Load exported .mat file from MATLAB pipeline.
