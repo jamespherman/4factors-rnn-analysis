@@ -1,0 +1,46 @@
+# Context grid, verified trials (2026-10-14)
+
+Successful trials with a verified PLDAPS match only, with true reward times. Window-mean loss on
+(`--lwin-scale 1`), context-conditioned losses off. One fixed train/select/test split
+(`--split-seed 0`), 6 restarts per variant and session. Full tables are in `evaluation_report.md`.
+
+## Fit quality is now good
+- Spatial r averages 0.76-0.86 across restarts. The best restart per session, chosen by
+  selection-set LL, reaches 0.92-0.98 (ceiling 0.97).
+- On all exported trials without the window loss it was 0.28. The improvement comes from the
+  trial filter together with the window-mean loss.
+
+## Reward context per neuron: only per-unit context input reproduces it
+
+Held-out r with the recorded pre-target reward-context effect (ceiling 0.64):
+
+| Variant | Mean over restarts | Restarts | Best restart |
+|---|---|---|---|
+| free_free (per-unit context weights) | +0.43 | +0.30 to +0.52 | +0.48 |
+| shared_free / _global / _spatial | +0.04 / -0.01 / -0.03 | -0.23 to +0.36 | -0.05 / -0.09 / +0.16 |
+| sharedI_free / sharedE_free | +0.03 / -0.04 | -0.20 to +0.28 | -0.05 / -0.09 |
+| trialvalue_free | +0.00 | -0.14 to +0.19 | -0.03 |
+| none_* (no context) | -0.07 to -0.01 | | |
+
+A shared context signal, whether into E, I or both, and whether the I->E weights are free or
+constrained, does not produce the neuron-specific pattern of reward-context modulation in these
+fits. Per-unit context input does, at about 70% of the ceiling.
+
+Caveats:
+- Failing to learn is not the same as being unable to. The recovery test (Stage D) has to show
+  that a shared-context student recovers a teacher whose neuron-specific context effects arise
+  through its I->E weights. Until then this is a negative result about what these fits found.
+- The per-unit model also has more input parameters. Its held-out LL is no better than the
+  others (delta LL -9.3 mean, -2.5 best restart), so the extra parameters are not paying off
+  in likelihood. They matter only for this one small effect.
+
+## Other results
+- **Block context per neuron:** every variant reaches about +0.2 (ceiling 0.46), including no
+  context. No variant separates from the others.
+- **Visual probability effect:** the per-neuron ceiling is 0.12, so the clean test trials can't
+  test it. No model reproduces its population mean (-1.30 sp/s).
+- **I->E constraints:** held-out LL differences between free, spatial and global I->E weights
+  are within about +/-5 x1000, the same size as restart-to-restart spread. One `none_global`
+  restart failed (-3506). The data do not demand a particular I->E structure.
+- **Reward-context current:** I->E carries 27-39% of the pre-target reward-context current to
+  E units in every variant.
