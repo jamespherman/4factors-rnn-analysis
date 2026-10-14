@@ -1,0 +1,14 @@
+{
+  "teacher": "results\\verified_grid\\free_free\\08_14_seed5",
+  "ctx_scale": 3.0,
+  "ie_transform": "none",
+  "seed": 0,
+  "teacher_config": {
+    "session": "08_14",
+    "context": "free",
+    "context_targets": "all",
+    "ie_mode": "free",
+    "seed": 5,
+    "trials": "verified"
+  }
+}

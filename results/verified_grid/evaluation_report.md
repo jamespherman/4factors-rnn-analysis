@@ -4,6 +4,8 @@ Effects: pre-target reward/block context (switch-triggered, sp/s), visual probab
 
 | Variant | Seeds | Delta LL x1000 | Reward pre: model / rec / r | Block pre: model / rec / r | Prob vis: model / rec / r | Spatial r | I->E share of reward-context current |
 |---|---|---|---|---|---|---|---|
+| freeE_free | 6 | +1.76 | +0.24 / +0.37 / +0.64 | +0.91 / +1.06 / +0.66 | +0.10 / -1.30 / -0.03 | +0.81 | 0.27 |
+| freeI_free | 6 | -0.19 | +0.57 / +0.37 / +0.61 | +0.61 / +1.06 / +0.58 | +0.17 / -1.30 / -0.11 | +0.80 | 0.36 |
 | free_free | 6 | -9.30 | +0.41 / +0.37 / +0.72 | +1.06 / +1.06 / +0.64 | +0.17 / -1.30 / -0.18 | +0.64 | 0.27 |
 | none_free | 6 | +0.00 | +0.02 / +0.37 / -0.05 | +0.17 / +1.06 / +0.21 | +0.02 / -1.30 / +0.06 | +0.84 | 0.31 |
 | none_global | 6 | -582.66 | -1.18 / +0.37 / -0.11 | +0.18 / +1.06 / +0.26 | +1.91 / -1.30 / +0.05 | +0.71 | 0.30 |
@@ -19,6 +21,8 @@ Held-out check: r between model effect and the recorded effect on test trials on
 
 | Variant | Reward pre r / ceiling | Block pre r / ceiling | Prob vis r / ceiling | Spatial r / ceiling |
 |---|---|---|---|---|
+| freeE_free | +0.36 / +0.64 | +0.24 / +0.46 | -0.12 / +0.12 | +0.79 / +0.97 |
+| freeI_free | +0.36 / +0.64 | +0.17 / +0.46 | -0.18 / +0.12 | +0.78 / +0.97 |
 | free_free | +0.43 / +0.64 | +0.24 / +0.46 | -0.26 / +0.12 | +0.62 / +0.97 |
 | none_free | -0.07 / +0.64 | +0.18 / +0.46 | +0.18 / +0.12 | +0.82 / +0.97 |
 | none_global | -0.07 / +0.64 | +0.16 / +0.46 | +0.15 / +0.12 | +0.70 / +0.97 |
@@ -34,6 +38,8 @@ Best restart per variant and session (highest selection-set log-likelihood); hel
 
 | Variant | Delta LL x1000 | Reward pre r | Block pre r | Spatial r (all trials) | Chosen seeds |
 |---|---|---|---|---|---|
+| freeE_free | -2.05 | +0.51 / +0.64 | +0.34 / +0.46 | +0.97 | 4 4 6 |
+| freeI_free | -3.73 | +0.44 / +0.64 | +0.28 / +0.46 | +0.97 | 4 4 6 |
 | free_free | -2.49 | +0.48 / +0.64 | +0.20 / +0.46 | +0.96 | 4 5 6 |
 | none_free | +0.00 | -0.05 / +0.64 | +0.19 / +0.46 | +0.97 | 6 4 6 |
 | none_global | -5.62 | -0.17 / +0.64 | +0.20 / +0.46 | +0.97 | 6 4 6 |

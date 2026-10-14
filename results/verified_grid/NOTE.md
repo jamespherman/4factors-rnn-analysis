@@ -44,3 +44,25 @@ Caveats:
   restart failed (-3506). The data do not demand a particular I->E structure.
 - **Reward-context current:** I->E carries 27-39% of the pre-target reward-context current to
   E units in every variant.
+
+## Added 2026-10-14: per-unit context to I only or E only
+
+Held-out r with recorded reward context (ceiling 0.64), 6 restarts each:
+
+| Variant | Mean | Range |
+|---|---|---|
+| free_free (all units) | +0.43 | +0.30 to +0.52 |
+| freeI_free (I units only) | +0.36 | +0.18 to +0.45 |
+| freeE_free (E units only) | +0.36 | +0.11 to +0.54 |
+| shared_free | +0.04 | -0.20 to +0.36 |
+
+- **Per-unit context into interneurons alone, relayed through the I->E weights, reproduces the
+  neuron-specific reward-context pattern** about as well as per-unit input to every unit. What
+  fails is a single shared context signal, not the local route.
+- **These fits can't tell whether the neuron-specific input lands on E or on I units.** They
+  indicate only that it must arrive already specific to individual neurons, not as one global
+  reward state.
+- The recovery pilot (`results/recovery_pilot`) tests whether this E-vs-I distinction is
+  identifiable at all.
+- Held-out LL: freeI -0.2 and freeE +1.4 x1000 vs none_free (restart means). Same size as the
+  restart spread.
