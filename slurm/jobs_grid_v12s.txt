@@ -1,0 +1,336 @@
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 1 --output-dir results/grid_v12s/none_free/Feynman_08_12_seed1
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 1 --output-dir results/grid_v12s/shared_free/Feynman_08_12_seed1
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 1 --output-dir results/grid_v12s/sharedI_free/Feynman_08_12_seed1
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 1 --output-dir results/grid_v12s/free_free/Feynman_08_12_seed1
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 1 --output-dir results/grid_v12s/freeI_free/Feynman_08_12_seed1
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 1 --output-dir results/grid_v12s/freeE_free/Feynman_08_12_seed1
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 1 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_12_seed1
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 1 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_12_seed1
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 1 --output-dir results/grid_v12s/none_free/Feynman_08_13_seed1
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 1 --output-dir results/grid_v12s/shared_free/Feynman_08_13_seed1
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 1 --output-dir results/grid_v12s/sharedI_free/Feynman_08_13_seed1
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 1 --output-dir results/grid_v12s/free_free/Feynman_08_13_seed1
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 1 --output-dir results/grid_v12s/freeI_free/Feynman_08_13_seed1
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 1 --output-dir results/grid_v12s/freeE_free/Feynman_08_13_seed1
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 1 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_13_seed1
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 1 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_13_seed1
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 1 --output-dir results/grid_v12s/none_free/Feynman_08_14_seed1
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 1 --output-dir results/grid_v12s/shared_free/Feynman_08_14_seed1
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 1 --output-dir results/grid_v12s/sharedI_free/Feynman_08_14_seed1
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 1 --output-dir results/grid_v12s/free_free/Feynman_08_14_seed1
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 1 --output-dir results/grid_v12s/freeI_free/Feynman_08_14_seed1
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 1 --output-dir results/grid_v12s/freeE_free/Feynman_08_14_seed1
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 1 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_14_seed1
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 1 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_14_seed1
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 1 --output-dir results/grid_v12s/none_free/Feynman_08_15_seed1
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 1 --output-dir results/grid_v12s/shared_free/Feynman_08_15_seed1
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 1 --output-dir results/grid_v12s/sharedI_free/Feynman_08_15_seed1
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 1 --output-dir results/grid_v12s/free_free/Feynman_08_15_seed1
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 1 --output-dir results/grid_v12s/freeI_free/Feynman_08_15_seed1
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 1 --output-dir results/grid_v12s/freeE_free/Feynman_08_15_seed1
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 1 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_15_seed1
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 1 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_15_seed1
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 1 --output-dir results/grid_v12s/none_free/08_13_seed1
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 1 --output-dir results/grid_v12s/shared_free/08_13_seed1
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 1 --output-dir results/grid_v12s/sharedI_free/08_13_seed1
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 1 --output-dir results/grid_v12s/free_free/08_13_seed1
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 1 --output-dir results/grid_v12s/freeI_free/08_13_seed1
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 1 --output-dir results/grid_v12s/freeE_free/08_13_seed1
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 1 --output-dir results/grid_v12s/free_free_qshift/08_13_seed1
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 1 --output-dir results/grid_v12s/shared_free_qshift/08_13_seed1
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 1 --output-dir results/grid_v12s/none_free/08_14_seed1
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 1 --output-dir results/grid_v12s/shared_free/08_14_seed1
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 1 --output-dir results/grid_v12s/sharedI_free/08_14_seed1
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 1 --output-dir results/grid_v12s/free_free/08_14_seed1
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 1 --output-dir results/grid_v12s/freeI_free/08_14_seed1
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 1 --output-dir results/grid_v12s/freeE_free/08_14_seed1
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 1 --output-dir results/grid_v12s/free_free_qshift/08_14_seed1
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 1 --output-dir results/grid_v12s/shared_free_qshift/08_14_seed1
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 1 --output-dir results/grid_v12s/none_free/08_15_seed1
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 1 --output-dir results/grid_v12s/shared_free/08_15_seed1
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 1 --output-dir results/grid_v12s/sharedI_free/08_15_seed1
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 1 --output-dir results/grid_v12s/free_free/08_15_seed1
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 1 --output-dir results/grid_v12s/freeI_free/08_15_seed1
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 1 --output-dir results/grid_v12s/freeE_free/08_15_seed1
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 1 --output-dir results/grid_v12s/free_free_qshift/08_15_seed1
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 1 --output-dir results/grid_v12s/shared_free_qshift/08_15_seed1
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 2 --output-dir results/grid_v12s/none_free/Feynman_08_12_seed2
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 2 --output-dir results/grid_v12s/shared_free/Feynman_08_12_seed2
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 2 --output-dir results/grid_v12s/sharedI_free/Feynman_08_12_seed2
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 2 --output-dir results/grid_v12s/free_free/Feynman_08_12_seed2
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 2 --output-dir results/grid_v12s/freeI_free/Feynman_08_12_seed2
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 2 --output-dir results/grid_v12s/freeE_free/Feynman_08_12_seed2
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 2 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_12_seed2
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 2 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_12_seed2
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 2 --output-dir results/grid_v12s/none_free/Feynman_08_13_seed2
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 2 --output-dir results/grid_v12s/shared_free/Feynman_08_13_seed2
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 2 --output-dir results/grid_v12s/sharedI_free/Feynman_08_13_seed2
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 2 --output-dir results/grid_v12s/free_free/Feynman_08_13_seed2
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 2 --output-dir results/grid_v12s/freeI_free/Feynman_08_13_seed2
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 2 --output-dir results/grid_v12s/freeE_free/Feynman_08_13_seed2
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 2 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_13_seed2
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 2 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_13_seed2
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 2 --output-dir results/grid_v12s/none_free/Feynman_08_14_seed2
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 2 --output-dir results/grid_v12s/shared_free/Feynman_08_14_seed2
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 2 --output-dir results/grid_v12s/sharedI_free/Feynman_08_14_seed2
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 2 --output-dir results/grid_v12s/free_free/Feynman_08_14_seed2
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 2 --output-dir results/grid_v12s/freeI_free/Feynman_08_14_seed2
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 2 --output-dir results/grid_v12s/freeE_free/Feynman_08_14_seed2
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 2 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_14_seed2
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 2 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_14_seed2
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 2 --output-dir results/grid_v12s/none_free/Feynman_08_15_seed2
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 2 --output-dir results/grid_v12s/shared_free/Feynman_08_15_seed2
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 2 --output-dir results/grid_v12s/sharedI_free/Feynman_08_15_seed2
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 2 --output-dir results/grid_v12s/free_free/Feynman_08_15_seed2
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 2 --output-dir results/grid_v12s/freeI_free/Feynman_08_15_seed2
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 2 --output-dir results/grid_v12s/freeE_free/Feynman_08_15_seed2
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 2 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_15_seed2
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 2 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_15_seed2
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 2 --output-dir results/grid_v12s/none_free/08_13_seed2
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 2 --output-dir results/grid_v12s/shared_free/08_13_seed2
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 2 --output-dir results/grid_v12s/sharedI_free/08_13_seed2
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 2 --output-dir results/grid_v12s/free_free/08_13_seed2
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 2 --output-dir results/grid_v12s/freeI_free/08_13_seed2
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 2 --output-dir results/grid_v12s/freeE_free/08_13_seed2
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 2 --output-dir results/grid_v12s/free_free_qshift/08_13_seed2
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 2 --output-dir results/grid_v12s/shared_free_qshift/08_13_seed2
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 2 --output-dir results/grid_v12s/none_free/08_14_seed2
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 2 --output-dir results/grid_v12s/shared_free/08_14_seed2
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 2 --output-dir results/grid_v12s/sharedI_free/08_14_seed2
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 2 --output-dir results/grid_v12s/free_free/08_14_seed2
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 2 --output-dir results/grid_v12s/freeI_free/08_14_seed2
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 2 --output-dir results/grid_v12s/freeE_free/08_14_seed2
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 2 --output-dir results/grid_v12s/free_free_qshift/08_14_seed2
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 2 --output-dir results/grid_v12s/shared_free_qshift/08_14_seed2
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 2 --output-dir results/grid_v12s/none_free/08_15_seed2
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 2 --output-dir results/grid_v12s/shared_free/08_15_seed2
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 2 --output-dir results/grid_v12s/sharedI_free/08_15_seed2
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 2 --output-dir results/grid_v12s/free_free/08_15_seed2
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 2 --output-dir results/grid_v12s/freeI_free/08_15_seed2
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 2 --output-dir results/grid_v12s/freeE_free/08_15_seed2
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 2 --output-dir results/grid_v12s/free_free_qshift/08_15_seed2
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 2 --output-dir results/grid_v12s/shared_free_qshift/08_15_seed2
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 3 --output-dir results/grid_v12s/none_free/Feynman_08_12_seed3
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 3 --output-dir results/grid_v12s/shared_free/Feynman_08_12_seed3
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 3 --output-dir results/grid_v12s/sharedI_free/Feynman_08_12_seed3
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 3 --output-dir results/grid_v12s/free_free/Feynman_08_12_seed3
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 3 --output-dir results/grid_v12s/freeI_free/Feynman_08_12_seed3
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 3 --output-dir results/grid_v12s/freeE_free/Feynman_08_12_seed3
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 3 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_12_seed3
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 3 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_12_seed3
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 3 --output-dir results/grid_v12s/none_free/Feynman_08_13_seed3
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 3 --output-dir results/grid_v12s/shared_free/Feynman_08_13_seed3
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 3 --output-dir results/grid_v12s/sharedI_free/Feynman_08_13_seed3
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 3 --output-dir results/grid_v12s/free_free/Feynman_08_13_seed3
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 3 --output-dir results/grid_v12s/freeI_free/Feynman_08_13_seed3
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 3 --output-dir results/grid_v12s/freeE_free/Feynman_08_13_seed3
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 3 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_13_seed3
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 3 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_13_seed3
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 3 --output-dir results/grid_v12s/none_free/Feynman_08_14_seed3
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 3 --output-dir results/grid_v12s/shared_free/Feynman_08_14_seed3
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 3 --output-dir results/grid_v12s/sharedI_free/Feynman_08_14_seed3
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 3 --output-dir results/grid_v12s/free_free/Feynman_08_14_seed3
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 3 --output-dir results/grid_v12s/freeI_free/Feynman_08_14_seed3
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 3 --output-dir results/grid_v12s/freeE_free/Feynman_08_14_seed3
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 3 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_14_seed3
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 3 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_14_seed3
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 3 --output-dir results/grid_v12s/none_free/Feynman_08_15_seed3
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 3 --output-dir results/grid_v12s/shared_free/Feynman_08_15_seed3
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 3 --output-dir results/grid_v12s/sharedI_free/Feynman_08_15_seed3
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 3 --output-dir results/grid_v12s/free_free/Feynman_08_15_seed3
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 3 --output-dir results/grid_v12s/freeI_free/Feynman_08_15_seed3
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 3 --output-dir results/grid_v12s/freeE_free/Feynman_08_15_seed3
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 3 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_15_seed3
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 3 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_15_seed3
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 3 --output-dir results/grid_v12s/none_free/08_13_seed3
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 3 --output-dir results/grid_v12s/shared_free/08_13_seed3
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 3 --output-dir results/grid_v12s/sharedI_free/08_13_seed3
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 3 --output-dir results/grid_v12s/free_free/08_13_seed3
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 3 --output-dir results/grid_v12s/freeI_free/08_13_seed3
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 3 --output-dir results/grid_v12s/freeE_free/08_13_seed3
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 3 --output-dir results/grid_v12s/free_free_qshift/08_13_seed3
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 3 --output-dir results/grid_v12s/shared_free_qshift/08_13_seed3
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 3 --output-dir results/grid_v12s/none_free/08_14_seed3
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 3 --output-dir results/grid_v12s/shared_free/08_14_seed3
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 3 --output-dir results/grid_v12s/sharedI_free/08_14_seed3
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 3 --output-dir results/grid_v12s/free_free/08_14_seed3
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 3 --output-dir results/grid_v12s/freeI_free/08_14_seed3
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 3 --output-dir results/grid_v12s/freeE_free/08_14_seed3
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 3 --output-dir results/grid_v12s/free_free_qshift/08_14_seed3
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 3 --output-dir results/grid_v12s/shared_free_qshift/08_14_seed3
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 3 --output-dir results/grid_v12s/none_free/08_15_seed3
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 3 --output-dir results/grid_v12s/shared_free/08_15_seed3
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 3 --output-dir results/grid_v12s/sharedI_free/08_15_seed3
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 3 --output-dir results/grid_v12s/free_free/08_15_seed3
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 3 --output-dir results/grid_v12s/freeI_free/08_15_seed3
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 3 --output-dir results/grid_v12s/freeE_free/08_15_seed3
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 3 --output-dir results/grid_v12s/free_free_qshift/08_15_seed3
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 3 --output-dir results/grid_v12s/shared_free_qshift/08_15_seed3
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 4 --output-dir results/grid_v12s/none_free/Feynman_08_12_seed4
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 4 --output-dir results/grid_v12s/shared_free/Feynman_08_12_seed4
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 4 --output-dir results/grid_v12s/sharedI_free/Feynman_08_12_seed4
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 4 --output-dir results/grid_v12s/free_free/Feynman_08_12_seed4
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 4 --output-dir results/grid_v12s/freeI_free/Feynman_08_12_seed4
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 4 --output-dir results/grid_v12s/freeE_free/Feynman_08_12_seed4
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 4 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_12_seed4
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 4 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_12_seed4
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 4 --output-dir results/grid_v12s/none_free/Feynman_08_13_seed4
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 4 --output-dir results/grid_v12s/shared_free/Feynman_08_13_seed4
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 4 --output-dir results/grid_v12s/sharedI_free/Feynman_08_13_seed4
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 4 --output-dir results/grid_v12s/free_free/Feynman_08_13_seed4
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 4 --output-dir results/grid_v12s/freeI_free/Feynman_08_13_seed4
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 4 --output-dir results/grid_v12s/freeE_free/Feynman_08_13_seed4
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 4 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_13_seed4
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 4 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_13_seed4
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 4 --output-dir results/grid_v12s/none_free/Feynman_08_14_seed4
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 4 --output-dir results/grid_v12s/shared_free/Feynman_08_14_seed4
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 4 --output-dir results/grid_v12s/sharedI_free/Feynman_08_14_seed4
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 4 --output-dir results/grid_v12s/free_free/Feynman_08_14_seed4
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 4 --output-dir results/grid_v12s/freeI_free/Feynman_08_14_seed4
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 4 --output-dir results/grid_v12s/freeE_free/Feynman_08_14_seed4
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 4 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_14_seed4
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 4 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_14_seed4
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 4 --output-dir results/grid_v12s/none_free/Feynman_08_15_seed4
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 4 --output-dir results/grid_v12s/shared_free/Feynman_08_15_seed4
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 4 --output-dir results/grid_v12s/sharedI_free/Feynman_08_15_seed4
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 4 --output-dir results/grid_v12s/free_free/Feynman_08_15_seed4
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 4 --output-dir results/grid_v12s/freeI_free/Feynman_08_15_seed4
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 4 --output-dir results/grid_v12s/freeE_free/Feynman_08_15_seed4
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 4 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_15_seed4
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 4 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_15_seed4
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 4 --output-dir results/grid_v12s/none_free/08_13_seed4
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 4 --output-dir results/grid_v12s/shared_free/08_13_seed4
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 4 --output-dir results/grid_v12s/sharedI_free/08_13_seed4
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 4 --output-dir results/grid_v12s/free_free/08_13_seed4
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 4 --output-dir results/grid_v12s/freeI_free/08_13_seed4
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 4 --output-dir results/grid_v12s/freeE_free/08_13_seed4
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 4 --output-dir results/grid_v12s/free_free_qshift/08_13_seed4
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 4 --output-dir results/grid_v12s/shared_free_qshift/08_13_seed4
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 4 --output-dir results/grid_v12s/none_free/08_14_seed4
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 4 --output-dir results/grid_v12s/shared_free/08_14_seed4
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 4 --output-dir results/grid_v12s/sharedI_free/08_14_seed4
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 4 --output-dir results/grid_v12s/free_free/08_14_seed4
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 4 --output-dir results/grid_v12s/freeI_free/08_14_seed4
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 4 --output-dir results/grid_v12s/freeE_free/08_14_seed4
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 4 --output-dir results/grid_v12s/free_free_qshift/08_14_seed4
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 4 --output-dir results/grid_v12s/shared_free_qshift/08_14_seed4
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 4 --output-dir results/grid_v12s/none_free/08_15_seed4
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 4 --output-dir results/grid_v12s/shared_free/08_15_seed4
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 4 --output-dir results/grid_v12s/sharedI_free/08_15_seed4
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 4 --output-dir results/grid_v12s/free_free/08_15_seed4
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 4 --output-dir results/grid_v12s/freeI_free/08_15_seed4
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 4 --output-dir results/grid_v12s/freeE_free/08_15_seed4
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 4 --output-dir results/grid_v12s/free_free_qshift/08_15_seed4
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 4 --output-dir results/grid_v12s/shared_free_qshift/08_15_seed4
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 5 --output-dir results/grid_v12s/none_free/Feynman_08_12_seed5
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 5 --output-dir results/grid_v12s/shared_free/Feynman_08_12_seed5
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 5 --output-dir results/grid_v12s/sharedI_free/Feynman_08_12_seed5
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 5 --output-dir results/grid_v12s/free_free/Feynman_08_12_seed5
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 5 --output-dir results/grid_v12s/freeI_free/Feynman_08_12_seed5
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 5 --output-dir results/grid_v12s/freeE_free/Feynman_08_12_seed5
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 5 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_12_seed5
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 5 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_12_seed5
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 5 --output-dir results/grid_v12s/none_free/Feynman_08_13_seed5
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 5 --output-dir results/grid_v12s/shared_free/Feynman_08_13_seed5
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 5 --output-dir results/grid_v12s/sharedI_free/Feynman_08_13_seed5
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 5 --output-dir results/grid_v12s/free_free/Feynman_08_13_seed5
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 5 --output-dir results/grid_v12s/freeI_free/Feynman_08_13_seed5
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 5 --output-dir results/grid_v12s/freeE_free/Feynman_08_13_seed5
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 5 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_13_seed5
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 5 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_13_seed5
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 5 --output-dir results/grid_v12s/none_free/Feynman_08_14_seed5
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 5 --output-dir results/grid_v12s/shared_free/Feynman_08_14_seed5
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 5 --output-dir results/grid_v12s/sharedI_free/Feynman_08_14_seed5
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 5 --output-dir results/grid_v12s/free_free/Feynman_08_14_seed5
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 5 --output-dir results/grid_v12s/freeI_free/Feynman_08_14_seed5
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 5 --output-dir results/grid_v12s/freeE_free/Feynman_08_14_seed5
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 5 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_14_seed5
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 5 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_14_seed5
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 5 --output-dir results/grid_v12s/none_free/Feynman_08_15_seed5
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 5 --output-dir results/grid_v12s/shared_free/Feynman_08_15_seed5
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 5 --output-dir results/grid_v12s/sharedI_free/Feynman_08_15_seed5
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 5 --output-dir results/grid_v12s/free_free/Feynman_08_15_seed5
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 5 --output-dir results/grid_v12s/freeI_free/Feynman_08_15_seed5
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 5 --output-dir results/grid_v12s/freeE_free/Feynman_08_15_seed5
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 5 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_15_seed5
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 5 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_15_seed5
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 5 --output-dir results/grid_v12s/none_free/08_13_seed5
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 5 --output-dir results/grid_v12s/shared_free/08_13_seed5
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 5 --output-dir results/grid_v12s/sharedI_free/08_13_seed5
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 5 --output-dir results/grid_v12s/free_free/08_13_seed5
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 5 --output-dir results/grid_v12s/freeI_free/08_13_seed5
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 5 --output-dir results/grid_v12s/freeE_free/08_13_seed5
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 5 --output-dir results/grid_v12s/free_free_qshift/08_13_seed5
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 5 --output-dir results/grid_v12s/shared_free_qshift/08_13_seed5
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 5 --output-dir results/grid_v12s/none_free/08_14_seed5
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 5 --output-dir results/grid_v12s/shared_free/08_14_seed5
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 5 --output-dir results/grid_v12s/sharedI_free/08_14_seed5
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 5 --output-dir results/grid_v12s/free_free/08_14_seed5
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 5 --output-dir results/grid_v12s/freeI_free/08_14_seed5
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 5 --output-dir results/grid_v12s/freeE_free/08_14_seed5
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 5 --output-dir results/grid_v12s/free_free_qshift/08_14_seed5
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 5 --output-dir results/grid_v12s/shared_free_qshift/08_14_seed5
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 5 --output-dir results/grid_v12s/none_free/08_15_seed5
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 5 --output-dir results/grid_v12s/shared_free/08_15_seed5
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 5 --output-dir results/grid_v12s/sharedI_free/08_15_seed5
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 5 --output-dir results/grid_v12s/free_free/08_15_seed5
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 5 --output-dir results/grid_v12s/freeI_free/08_15_seed5
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 5 --output-dir results/grid_v12s/freeE_free/08_15_seed5
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 5 --output-dir results/grid_v12s/free_free_qshift/08_15_seed5
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 5 --output-dir results/grid_v12s/shared_free_qshift/08_15_seed5
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 6 --output-dir results/grid_v12s/none_free/Feynman_08_12_seed6
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 6 --output-dir results/grid_v12s/shared_free/Feynman_08_12_seed6
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 6 --output-dir results/grid_v12s/sharedI_free/Feynman_08_12_seed6
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 6 --output-dir results/grid_v12s/free_free/Feynman_08_12_seed6
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 6 --output-dir results/grid_v12s/freeI_free/Feynman_08_12_seed6
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 6 --output-dir results/grid_v12s/freeE_free/Feynman_08_12_seed6
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 6 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_12_seed6
+--session Feynman_08_12 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 6 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_12_seed6
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 6 --output-dir results/grid_v12s/none_free/Feynman_08_13_seed6
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 6 --output-dir results/grid_v12s/shared_free/Feynman_08_13_seed6
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 6 --output-dir results/grid_v12s/sharedI_free/Feynman_08_13_seed6
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 6 --output-dir results/grid_v12s/free_free/Feynman_08_13_seed6
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 6 --output-dir results/grid_v12s/freeI_free/Feynman_08_13_seed6
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 6 --output-dir results/grid_v12s/freeE_free/Feynman_08_13_seed6
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 6 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_13_seed6
+--session Feynman_08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 6 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_13_seed6
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 6 --output-dir results/grid_v12s/none_free/Feynman_08_14_seed6
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 6 --output-dir results/grid_v12s/shared_free/Feynman_08_14_seed6
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 6 --output-dir results/grid_v12s/sharedI_free/Feynman_08_14_seed6
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 6 --output-dir results/grid_v12s/free_free/Feynman_08_14_seed6
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 6 --output-dir results/grid_v12s/freeI_free/Feynman_08_14_seed6
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 6 --output-dir results/grid_v12s/freeE_free/Feynman_08_14_seed6
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 6 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_14_seed6
+--session Feynman_08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 6 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_14_seed6
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 6 --output-dir results/grid_v12s/none_free/Feynman_08_15_seed6
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 6 --output-dir results/grid_v12s/shared_free/Feynman_08_15_seed6
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 6 --output-dir results/grid_v12s/sharedI_free/Feynman_08_15_seed6
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 6 --output-dir results/grid_v12s/free_free/Feynman_08_15_seed6
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 6 --output-dir results/grid_v12s/freeI_free/Feynman_08_15_seed6
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 6 --output-dir results/grid_v12s/freeE_free/Feynman_08_15_seed6
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 6 --output-dir results/grid_v12s/free_free_qshift/Feynman_08_15_seed6
+--session Feynman_08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 6 --output-dir results/grid_v12s/shared_free_qshift/Feynman_08_15_seed6
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 6 --output-dir results/grid_v12s/none_free/08_13_seed6
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 6 --output-dir results/grid_v12s/shared_free/08_13_seed6
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 6 --output-dir results/grid_v12s/sharedI_free/08_13_seed6
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 6 --output-dir results/grid_v12s/free_free/08_13_seed6
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 6 --output-dir results/grid_v12s/freeI_free/08_13_seed6
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 6 --output-dir results/grid_v12s/freeE_free/08_13_seed6
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 6 --output-dir results/grid_v12s/free_free_qshift/08_13_seed6
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 6 --output-dir results/grid_v12s/shared_free_qshift/08_13_seed6
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 6 --output-dir results/grid_v12s/none_free/08_14_seed6
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 6 --output-dir results/grid_v12s/shared_free/08_14_seed6
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 6 --output-dir results/grid_v12s/sharedI_free/08_14_seed6
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 6 --output-dir results/grid_v12s/free_free/08_14_seed6
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 6 --output-dir results/grid_v12s/freeI_free/08_14_seed6
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 6 --output-dir results/grid_v12s/freeE_free/08_14_seed6
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 6 --output-dir results/grid_v12s/free_free_qshift/08_14_seed6
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 6 --output-dir results/grid_v12s/shared_free_qshift/08_14_seed6
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context none --ie-mode free --seed 6 --output-dir results/grid_v12s/none_free/08_15_seed6
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --ie-mode free --seed 6 --output-dir results/grid_v12s/shared_free/08_15_seed6
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-targets i --ie-mode free --seed 6 --output-dir results/grid_v12s/sharedI_free/08_15_seed6
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --ie-mode free --seed 6 --output-dir results/grid_v12s/free_free/08_15_seed6
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets i --ie-mode free --seed 6 --output-dir results/grid_v12s/freeI_free/08_15_seed6
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-targets e --ie-mode free --seed 6 --output-dir results/grid_v12s/freeE_free/08_15_seed6
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context free --context-shift-trials 24,48 --ie-mode free --seed 6 --output-dir results/grid_v12s/free_free_qshift/08_15_seed6
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split switch --context shared --context-shift-trials 24,48 --ie-mode free --seed 6 --output-dir results/grid_v12s/shared_free_qshift/08_15_seed6

@@ -1,0 +1,14 @@
+{
+  "teacher": "results\\grid_v12\\shared_free\\08_15_seed5",
+  "ctx_scale": 1.0,
+  "ie_transform": "none",
+  "seed": 0,
+  "teacher_config": {
+    "session": "08_15",
+    "context": "shared",
+    "context_targets": "all",
+    "ie_mode": "free",
+    "seed": 5,
+    "trials": "verified"
+  }
+}

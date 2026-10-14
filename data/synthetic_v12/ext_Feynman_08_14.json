@@ -1,0 +1,14 @@
+{
+  "teacher": "results\\grid_v12\\free_free\\Feynman_08_14_seed2",
+  "ctx_scale": 1.0,
+  "ie_transform": "none",
+  "seed": 0,
+  "teacher_config": {
+    "session": "Feynman_08_14",
+    "context": "free",
+    "context_targets": "all",
+    "ie_mode": "free",
+    "seed": 2,
+    "trials": "verified"
+  }
+}

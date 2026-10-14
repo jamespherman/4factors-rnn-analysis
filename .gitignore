@@ -179,3 +179,5 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+# Synthetic recovery sessions (regenerate with scripts/build_recovery_set.py)
+data/synthetic_v12/*.mat

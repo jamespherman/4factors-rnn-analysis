@@ -16,6 +16,7 @@ fi
 TODO=slurm/todo_$(basename "$JOBS")
 : > "$TODO"
 while read -r ARGS; do
+    ARGS=${ARGS%$'\r'}  # job lists written on Windows
     [ -z "$ARGS" ] && continue
     OUT=""; PREV=""
     for A in $ARGS; do

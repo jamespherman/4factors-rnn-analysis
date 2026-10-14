@@ -30,6 +30,7 @@ nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
 
 mapfile -t LINES < <(sed -n "${FIRST},${LAST}p" "$JOBS")
 for ARGS in "${LINES[@]}"; do
+    ARGS=${ARGS%$'\r'}  # job lists written on Windows
     [ -z "$ARGS" ] && continue
     OUT=""; PREV=""
     for A in $ARGS; do

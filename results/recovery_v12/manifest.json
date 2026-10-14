@@ -1,0 +1,156 @@
+{
+ "Feynman_08_12": {
+  "teachers": {
+   "null": "results/grid_v12/none_free/Feynman_08_12_seed4",
+   "ext": "results/grid_v12/free_free/Feynman_08_12_seed3",
+   "local": "results/grid_v12/freeI_free/Feynman_08_12_seed4",
+   "shared": "results/grid_v12/shared_free/Feynman_08_12_seed4"
+  },
+  "gains": {
+   "null": 1.0,
+   "ext": 1.0,
+   "local": 1.0,
+   "shared": 2.0
+  },
+  "ext_context_sd": 0.8584451904094706,
+  "shared_context_sd_by_gain": {
+   "1": 0.4545631084882775,
+   "2": 0.8754891889513265,
+   "3": 1.2646882337748793,
+   "5": 1.9746868053145994,
+   "8": 2.9882692204637804
+  }
+ },
+ "Feynman_08_13": {
+  "teachers": {
+   "null": "results/grid_v12/none_free/Feynman_08_13_seed4",
+   "ext": "results/grid_v12/free_free/Feynman_08_13_seed4",
+   "local": "results/grid_v12/freeI_free/Feynman_08_13_seed5",
+   "shared": "results/grid_v12/shared_free/Feynman_08_13_seed4"
+  },
+  "gains": {
+   "null": 1.0,
+   "ext": 1.0,
+   "local": 1.0,
+   "shared": 2.0
+  },
+  "ext_context_sd": 0.5893744939625096,
+  "shared_context_sd_by_gain": {
+   "1": 0.39865611286152064,
+   "2": 0.7969657771954863,
+   "3": 1.1946991142108065,
+   "5": 1.9875299968267912,
+   "8": 3.166786510186242
+  }
+ },
+ "Feynman_08_14": {
+  "teachers": {
+   "null": "results/grid_v12/none_free/Feynman_08_14_seed6",
+   "ext": "results/grid_v12/free_free/Feynman_08_14_seed2",
+   "local": "results/grid_v12/freeI_free/Feynman_08_14_seed3",
+   "shared": "results/grid_v12/shared_free/Feynman_08_14_seed6"
+  },
+  "gains": {
+   "null": 1.0,
+   "ext": 1.0,
+   "local": 1.0,
+   "shared": 1.0
+  },
+  "ext_context_sd": 1.106065130307534,
+  "shared_context_sd_by_gain": {
+   "1": 1.0081354731360925,
+   "2": 2.011570823198801,
+   "3": 3.0095088930147473,
+   "5": 4.9850637250049585,
+   "8": 7.877174590242939
+  }
+ },
+ "Feynman_08_15": {
+  "teachers": {
+   "null": "results/grid_v12/none_free/Feynman_08_15_seed6",
+   "ext": "results/grid_v12/free_free/Feynman_08_15_seed5",
+   "local": "results/grid_v12/freeI_free/Feynman_08_15_seed5",
+   "shared": "results/grid_v12/shared_free/Feynman_08_15_seed6"
+  },
+  "gains": {
+   "null": 1.0,
+   "ext": 1.0,
+   "local": 1.0,
+   "shared": 1.0
+  },
+  "ext_context_sd": 1.0689042627457586,
+  "shared_context_sd_by_gain": {
+   "1": 0.8483003500820223,
+   "2": 1.6766831809435456,
+   "3": 2.480003693248101,
+   "5": 4.001660101579347,
+   "8": 6.070808719807324
+  }
+ },
+ "08_13": {
+  "teachers": {
+   "null": "results/grid_v12/none_free/08_13_seed5",
+   "ext": "results/grid_v12/free_free/08_13_seed4",
+   "local": "results/grid_v12/freeI_free/08_13_seed4",
+   "shared": "results/grid_v12/shared_free/08_13_seed5"
+  },
+  "gains": {
+   "null": 1.0,
+   "ext": 1.0,
+   "local": 1.0,
+   "shared": 1.0
+  },
+  "ext_context_sd": 1.4162513921023898,
+  "shared_context_sd_by_gain": {
+   "1": 1.6685455730408525,
+   "2": 3.3294460345099566,
+   "3": 5.024374522107256,
+   "5": 8.678998146699648,
+   "8": 15.537941150522283
+  }
+ },
+ "08_14": {
+  "teachers": {
+   "null": "results/grid_v12/none_free/08_14_seed4",
+   "ext": "results/grid_v12/free_free/08_14_seed4",
+   "local": "results/grid_v12/freeI_free/08_14_seed4",
+   "shared": "results/grid_v12/shared_free/08_14_seed4"
+  },
+  "gains": {
+   "null": 1.0,
+   "ext": 1.0,
+   "local": 1.0,
+   "shared": 2.0
+  },
+  "ext_context_sd": 2.3958328171131607,
+  "shared_context_sd_by_gain": {
+   "1": 1.4920572269648702,
+   "2": 2.959480648405048,
+   "3": 4.383282168949201,
+   "5": 7.062400780045281,
+   "8": 10.679698935585076
+  }
+ },
+ "08_15": {
+  "teachers": {
+   "null": "results/grid_v12/none_free/08_15_seed6",
+   "ext": "results/grid_v12/free_free/08_15_seed5",
+   "local": "results/grid_v12/freeI_free/08_15_seed5",
+   "shared": "results/grid_v12/shared_free/08_15_seed5"
+  },
+  "gains": {
+   "null": 1.0,
+   "ext": 1.0,
+   "local": 1.0,
+   "shared": 1.0
+  },
+  "ext_context_sd": 2.444520936728009,
+  "shared_context_sd_by_gain": {
+   "1": 1.8937391883823553,
+   "2": 3.7095040715594148,
+   "3": 5.417745655279941,
+   "5": 8.48965914934542,
+   "8": 12.459721691624372
+  }
+ }
+}

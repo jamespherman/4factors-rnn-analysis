@@ -37,7 +37,7 @@ from src.data_loader import load_mat_file, RNNDataset
 from src.analysis.pipeline_selectivity import get_target_onset_bins, compute_window_rates, OPPOSITE_LOCATION
 from src.analysis.task_context import location_rewarded
 from train_context import get_context_channels, get_drift_channels
-from src.sessions import stable_mask
+from src.sessions import stable_mask, mask_unstable
 import analyze_context_effects as A
 
 warnings.filterwarnings('ignore', category=RuntimeWarning)
@@ -150,7 +150,7 @@ def evaluate(model_dir: Path, sessions: dict) -> dict:
     synthetic = 'synthetic' in config['data_path']
     key = config['data_path'] if synthetic else (config['session'], config.get('trials', 'all'))
     if key not in sessions:
-        sessions[key] = (A.session_from_data(load_mat_file(config['data_path']), config['session'])
+        sessions[key] = (A.session_from_data(mask_unstable(load_mat_file(config['data_path'])), config['session'])
                          if synthetic else A.load_session(*key))
     sess = sessions[key]
     n_split = sum(len(config.get(k, [])) for k in ('train_idx', 'select_idx', 'test_idx'))
@@ -202,6 +202,13 @@ def evaluate(model_dir: Path, sessions: dict) -> dict:
             part['vis'] = np.where(keep[:, None], sess['vis'], np.nan)
             part['pre'] = np.where(keep[:, None], sess['pre'], np.nan)
             rec_split[name] = effects(part, min_trials=2)  # test trials are few
+        # Model effects on the test trials alone (same switches as the recorded test effect)
+        part = dict(model_sess)
+        part['vis'] = np.where(is_test[:, None], model_sess['vis'], np.nan)
+        part['pre'] = np.where(is_test[:, None], model_sess['pre'], np.nan)
+        model_eff_test = effects(part, min_trials=2)
+    else:
+        model_eff_test = None
 
     # 3. Current decomposition (recorded E units; pre-target window; pref location rewarded vs not)
     decomposition = {}
@@ -215,8 +222,9 @@ def evaluate(model_dir: Path, sessions: dict) -> dict:
             diffs.append(np.nanmean(window[gain, j]) - np.nanmean(window[~gain, j]))
         decomposition[name] = np.array(diffs)
 
-    return {'config': {k: config[k] for k in ('session', 'context', 'context_targets', 'ie_mode', 'hidden_i', 'seed', 'trials')},
-            'll': ll, 'effects': model_eff, 'decomposition': decomposition, 'recorded_split': rec_split,
+    return {'config': {k: config.get(k) for k in ('session', 'context', 'context_targets', 'ie_mode', 'hidden_i', 'seed',
+                                                  'trials', 'split', 'split_seed')},
+            'll': ll, 'effects': model_eff, 'effects_test': model_eff_test, 'decomposition': decomposition, 'recorded_split': rec_split,
             'recorded': sess['effects'],
             'select_ll': json.loads((model_dir / 'summary.json').read_text()).get('select_ll', np.nan)}
 

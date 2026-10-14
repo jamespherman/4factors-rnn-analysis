@@ -51,13 +51,16 @@ from src.data_loader import load_mat_file, RNNDataset, validate_data, select_tri
 from src.analysis.pipeline_selectivity import (
     get_target_onset_bins, compute_window_rates, compute_preferred_locations
 )
-from src.analysis.task_context import get_task_context
+from src.analysis.task_context import get_task_context, get_switches
 from src.sessions import export_path, load_export, stable_mask, REPO_DIR
 from train_session import (
     CONFIG as BASE_CONFIG, get_recorded_unit_indices,
     get_stimulus_location_conditions, get_target_window_index, target_aligned,
     grand_psth_correlation
 )
+
+# Half-width (trials) of held-out switch windows; matches the K = 30 switch-triggered contrast
+SWITCH_HALF_WIDTH = 30
 
 CONFIG = dict(BASE_CONFIG)
 CONFIG.update({
@@ -140,6 +143,32 @@ def three_way_split(strata: np.ndarray, test_fraction: float, select_fraction: f
     return np.sort(train), np.sort(select), np.sort(test)
 
 
+def switch_window_split(reward_map: np.ndarray, n_test: int, n_select: int, half_width: int, seed: int):
+    """
+    Train / selection / test split by whole switch windows: n_test and n_select reward-map
+    switches (not adjacent to each other, so windows don't overlap) are drawn at random, and
+    the trials within +/- half_width of each go to test or selection. Held-out trials then
+    share no slow fluctuations with nearby training trials, and the switch-triggered context
+    effect at a test switch must come from the context input.
+    """
+    switches = get_switches(reward_map)
+    rng = np.random.default_rng(seed)
+    order = rng.permutation(len(switches))
+    picked = []
+    for k in order:  # greedy: skip switches adjacent to one already picked
+        if all(abs(k - j) > 1 for j in picked):
+            picked.append(k)
+        if len(picked) == n_test + n_select:
+            break
+    assert len(picked) == n_test + n_select, "Not enough separated switches"
+    n = len(reward_map)
+    label = np.zeros(n, dtype=int)  # 0 train, 1 select, 2 test
+    for rank, k in enumerate(picked):
+        t = switches[k]
+        label[max(0, t - half_width):min(n, t + half_width)] = 2 if rank < n_test else 1
+    return np.flatnonzero(label == 0), np.flatnonzero(label == 1), np.flatnonzero(label == 2)
+
+
 def get_unit_locations(data: dict, rec_units: np.ndarray, n_total: int) -> np.ndarray:
     """Preferred location per unit: recorded neurons' visual maximum; hidden units cycle 1-4."""
     onset = get_target_onset_bins(data)
@@ -171,6 +200,11 @@ def main():
                              'the session (shared/free context only)')
     parser.add_argument('--hidden-i', type=int, default=0, help='Extra unrecorded I units')
     parser.add_argument('--seed', type=int, default=1, help='Initialization (and default split) seed')
+    parser.add_argument('--split', default='random', choices=['random', 'switch'],
+                        help="'random': stratified random trials; 'switch': whole windows around "
+                             "reward switches (see switch_window_split)")
+    parser.add_argument('--split-switches', default='2,2',
+                        help="--split switch: number of test,selection switches")
     parser.add_argument('--split-seed', type=int, default=None,
                         help='Seed of the train/select/test split (default: --seed). Fix it to compare '
                              'restarts and variants on the same trials')
@@ -197,7 +231,8 @@ def main():
                   seed=args.seed, context_shift=args.context_shift,
                   context_shift_trials=[int(k) for k in args.context_shift_trials.split(',')] if args.context_shift_trials else None,
                   data_path=args.data or export_path(args.session).relative_to(REPO_DIR).as_posix(), trials=args.trials,
-                  split_seed=args.seed if args.split_seed is None else args.split_seed)
+                  split_seed=args.seed if args.split_seed is None else args.split_seed,
+                  split=args.split, split_switches=[int(k) for k in args.split_switches.split(',')])
     for key in ('max_epochs', 'patience', 'lctx_scale', 'lwin_scale', 'n_drift', 'test_fraction', 'select_fraction'):
         if getattr(args, key) is not None:
             config[key] = getattr(args, key)
@@ -243,8 +278,12 @@ def main():
     conditions = {'stim': torch.tensor(stim_cond, device=device),
                   'ctx': torch.tensor(ctx_cond, device=device)}
 
-    train_idx, select_idx, test_idx = three_way_split(
-        ctx_cond, config['test_fraction'], config['select_fraction'], config['split_seed'])
+    if config['split'] == 'switch':
+        train_idx, select_idx, test_idx = switch_window_split(
+            get_task_context(data)['reward_map'], *config['split_switches'], SWITCH_HALF_WIDTH, config['split_seed'])
+    else:
+        train_idx, select_idx, test_idx = three_way_split(
+            ctx_cond, config['test_fraction'], config['select_fraction'], config['split_seed'])
 
     tgt_valid, tgt_bins = get_target_window_index(onset_bins, n_bins, bin_size_ms, config['target_window_ms'])
     row = np.cumsum(tgt_valid) - 1
