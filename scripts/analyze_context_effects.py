@@ -207,7 +207,7 @@ def summarize_switches(rows: list) -> dict:
 
 # ---------------------------------------------------------------- A1c
 
-def probability_sign_reversal(sess: dict) -> list:
+def probability_sign_reversal(sess: dict, min_trials: int = 5) -> list:
     """
     Per neuron: block-1-minus-block-2 visual response at location 1 (d1) and at
     location 3 (d3). Probability predicts d1 > 0 > d3 (or the reverse for an
@@ -221,7 +221,7 @@ def probability_sign_reversal(sess: dict) -> list:
             a = vis[(location == loc) & (block == 1), i]
             b = vis[(location == loc) & (block == 2), i]
             a, b = a[~np.isnan(a)], b[~np.isnan(b)]
-            d.append(a.mean() - b.mean() if len(a) >= 5 and len(b) >= 5 else np.nan)
+            d.append(a.mean() - b.mean() if len(a) >= min_trials and len(b) >= min_trials else np.nan)
         out.append((d[0], d[1], bool(sess['is_e'][i])))
     return out
 

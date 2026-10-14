@@ -118,7 +118,7 @@ def poisson_ll(rates: np.ndarray, counts: np.ndarray, mask: np.ndarray, bin_s: f
     return np.nanmean(ll.reshape(-1, ll.shape[-1])[valid], axis=0)
 
 
-def effects(sess: dict) -> dict:
+def effects(sess: dict, min_trials: int = 5) -> dict:
     """Per-neuron context and spatial effects for a session dict (recorded or model rates)."""
     rows = A.switch_contrasts(sess, SWITCH_K)
     out = {}
@@ -131,7 +131,7 @@ def effects(sess: dict) -> dict:
         for i, d in per_neuron.items():
             v[i] = np.mean(d)
         out[f'{ctx}_pre'] = v
-    sr = np.array(A.probability_sign_reversal(sess), dtype=float)
+    sr = np.array(A.probability_sign_reversal(sess, min_trials), dtype=float)
     out['prob_vis'] = (sr[:, 0] - sr[:, 1]) / 2
     loc, vis = sess['location'], sess['vis']
     pref = sess['preferred']['for_factors']
@@ -176,6 +176,17 @@ def evaluate(model_dir: Path, sessions: dict) -> dict:
     model_sess['pre'] = compute_window_rates(rates, onset, window_ms=A.PRE_WINDOW_MS)
     model_eff = effects(model_sess)
 
+    # Recorded effects from the test trials alone and from the rest. Models fit to window
+    # means can match training-trial noise; the test-trial effect is the held-out target.
+    rec_split = {}
+    if len(test):
+        is_test = np.isin(np.arange(len(onset)), test)
+        for name, keep in [('test', is_test), ('rest', ~is_test)]:
+            part = dict(sess)
+            part['vis'] = np.where(keep[:, None], sess['vis'], np.nan)
+            part['pre'] = np.where(keep[:, None], sess['pre'], np.nan)
+            rec_split[name] = effects(part, min_trials=2)  # test trials are few
+
     # 3. Current decomposition (recorded E units; pre-target window; pref location rewarded vs not)
     decomposition = {}
     is_e_unit = rec_units < n_exc
@@ -189,7 +200,7 @@ def evaluate(model_dir: Path, sessions: dict) -> dict:
         decomposition[name] = np.array(diffs)
 
     return {'config': {k: config[k] for k in ('session', 'context', 'context_targets', 'ie_mode', 'hidden_i', 'seed')},
-            'll': ll, 'effects': model_eff, 'decomposition': decomposition}
+            'll': ll, 'effects': model_eff, 'decomposition': decomposition, 'recorded_split': rec_split}
 
 
 def main():
@@ -245,6 +256,13 @@ def main():
                 ok = ~np.isnan(m) & ~np.isnan(rec_pooled[k])
                 entry[f'{k}_model'] = float(np.nanmean(m))
                 entry[f'{k}_r'] = float(np.corrcoef(m[ok], rec_pooled[k][ok])[0, 1]) if ok.sum() > 3 else np.nan
+                if all(r.get('recorded_split') for r in runs):
+                    rt = np.concatenate([r['recorded_split']['test'][k] for r in runs])
+                    rr = np.concatenate([r['recorded_split']['rest'][k] for r in runs])
+                    ok = ~np.isnan(m) & ~np.isnan(rt) & ~np.isnan(rr)
+                    if ok.sum() > 3:
+                        entry[f'{k}_r_test'] = float(np.corrcoef(m[ok], rt[ok])[0, 1])
+                        entry[f'{k}_ceiling_test'] = float(np.corrcoef(rr[ok], rt[ok])[0, 1])
             dec = {c: np.concatenate([r['decomposition'][c] for r in runs if c in r['decomposition']])
                    for c in runs[0]['decomposition']}
             total_abs = sum(np.abs(d) for d in dec.values())
@@ -262,6 +280,17 @@ def main():
             f"{avg['block_pre_model']:+.2f} / {rec('block_pre'):+.2f} / {avg['block_pre_r']:+.2f} | "
             f"{avg['prob_vis_model']:+.2f} / {rec('prob_vis'):+.2f} / {avg['prob_vis_r']:+.2f} | "
             f"{avg['spatial_r']:+.2f} | {avg['ie_share']:.2f} |")
+
+    lines += ['', 'Held-out check: r between model effect and the recorded effect on test trials only, '
+              'and the ceiling r(recorded non-test trials, recorded test trials).', '',
+              '| Variant | Reward pre r / ceiling | Block pre r / ceiling | Prob vis r / ceiling '
+              '| Spatial r / ceiling |', '|---|---|---|---|---|']
+    for v, e in summary.items():
+        avg = e['mean']
+        if 'spatial_r_test' in avg:
+            lines.append(f"| {v} | " + ' | '.join(
+                f"{avg.get(k + '_r_test', np.nan):+.2f} / {avg.get(k + '_ceiling_test', np.nan):+.2f}"
+                for k in ('reward_pre', 'block_pre', 'prob_vis', 'spatial')) + ' |')
 
     report = '\n'.join(lines) + '\n'
     (root / 'evaluation_report.md').write_text(report, encoding='utf-8')
