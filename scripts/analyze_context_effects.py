@@ -41,7 +41,7 @@ from sklearn.preprocessing import StandardScaler
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.data_loader import load_mat_file
-from src.sessions import DEFAULT_SESSIONS, session_name, load_export
+from src.sessions import DEFAULT_SESSIONS, ALL_SESSIONS, session_name, load_export
 from src.analysis.pipeline_selectivity import (
     get_target_onset_bins, compute_window_rates, compute_preferred_locations, get_factor_masks
 )
@@ -376,11 +376,17 @@ def main():
     parser = argparse.ArgumentParser(description='Stage A context analyses')
     parser.add_argument('--trials', default='all', choices=['all', 'verified'],
                         help="'verified': successful trials with a verified PLDAPS match only")
+    parser.add_argument('--sessions', default=None,
+                        help="Comma-separated sessions, or 'all' for every corrected export (default: the Newton three)")
+    parser.add_argument('--output-dir', default=None)
     args = parser.parse_args()
-    if args.trials == 'verified':
+    if args.output_dir:
+        OUTPUT_DIR = Path(args.output_dir)
+    elif args.trials == 'verified':
         OUTPUT_DIR = OUTPUT_DIR.parent / 'context_analysis_verified'
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    sessions = [load_session(s, args.trials) for s in SESSIONS]
+    names = (ALL_SESSIONS if args.sessions == 'all' else args.sessions.split(',')) if args.sessions else SESSIONS
+    sessions = [load_session(s, args.trials) for s in names]
     results = {'labels': {}, 'circular_null': {}, 'switch': {}, 'sign_reversal': [],
                'history': {}, 'decoding': {}}
     lines = ['# Stage A: context effects in the recordings', '',

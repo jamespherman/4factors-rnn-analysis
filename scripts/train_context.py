@@ -52,7 +52,7 @@ from src.analysis.pipeline_selectivity import (
     get_target_onset_bins, compute_window_rates, compute_preferred_locations
 )
 from src.analysis.task_context import get_task_context
-from src.sessions import export_path, load_export
+from src.sessions import export_path, load_export, stable_mask, REPO_DIR
 from train_session import (
     CONFIG as BASE_CONFIG, get_recorded_unit_indices,
     get_stimulus_location_conditions, get_target_window_index, target_aligned,
@@ -196,7 +196,7 @@ def main():
                   ie_mode=args.ie_mode, frozen_from=args.frozen_from, hidden_i=args.hidden_i,
                   seed=args.seed, context_shift=args.context_shift,
                   context_shift_trials=[int(k) for k in args.context_shift_trials.split(',')] if args.context_shift_trials else None,
-                  data_path=args.data or f'data/{export_path(args.session).name}', trials=args.trials,
+                  data_path=args.data or export_path(args.session).relative_to(REPO_DIR).as_posix(), trials=args.trials,
                   split_seed=args.seed if args.split_seed is None else args.split_seed)
     for key in ('max_epochs', 'patience', 'lctx_scale', 'lwin_scale', 'n_drift', 'test_fraction', 'select_fraction'):
         if getattr(args, key) is not None:
@@ -217,6 +217,7 @@ def main():
     # Data
     data = load_export(args.session, args.trials, path=config['data_path'])
     validate_data(data)
+    config['export_version'] = str(data.get('pipeline_version', 'unknown'))
     dataset = RNNDataset(data)
     n_trials, n_bins = len(dataset), dataset.n_bins
     bin_size_ms = dataset.bin_size_ms
@@ -232,6 +233,10 @@ def main():
                         torch.from_numpy(drift_channels)], dim=-1).to(device)
     targets = all_trials['targets'].to(device)
     mask = all_trials['mask'].to(device)
+    # Each neuron counts only on trials in its stable period (targets there are 0, from NaN;
+    # model rates are zeroed to match, as for padded bins)
+    stable = torch.tensor(stable_mask(data).T, dtype=torch.float32, device=device)  # [trials, neurons]
+    config['stable_fraction'] = float(stable.mean())
 
     stim_cond = get_stimulus_location_conditions(data)
     ctx_cond = get_context_conditions(data)
@@ -256,19 +261,20 @@ def main():
     n_ctx_cond = 16
 
     def window_stats(idx):
-        """Recorded window means per context cell and their squared standard errors."""
-        onehot = np.zeros((len(idx), n_ctx_cond), dtype=np.float32)
-        onehot[np.arange(len(idx)), ctx_cond[idx]] = 1
-        counts = onehot.sum(axis=0)
-        avg = torch.tensor(onehot / np.maximum(counts, 1), device=device)  # [trials, cells]
+        """Recorded window means per context cell and neuron (stable trials only), and their squared SEs."""
+        onehot = torch.zeros(len(idx), n_ctx_cond, device=device)
+        onehot[torch.arange(len(idx)), torch.tensor(ctx_cond[idx], device=device)] = 1
+        w = onehot[:, :, None] * stable[idx][:, None, :]  # [trials, cells, neurons]
+        counts = w.sum(dim=0)
+        avg = w / counts.clamp(min=1)
         means, se2 = [], []
         for bins in win_bins:
             x = target_aligned(targets[idx], bins[idx]).mean(dim=1)  # [trials, neurons]
-            m = avg.T @ x
-            var = (avg.T @ x ** 2) - m ** 2
+            m = torch.einsum('tcn,tn->cn', avg, x)
+            var = torch.einsum('tcn,tn->cn', avg, x ** 2) - m ** 2
             means.append(m)
-            se2.append(var / torch.tensor(np.maximum(counts - 1, 1), device=device)[:, None])
-        keep = torch.tensor(counts >= config['min_trials_per_condition'], device=device)
+            se2.append(var / (counts - 1).clamp(min=1))
+        keep = counts >= config['min_trials_per_condition']
         return {'avg': avg, 'means': means, 'se2': se2, 'keep': keep}
 
     def split(idx):
@@ -354,7 +360,7 @@ def main():
             # Window means per cell vs recorded, in units of the recorded standard error
             w, kk, terms = s['win'], s['win_idx'], []
             for bins, m_rec, se2 in zip(win_bins, w['means'], w['se2']):
-                m = w['avg'].T @ target_aligned(rates_rec[kk], bins[kk]).mean(dim=1)
+                m = torch.einsum('tcn,tn->cn', w['avg'], target_aligned(rates_rec[kk], bins[kk]).mean(dim=1))
                 terms.append(((m - m_rec) ** 2 / (se2 + 0.25))[w['keep']].mean())
             out['L_win'] = sum(terms) / len(terms)
         return out
@@ -386,7 +392,7 @@ def main():
 
     def full_size(rates, idx):
         out = torch.zeros(n_trials, rates.shape[1], len(rec_units), device=device)
-        return out.index_copy(0, idx, rates[:, :, rec_units_t])
+        return out.index_copy(0, idx, rates[:, :, rec_units_t] * stable[idx][:, None, :])
 
     for epoch in range(start_epoch, config['max_epochs']):
         model.train()

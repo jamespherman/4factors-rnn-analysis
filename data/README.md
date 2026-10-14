@@ -27,3 +27,14 @@ After export, you should have:
 ## Data format
 
 See `specs/DATA_SPEC.md` for detailed format documentation.
+
+## Export versions (2026-10-14)
+
+- `rnn_export_*.mat` here: corrected exports, pipeline 1.2.0, all 7 SC sessions (Feynman 08_12-15,
+  Newton 08_13-15). Successful trials only (`trial_outcome` = 21), true reward times, and
+  `neuron_stable_trials` [neurons x trials]; rates outside a neuron's stable period are masked
+  (src/sessions.py). `trial_audit/`: the matching audit CSVs.
+- `export_2026-10-14_v1.0/`: the earlier Newton exports (fixation breaks included, filtered with
+  their audit CSVs). Every result computed before the corrected exports used these; rebuild them
+  with `FOURFACTORS_EXPORT_DIR=data/export_2026-10-14_v1.0`.
+- `export_2026-01-22_0631/`: older still.

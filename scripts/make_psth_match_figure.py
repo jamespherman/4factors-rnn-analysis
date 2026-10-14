@@ -31,7 +31,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent))
 
 from src.data_loader import RNNDataset
-from src.sessions import load_export, DEFAULT_SESSIONS
+from src.sessions import load_export, stable_mask, DEFAULT_SESSIONS
 from src.analysis.pipeline_selectivity import get_target_onset_bins
 from evaluate_context_models import load_context_model, build_inputs, run_with_currents, N_DRAWS
 
@@ -92,6 +92,7 @@ def session_units(variant: str, session: str) -> list:
     rates = sum(run_with_currents(model, inputs, seed)[0][:, :, rec_units] for seed in range(N_DRAWS)) / N_DRAWS
 
     recorded = np.transpose(data['firing_rates'], (2, 1, 0))
+    rates = np.where(stable_mask(data).T[:, None, :], rates, np.nan)  # compare only on each neuron's stable trials
     mask = RNNDataset(data).get_all_trials()['mask'].numpy()
     valid = (mask[:, :, 0] if mask.ndim == 3 else mask) > 0
     onset = get_target_onset_bins(data)

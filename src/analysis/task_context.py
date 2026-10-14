@@ -123,7 +123,6 @@ def match_raw_trials(data: dict, session_name: str) -> Optional[Dict[str, np.nda
             'export_to_raw': np.array(export_to_raw)}
 
 
-TRIAL_AUDIT_DIR = Path(__file__).parent.parent.parent / 'data' / 'trial_audit'
 
 
 def get_verified_success(session_name: str, n_trials: int) -> Tuple[np.ndarray, np.ndarray]:
@@ -142,7 +141,8 @@ def get_verified_success(session_name: str, n_trials: int) -> Tuple[np.ndarray, 
         true_reward_ms: [n_trials] real reward delivery relative to fixOn (the export's
             t = 0); only meaningful where keep is True
     """
-    path = TRIAL_AUDIT_DIR / f'{session_name}_trial_audit.csv'
+    from src.sessions import trial_audit_dir
+    path = trial_audit_dir() / f'{session_name}_trial_audit.csv'
     assert path.exists(), f"Missing trial audit {path}"
     audit = np.genfromtxt(path, delimiter=',', names=True)
     rows = audit[~np.isnan(audit['export_row'])]

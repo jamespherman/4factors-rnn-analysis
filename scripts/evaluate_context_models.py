@@ -37,6 +37,7 @@ from src.data_loader import load_mat_file, RNNDataset
 from src.analysis.pipeline_selectivity import get_target_onset_bins, compute_window_rates, OPPOSITE_LOCATION
 from src.analysis.task_context import location_rewarded
 from train_context import get_context_channels, get_drift_channels
+from src.sessions import stable_mask
 import analyze_context_effects as A
 
 warnings.filterwarnings('ignore', category=RuntimeWarning)
@@ -152,6 +153,8 @@ def evaluate(model_dir: Path, sessions: dict) -> dict:
         sessions[key] = (A.session_from_data(load_mat_file(config['data_path']), config['session'])
                          if synthetic else A.load_session(*key))
     sess = sessions[key]
+    n_split = sum(len(config.get(k, [])) for k in ('train_idx', 'select_idx', 'test_idx'))
+    assert n_split in (0, sess['data']['firing_rates'].shape[-1]),         f"{model_dir} was trained on a different export (set FOURFACTORS_EXPORT_DIR, src/sessions.py)"
     if 'effects' not in sess:
         sess['effects'] = effects(sess)
     data = sess['data']
@@ -170,6 +173,9 @@ def evaluate(model_dir: Path, sessions: dict) -> dict:
             rates += r
             for k in currents:
                 currents[k] += c[k]
+
+    # Model rates only where the recorded neuron is in its stable period
+    rates = np.where(stable_mask(data).T[:, None, :], rates, np.nan)
 
     # 1. Held-out Poisson log-likelihood
     counts = np.round(np.transpose(data['firing_rates'], (2, 1, 0)) * 0.025)

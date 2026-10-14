@@ -60,6 +60,10 @@ def _load_hdf5_mat(filepath: str) -> dict:
             # 2D input arrays: HDF5 gives (trials, bins) -> need (bins, trials)
             elif key.startswith('input_') and val.ndim == 2:
                 val = val.T
+            # Per-neuron 2D arrays (neuron_stable_trials, neuron_stable_range): HDF5 gives them
+            # transposed -> [n_neurons, ...]
+            elif key.startswith('neuron_') and val.ndim == 2:
+                val = val.T
 
             data[key] = val
 
@@ -69,14 +73,14 @@ def _load_hdf5_mat(filepath: str) -> dict:
 def select_trials(data: dict, keep: np.ndarray) -> dict:
     """
     Subset an export to the trials in boolean mask keep (trial axis is last for
-    firing_rates, input_* and trial_* fields).
+    firing_rates, neuron_stable_trials, input_* and trial_* fields).
     """
     n_trials = data['firing_rates'].shape[-1]
     keep = np.asarray(keep, dtype=bool)
     assert keep.shape == (n_trials,), "keep must be a mask over trials"
     out = dict(data)
     for key, value in data.items():
-        if key == 'firing_rates' or key.startswith('input_') or key.startswith('trial_'):
+        if key in ('firing_rates', 'neuron_stable_trials') or key.startswith('input_') or key.startswith('trial_'):
             value = np.asarray(value)
             assert value.shape[-1] == n_trials, f"{key}: trial axis is not last"
             out[key] = value[..., keep]
