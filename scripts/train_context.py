@@ -20,6 +20,10 @@ Builds on scripts/train_session.py (corrected E/I mapping, 'cond_target' loss) a
 - Optional hidden interneurons (--hidden-i), keeping the 4:1 E:I ratio.
 - Context-conditioned PSTH losses: location x context state (16 cells), on the
   fixation-aligned trial and the target-aligned window, in every variant.
+- Optional window-mean loss (--lwin-scale): mean rate in the pre-target (-300..0 ms) and
+  visual (50..250 ms) windows per location x context cell, in units of the recorded
+  standard error. The context effects are small (about 1 sp/s) and are averaged out
+  in the PSTH losses' noise.
 - Trials split 70/15/15 (train / selection / test), stratified by location x
   context. Checkpoint selection uses the selection split only, with each validation
   loss normalized by its value at epoch 1.
@@ -60,6 +64,8 @@ CONFIG.update({
     'test_fraction': 0.15,
     'select_fraction': 0.15,
     'lctx_scale': 1.0,
+    'lwin_scale': 0.0,
+    'win_windows_ms': [[-300.0, 0.0], [50.0, 250.0]],
     'checkpoint_every': 50,
 })
 
@@ -148,6 +154,9 @@ def main():
     parser.add_argument('--patience', type=int, default=None)
     parser.add_argument('--lctx-scale', type=float, default=None,
                         help='Weight of the context-conditioned losses (0 = off, also for selection)')
+    parser.add_argument('--lwin-scale', type=float, default=None,
+                        help='Weight of the window-mean loss (pre-target and visual window means per '
+                             'location x context cell, in units of the recorded standard error; 0 = off)')
     parser.add_argument('--n-drift', type=int, default=None, help='Number of drift channels (0 = none)')
     parser.add_argument('--test-fraction', type=float, default=None)
     parser.add_argument('--select-fraction', type=float, default=None)
@@ -160,7 +169,7 @@ def main():
     config.update(session=args.session, context=args.context, context_targets=args.context_targets,
                   ie_mode=args.ie_mode, frozen_from=args.frozen_from, hidden_i=args.hidden_i,
                   seed=args.seed, data_path=args.data or SESSION_FILES[args.session])
-    for key in ('max_epochs', 'patience', 'lctx_scale', 'n_drift', 'test_fraction', 'select_fraction'):
+    for key in ('max_epochs', 'patience', 'lctx_scale', 'lwin_scale', 'n_drift', 'test_fraction', 'select_fraction'):
         if getattr(args, key) is not None:
             config[key] = getattr(args, key)
     if args.test:
@@ -205,6 +214,33 @@ def main():
     tgt_valid, tgt_bins = get_target_window_index(onset_bins, n_bins, bin_size_ms, config['target_window_ms'])
     row = np.cumsum(tgt_valid) - 1
 
+    # Window-mean loss: trials with a known context state and both windows inside the trial
+    win_bins = []
+    win_ok = ctx_cond >= 0
+    for window in config['win_windows_ms']:
+        valid, bins = get_target_window_index(onset_bins, n_bins, bin_size_ms, window)
+        full = np.zeros((n_trials, bins.shape[1]), dtype=np.int64)
+        full[valid] = bins
+        win_bins.append(torch.tensor(full, device=device))
+        win_ok &= valid
+    n_ctx_cond = 16
+
+    def window_stats(idx):
+        """Recorded window means per context cell and their squared standard errors."""
+        onehot = np.zeros((len(idx), n_ctx_cond), dtype=np.float32)
+        onehot[np.arange(len(idx)), ctx_cond[idx]] = 1
+        counts = onehot.sum(axis=0)
+        avg = torch.tensor(onehot / np.maximum(counts, 1), device=device)  # [trials, cells]
+        means, se2 = [], []
+        for bins in win_bins:
+            x = target_aligned(targets[idx], bins[idx]).mean(dim=1)  # [trials, neurons]
+            m = avg.T @ x
+            var = (avg.T @ x ** 2) - m ** 2
+            means.append(m)
+            se2.append(var / torch.tensor(np.maximum(counts - 1, 1), device=device)[:, None])
+        keep = torch.tensor(counts >= config['min_trials_per_condition'], device=device)
+        return {'avg': avg, 'means': means, 'se2': se2, 'keep': keep}
+
     def split(idx):
         idx = np.asarray(idx, dtype=np.int64)
         ctx_ok = ctx_cond[idx] >= 0
@@ -217,6 +253,8 @@ def main():
             'tgt_bins': torch.tensor(tgt_bins[row[idx[tv]]].astype(np.int64), device=device),
             'tgt_ctx_trials': torch.tensor(idx[tv_ctx], device=device),
             'tgt_ctx_bins': torch.tensor(tgt_bins[row[idx[tv_ctx]]].astype(np.int64), device=device),
+            'win_idx': torch.tensor(idx[win_ok[idx]], device=device),
+            'win': window_stats(idx[win_ok[idx]]) if config['lwin_scale'] > 0 else None,
         }
     tr, se = split(train_idx), split(select_idx)
 
@@ -282,11 +320,22 @@ def main():
             out[name], _ = compute_L_neuron_conditioned(
                 target_aligned(rates_rec[jj], bins), target_aligned(targets[jj], bins),
                 conditions[cond][jj], bin_size_ms, **cond_kw)
+        if s['win'] is not None:
+            # Window means per cell vs recorded, in units of the recorded standard error
+            w, kk, terms = s['win'], s['win_idx'], []
+            for bins, m_rec, se2 in zip(win_bins, w['means'], w['se2']):
+                m = w['avg'].T @ target_aligned(rates_rec[kk], bins[kk]).mean(dim=1)
+                terms.append(((m - m_rec) ** 2 / (se2 + 0.25))[w['keep']].mean())
+            out['L_win'] = sum(terms) / len(terms)
         return out
 
     scales = {'L_cond': 1.0, 'L_target': config['ltarget_scale'], 'L_ctx': config['lctx_scale'],
               'L_ctx_target': config['lctx_scale'] * config['ltarget_scale'], 'L_trial': config['ltrial_scale']}
+    if config['lwin_scale'] > 0:
+        scales['L_win'] = config['lwin_scale']
     ema = {k: 1.0 for k in scales}
+    if 'L_win' in ema:
+        ema['L_win'] = None  # starts at its first value: L_win is ~100x the other terms early on
     ema_decay = 0.99
     history = {k: [] for k in ['loss', 'val_select', 'val_grand_corr', 'lr'] + list(scales)
                + [f'val_{k}' for k in scales if k != 'L_trial']}
@@ -320,7 +369,7 @@ def main():
             mask=mask[tr['idx']], sinkhorn_iters=20, sinkhorn_epsilon=0.1)
         loss = compute_L_reg(model, config['lambda_reg'])
         for k, v in comp.items():
-            ema[k] = ema_decay * ema[k] + (1 - ema_decay) * v.item()
+            ema[k] = v.item() if ema[k] is None else ema_decay * ema[k] + (1 - ema_decay) * v.item()
             loss = loss + scales[k] * v / (ema[k] + 1e-8)
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=config['gradient_clip'])
