@@ -701,7 +701,8 @@ therefore do not improve the overall fit; they matter only for this small effect
 <figcaption><strong>Figure 4. On real data, per-unit context reproduces the neuron-by-neuron pattern of reward
 modulation and shared context does not.</strong> (a) Held-out r between each model's reward-context effects and the
 recorded ones on test trials, pooled over the {n_e + n_i} neurons of three sessions; one dot per restart, bar = mean,
-green line = reliability ceiling. (b) The same for spatial preference, as a check that all variants fit.
+green line = reliability ceiling; the gray columns at right are the control with the context inputs shifted
+out of register with the trials (Section 7). (b) The same for spatial preference, as a check that all variants fit.
 (c, d) Per-neuron effects for the best restart (highest selection-set likelihood) of per-unit and shared variants.</figcaption></figure>
 
 <h2>5. Why a recovery test, and how it works</h2>
@@ -764,10 +765,20 @@ def summary_text(d, gm, pm) -> str:
     if 'shared_g1' in d['pilot']:
         s += ("A shared-context teacher, the control for whether the test can confirm a shared mechanism, turned out "
               "to have almost no reward-context effect of its own, so that control remains open. ")
-    s += ("Per-unit students also scored above zero on a teacher with no context at all, so part of their real-data "
-          "advantage may be spurious. The real-data contrast is therefore suggestive, not yet decisive. "
-          "The full test, on all re-exported Newton and Feynman sessions with more restarts and two added controls, "
-          "is specified in Section 8.")
+    g = d['grid']
+    if 'free_free_qshift' in g:
+        s += (f"Per-unit students scored above zero even on a teacher with no context, raising the worry that their "
+              f"real-data success was generic. A control on the real data rules most of this out: with the context "
+              f"inputs shifted out of register with the trials, per-unit models fell from r = {gm('free_free'):.2f} to "
+              f"{gm('free_free_qshift'):.2f} (all units) and from {gm('freeI_free'):.2f} to {gm('freeI_free_qshift'):+.2f} "
+              f"(I units only). The neuron-specific reward-context pattern is therefore genuinely carried by context "
+              f"that is aligned with the task, and per-unit context input reproduces it. Whether a single shared signal "
+              f"could also reproduce it remains untested, because the pilot has not yet shown that the procedure "
+              f"recovers a shared mechanism when that is the truth. ")
+    else:
+        s += ("Per-unit students also scored above zero on a teacher with no context at all, so part of their real-data "
+              "advantage may be spurious. The real-data contrast is therefore suggestive, not yet decisive. ")
+    s += "The full test, on all re-exported Newton and Feynman sessions, is specified in Section 8."
     return s
 
 
@@ -813,12 +824,19 @@ def calibrated_text(d, gm, pm) -> str:
          f"not unique to such data: on the no-context teacher the per-unit student also outscored the shared one "
          f"({pm('null', 'free_free'):+.2f} vs {pm('null', 'shared_free'):+.2f}).</p>")
     if 'free_free_qshift' in g:
-        t += (f"<p><span class=\"tag\">F</span>Shifted-context control on real data (Fig. 4a, gray columns). Each "
-              f"context input was shifted by a quarter of its own period (24 trials for the reward map, 48 for the "
-              f"probability block), so it keeps the same switching statistics but is uncorrelated with the true "
-              f"context. Per-unit models given these inputs reached r = {gm('free_free_qshift'):+.2f} (all units) and "
-              f"{gm('freeI_free_qshift'):+.2f} (I only), against {gm('free_free'):+.2f} and {gm('freeI_free'):+.2f} with "
-              f"correctly aligned context.</p>")
+        ctl = (f"<p><span class=\"tag\">F</span>On real data, the per-unit models' success depends on correctly aligned "
+               f"context, so it is not the generic advantage seen on the no-context teacher. In a control, each context "
+               f"input was shifted by a quarter of its own period (24 trials for the reward map, 48 for the probability "
+               f"block): it keeps the same switching statistics but is uncorrelated with the true context. Per-unit "
+               f"models given these inputs reached r = {gm('free_free_qshift'):+.2f} (all units; restarts "
+               f"{min(g['free_free_qshift']['r']):+.2f} to {max(g['free_free_qshift']['r']):+.2f}) and "
+               f"{gm('freeI_free_qshift'):+.2f} (I only; {min(g['freeI_free_qshift']['r']):+.2f} to "
+               f"{max(g['freeI_free_qshift']['r']):+.2f}), against {gm('free_free'):+.2f} and {gm('freeI_free'):+.2f} "
+               f"with aligned context (Fig. 4a, gray columns); the ranges do not overlap. About "
+               f"{gm('free_free_qshift'):.2f} of the all-unit score is what extra slow inputs buy without real context.</p>")
+        t = ctl + t.replace("The real-data result is weaker evidence than it first appeared. ",
+                            "What the pilot cannot yet say is whether a shared signal could have produced the "
+                            "real-data pattern. ")
     return t
 
 
