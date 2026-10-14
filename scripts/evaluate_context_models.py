@@ -49,10 +49,10 @@ def load_context_model(model_dir: Path, device: str = 'cpu'):
     """Rebuild an EIRNN from a train_context.py (or train_session.py) config and load model_best.pt."""
     with open(model_dir / 'config.json') as f:
         config = json.load(f)
-    # train_session.py configs: no context, drift or test split
+    # train_session.py and older configs: no context, drift, test split or trial filter
     for key, value in [('context', 'none'), ('n_context', 0), ('context_mode', 'shared'),
                        ('context_targets', 'all'), ('n_drift', 0), ('ie_mode', 'free'),
-                       ('hidden_i', 0), ('test_idx', [])]:
+                       ('hidden_i', 0), ('test_idx', []), ('trials', 'all')]:
         config.setdefault(key, value)
     model = EIRNN(
         n_exc=config['n_exc'], n_inh=config['n_inh'], n_inputs=config['n_inputs'],
