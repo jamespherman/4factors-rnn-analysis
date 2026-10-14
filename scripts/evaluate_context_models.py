@@ -73,7 +73,8 @@ def build_inputs(data: dict, config: dict) -> torch.Tensor:
     """Task + context + drift input tensor, as in training."""
     dataset = RNNDataset(data)
     onset = get_target_onset_bins(data)
-    ctx = get_context_channels(data, config['context'], onset, dataset.n_bins, config.get('context_shift', 0.0))
+    ctx = get_context_channels(data, config['context'], onset, dataset.n_bins, config.get('context_shift', 0.0),
+                               config.get('context_shift_trials'))
     drift = get_drift_channels(len(dataset), dataset.n_bins, config['n_drift'])
     return torch.cat([dataset.get_all_trials()['inputs'], torch.from_numpy(ctx), torch.from_numpy(drift)], dim=-1)
 

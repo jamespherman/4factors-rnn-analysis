@@ -66,3 +66,13 @@ Held-out r with recorded reward context (ceiling 0.64), 6 restarts each:
   identifiable at all.
 - Held-out LL: freeI -0.2 and freeE +1.4 x1000 vs none_free (restart means). Same size as the
   restart spread.
+
+## Context-shift controls (2026-10-14)
+- `*_shift50` (context circularly shifted by half a session) is **not a valid control**. The reward map
+  switches exactly every 48 successful trials, so it is periodic, and a half-session shift leaves it
+  correlated with the true reward map: r = -0.67 (08_13), +0.83 (08_14), +0.17 (08_15). Free per-unit
+  weights can use an anti-correlated input as easily as a correlated one. Its results (reward r 0.36
+  all-unit, 0.29 I-only) are kept for the record only.
+- `*_qshift` (`--context-shift-trials 24,48`) shifts each channel by a quarter of its own period,
+  which leaves it uncorrelated with the true context (|r| <= 0.08; 0.2 for the block in 08_13).
+  This is the control used in the report.

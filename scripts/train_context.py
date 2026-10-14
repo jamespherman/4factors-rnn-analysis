@@ -72,7 +72,7 @@ CONFIG.update({
 
 
 def get_context_channels(data: dict, mode: str, onset_bins: np.ndarray, n_bins: int,
-                         shift: float = 0.0) -> np.ndarray:
+                         shift: float = 0.0, shift_trials=None) -> np.ndarray:
     """
     Context input channels [n_trials, n_bins, n_channels] (empty for 'none').
 
@@ -81,7 +81,10 @@ def get_context_channels(data: dict, mode: str, onset_bins: np.ndarray, n_bins: 
     probability (+1 = high), from the target onset bin onwards.
 
     shift: control only. Circularly shift the block-state sequence by this fraction of
-    the session, which keeps its switch statistics but misaligns it with the trials.
+    the session. Superseded: the reward map is periodic (a switch every 48 successful
+    trials), so a large shift can leave it correlated or anti-correlated with the truth.
+    shift_trials: control. (reward-map shift, block shift) in trials; a quarter period of
+    each (24, 48) makes each channel uncorrelated with the true one.
     """
     n_trials = len(onset_bins)
     if mode == 'none':
@@ -91,6 +94,9 @@ def get_context_channels(data: dict, mode: str, onset_bins: np.ndarray, n_bins: 
         block_code = np.where(ctx['block'] == 1, 1.0, np.where(ctx['block'] == 2, -1.0, 0.0))  # 0 if unknown
         values = np.stack([2.0 * ctx['reward_map'] - 1, block_code], axis=1)
         values = np.roll(values, int(round(shift * n_trials)), axis=0)
+        if shift_trials is not None:
+            for ch, k in enumerate(shift_trials):
+                values[:, ch] = np.roll(values[:, ch], int(k))
         return np.repeat(values[:, None, :], n_bins, axis=1).astype(np.float32)
     assert mode == 'trialvalue', f"Unknown context mode: {mode}"
     reward = 2.0 * np.asarray(data['trial_reward']).ravel() - 1
@@ -157,6 +163,9 @@ def main():
                         help="'verified': successful trials only, with true event times "
                              "(src/sessions.py). Use 'all' for synthetic --data files, which "
                              "already hold the teacher's trial set")
+    parser.add_argument('--context-shift-trials', default=None,
+                        help="Control: per-channel circular shifts 'reward,block' in trials, e.g. 24,48 "
+                             "(a quarter period each: uncorrelated with the true context)")
     parser.add_argument('--context-shift', type=float, default=0.0,
                         help='Control: circularly shift the block-state context by this fraction of '
                              'the session (shared/free context only)')
@@ -185,7 +194,9 @@ def main():
     config = dict(CONFIG)
     config.update(session=args.session, context=args.context, context_targets=args.context_targets,
                   ie_mode=args.ie_mode, frozen_from=args.frozen_from, hidden_i=args.hidden_i,
-                  seed=args.seed, context_shift=args.context_shift, data_path=args.data or f'data/{export_path(args.session).name}', trials=args.trials,
+                  seed=args.seed, context_shift=args.context_shift,
+                  context_shift_trials=[int(k) for k in args.context_shift_trials.split(',')] if args.context_shift_trials else None,
+                  data_path=args.data or f'data/{export_path(args.session).name}', trials=args.trials,
                   split_seed=args.seed if args.split_seed is None else args.split_seed)
     for key in ('max_epochs', 'patience', 'lctx_scale', 'lwin_scale', 'n_drift', 'test_fraction', 'select_fraction'):
         if getattr(args, key) is not None:
@@ -212,7 +223,8 @@ def main():
     assert bin_size_ms == config['dt'], "dt must equal the data bin size"
 
     onset_bins = get_target_onset_bins(data)
-    ctx_channels = get_context_channels(data, args.context, onset_bins, n_bins, config['context_shift'])
+    ctx_channels = get_context_channels(data, args.context, onset_bins, n_bins, config['context_shift'],
+                                        config['context_shift_trials'])
     drift_channels = get_drift_channels(n_trials, n_bins, config['n_drift'])
     all_trials = dataset.get_all_trials()
     n_task_inputs = all_trials['inputs'].shape[-1]

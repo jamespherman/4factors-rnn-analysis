@@ -41,6 +41,9 @@ VARIANTS = {
     'freeI_free': ('Per-unit → I', 'unit', 'own weight for each I unit'),
     'freeE_free': ('Per-unit → E', 'unit', 'own weight for each E unit'),
     'free_free': ('Per-unit → all', 'unit', 'own weight for every unit'),
+    # Control: per-unit context, each channel shifted by a quarter of its period (uncorrelated with the truth)
+    'freeI_free_qshift': ('Shifted per-unit → I', 'none', 'control: context shifted out of register'),
+    'free_free_qshift': ('Shifted per-unit → all', 'none', 'control: context shifted out of register'),
 }
 STUDENTS = ['none_free', 'shared_free', 'sharedI_free', 'freeI_free', 'free_free']
 TEACHERS = {  # dataset: (label, family, gain)
@@ -75,7 +78,7 @@ def gather() -> dict:
                      'spatial': per_restart(grid, v, 'spatial_r'),
                      'block': per_restart(grid, v, 'block_pre_r_test'),
                      'dll': per_restart(grid, v, 'dll')}
-                 for v in list(VARIANTS) + ['free_free_shift50', 'freeI_free_shift50'] if grid and v in grid}
+                 for v in VARIANTS if grid and v in grid}
     d['grid_ceiling'] = float(np.nanmean(per_restart(grid, 'none_free', 'reward_pre_ceiling_test')))
     d['grid_spatial_ceiling'] = float(np.nanmean(per_restart(grid, 'none_free', 'spatial_ceiling_test')))
     d['grid_block_ceiling'] = float(np.nanmean(per_restart(grid, 'none_free', 'block_pre_ceiling_test')))
@@ -426,8 +429,9 @@ def strip_by_variant(values: dict, order, ceiling, title, ylab, yr=(-0.6, 1.0), 
 
 
 def fig_real(d):
-    order = ['none_free', 'shared_free', 'sharedI_free', 'sharedE_free', 'freeI_free', 'freeE_free', 'free_free']
     g = d['grid']
+    order = [v for v in ('none_free', 'shared_free', 'sharedI_free', 'sharedE_free', 'freeI_free', 'freeE_free',
+                         'free_free', 'freeI_free_qshift', 'free_free_qshift') if v in g]
     a = strip_by_variant({v: g[v]['r'] for v in order if v in g}, order, d['grid_ceiling'],
                          'Reward context per variant', 'held-out r with the recorded reward-context effect')
     sp = strip_by_variant({v: g[v]['spatial'] for v in order if v in g}, order, d['grid_spatial_ceiling'],
@@ -506,7 +510,7 @@ def fig_recovery(d) -> str:
 def fig_calibrated(d) -> str:
     """Shared vs per-unit student r, real data vs teachers at g = 1."""
     items = [('Real data, 3 sessions', d['grid'].get('shared_free', {}).get('r', []), d['grid'].get('free_free', {}).get('r', []))]
-    for ds in ('shared_g1', 'ext_g1', 'local_g1', 'null'):
+    for ds in ('ext_g1', 'local_g1', 'null'):  # the shared teacher has no usable context effect (Section 6)
         if ds in d['pilot']:
             st = d['pilot'][ds]['students']
             items.append((TEACHERS[ds][0], st['shared_free'], st['free_free']))
@@ -758,7 +762,8 @@ def summary_text(d, gm, pm) -> str:
          f"of a per-unit teacher's pattern when effects were large, but erratically at realistic effect sizes "
          f"({pm('ext_g1', 'shared_free'):+.2f} and {pm('local_g1', 'shared_free'):+.2f} for two such teachers). ")
     if 'shared_g1' in d['pilot']:
-        s += (f"Shared-context students recovered a shared teacher at realistic size with r = {pm('shared_g1', 'shared_free'):+.2f}. ")
+        s += ("A shared-context teacher, the control for whether the test can confirm a shared mechanism, turned out "
+              "to have almost no reward-context effect of its own, so that control remains open. ")
     s += ("Per-unit students also scored above zero on a teacher with no context at all, so part of their real-data "
           "advantage may be spurious. The real-data contrast is therefore suggestive, not yet decisive. "
           "The full test, on all re-exported Newton and Feynman sessions with more restarts and two added controls, "
@@ -780,10 +785,13 @@ def recovery_text(d, pm) -> str:
              f"{' '.join(fmt(x) for x in pl['ext_g1']['students']['shared_free'])} and "
              f"{' '.join(fmt(x) for x in pl['local_g1']['students']['shared_free'])} across restarts.</p>")
     if 'shared_g1' in pl:
-        t.append(f"<p><span class=\"tag\">F</span>When the truth is a shared signal, shared students recover it: r = "
-                 f"{pm('shared_g1', 'shared_free'):+.2f} at g = 1 and {pm('shared_g3', 'shared_free'):+.2f} at g = 3 "
-                 f"(ceilings {pl['shared_g1']['ceiling']:.2f}, {pl['shared_g3']['ceiling']:.2f}); per-unit students "
-                 f"reached {pm('shared_g1', 'free_free'):+.2f} and {pm('shared_g3', 'free_free'):+.2f}.</p>")
+        t.append(f"<p><span class=\"tag\">F</span>The shared-context teacher could not serve as the shared-mechanism control. "
+                 f"It came from the shared-context fit to 08_14, which had learned almost no context effect: at g = 1 its "
+                 f"mean effect was {pl['shared_g1']['recorded_mean']:+.2f} sp/s and its per-neuron pattern was barely "
+                 f"reliable (ceiling {pl['shared_g1']['ceiling']:.2f}). At g = 3 the pattern became reliable (ceiling "
+                 f"{pl['shared_g3']['ceiling']:.2f}), but students without any context input reproduced it as well "
+                 f"({pm('shared_g3', 'none_free'):+.2f}) as shared students ({pm('shared_g3', 'shared_free'):+.2f}), so it "
+                 f"reflects the teacher's drift and task structure rather than context.</p>")
     t.append(f"<p><span class=\"tag\">F</span>Per-unit students can score above zero without any reward context. On the "
              f"no-context teacher, the effect measure was itself reliable (ceiling {pl['null']['ceiling']:.2f}), "
              f"because the teacher's slow-drift inputs change firing over the session, and switches happen at particular "
@@ -804,12 +812,13 @@ def calibrated_text(d, gm, pm) -> str:
          f"for at least some data generated by neuron-specific input, consistent with the real-data result, but it is "
          f"not unique to such data: on the no-context teacher the per-unit student also outscored the shared one "
          f"({pm('null', 'free_free'):+.2f} vs {pm('null', 'shared_free'):+.2f}).</p>")
-    if 'free_free_shift50' in g:
-        t += (f"<p><span class=\"tag\">F</span>Shifted-context control on real data: when the context inputs were "
-              f"circularly shifted by half a session, which keeps their switching statistics but breaks their "
-              f"alignment with the trials, per-unit models reached r = {gm('free_free_shift50'):+.2f} (all units) and "
-              f"{gm('freeI_free_shift50'):+.2f} (I only), against {gm('free_free'):+.2f} and {gm('freeI_free'):+.2f} "
-              f"with correctly aligned context.</p>")
+    if 'free_free_qshift' in g:
+        t += (f"<p><span class=\"tag\">F</span>Shifted-context control on real data (Fig. 4a, gray columns). Each "
+              f"context input was shifted by a quarter of its own period (24 trials for the reward map, 48 for the "
+              f"probability block), so it keeps the same switching statistics but is uncorrelated with the true "
+              f"context. Per-unit models given these inputs reached r = {gm('free_free_qshift'):+.2f} (all units) and "
+              f"{gm('freeI_free_qshift'):+.2f} (I only), against {gm('free_free'):+.2f} and {gm('freeI_free'):+.2f} with "
+              f"correctly aligned context.</p>")
     return t
 
 
@@ -820,11 +829,17 @@ def gaps_text(d) -> str:
         items.append("<strong>Shared-teacher control.</strong> Whether shared students recover a teacher that really "
                      "uses a shared signal is running now (<code>results/recovery_pilot/shared_g*</code>). Without it, "
                      "the test has not shown that it can confirm the shared mechanism when that mechanism is true.")
-    if 'free_free_shift50' not in g:
-        items.append("<strong>Shifted-context control on real data.</strong> Per-unit models fit with the context "
-                     "inputs shifted by half a session are running now (<code>results/verified_grid/*_shift50</code>). "
-                     "If they reach r near 0.43 too, the real-data result reflects slow drift aligned with switches, not "
-                     "reward context.")
+    else:
+        items.append("<strong>Shared-teacher control still open.</strong> The teacher taken from a shared-context fit had "
+                     "almost no context effect (Section 6), so the test has not yet shown that it can confirm a shared "
+                     "mechanism when that is the truth. A usable shared teacher needs a sizeable, genuinely "
+                     "context-driven effect: for example, a shared-context network trained with the context effect "
+                     "weighted more heavily, checked against a no-context student before use.")
+    if 'free_free_qshift' not in g:
+        items.append("<strong>Shifted-context control on real data.</strong> Per-unit models fit with each context input "
+                     "shifted by a quarter of its period, which leaves it uncorrelated with the true context, are running "
+                     "now (<code>results/verified_grid/*_qshift</code>). If they reach r near 0.43 too, the real-data "
+                     "result reflects slow structure aligned with the switches, not reward context.")
     items += [
         "<strong>One session, three restarts.</strong> The pilot used 41 neurons from 08_14. Single-session r varies by "
         "about ±0.4 between restarts (Fig. 6), so the pilot calibrates the test but cannot settle it.",
