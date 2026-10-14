@@ -45,3 +45,19 @@ window-mean loss. r = held-out correlation across the 41 neurons between student
 - Use 6 restarts.
 - Report the real-data shared/per-unit ratio against the same ratio on teacher data
   (finding 2) as the main calibrated comparison.
+
+## Corrections and added controls (2026-10-14)
+- **The "about 60%" figure in Finding 2 holds for one teacher only.** It applies to the all-unit
+  teacher at g1 (shared 0.42 vs per-unit 0.69). For the I-only teacher at g1, shared students averaged
+  -0.03 (-0.41 to +0.72), close to the real-data result. Finding 2's conclusion ("supports
+  neuron-specific input") was overstated.
+- **Shared-teacher control (`shared_g1`, `shared_g3`): uninformative.** The teacher, from a shared-context
+  fit, has almost no context effect (g1 mean -0.15 sp/s, ceiling 0.19). At g3, no-context students
+  match its pattern (0.72) as well as shared students (0.79), so the pattern is drift and task
+  structure. Whether the procedure can confirm a shared mechanism is still untested.
+- **Quarter-period shifted-context control on real data (`verified_grid/*_qshift`): passes.**
+  Per-unit models fell from 0.43 to 0.13 (all units) and from 0.36 to -0.01 (I only); the restart
+  ranges do not overlap. The real-data match therefore depends on correctly aligned reward context.
+- **Current conclusion:** per-unit context input genuinely reproduces the neuron-specific
+  reward-context pattern. Whether one shared signal could also produce it remains untested.
+  See `results/recovery_pilot_report.html`.
