@@ -71,13 +71,17 @@ CONFIG.update({
 })
 
 
-def get_context_channels(data: dict, mode: str, onset_bins: np.ndarray, n_bins: int) -> np.ndarray:
+def get_context_channels(data: dict, mode: str, onset_bins: np.ndarray, n_bins: int,
+                         shift: float = 0.0) -> np.ndarray:
     """
     Context input channels [n_trials, n_bins, n_channels] (empty for 'none').
 
     Block state: reward map (+1 = locations 1, 2 rewarded) and block (+1 = location 1
     frequent), constant over the trial. Trial value: current target's reward and
     probability (+1 = high), from the target onset bin onwards.
+
+    shift: control only. Circularly shift the block-state sequence by this fraction of
+    the session, which keeps its switch statistics but misaligns it with the trials.
     """
     n_trials = len(onset_bins)
     if mode == 'none':
@@ -86,6 +90,7 @@ def get_context_channels(data: dict, mode: str, onset_bins: np.ndarray, n_bins: 
         ctx = get_task_context(data)
         block_code = np.where(ctx['block'] == 1, 1.0, np.where(ctx['block'] == 2, -1.0, 0.0))  # 0 if unknown
         values = np.stack([2.0 * ctx['reward_map'] - 1, block_code], axis=1)
+        values = np.roll(values, int(round(shift * n_trials)), axis=0)
         return np.repeat(values[:, None, :], n_bins, axis=1).astype(np.float32)
     assert mode == 'trialvalue', f"Unknown context mode: {mode}"
     reward = 2.0 * np.asarray(data['trial_reward']).ravel() - 1
@@ -152,6 +157,9 @@ def main():
                         help="'verified': successful trials only, with true event times "
                              "(src/sessions.py). Use 'all' for synthetic --data files, which "
                              "already hold the teacher's trial set")
+    parser.add_argument('--context-shift', type=float, default=0.0,
+                        help='Control: circularly shift the block-state context by this fraction of '
+                             'the session (shared/free context only)')
     parser.add_argument('--hidden-i', type=int, default=0, help='Extra unrecorded I units')
     parser.add_argument('--seed', type=int, default=1, help='Initialization (and default split) seed')
     parser.add_argument('--split-seed', type=int, default=None,
@@ -177,7 +185,7 @@ def main():
     config = dict(CONFIG)
     config.update(session=args.session, context=args.context, context_targets=args.context_targets,
                   ie_mode=args.ie_mode, frozen_from=args.frozen_from, hidden_i=args.hidden_i,
-                  seed=args.seed, data_path=args.data or f'data/{export_path(args.session).name}', trials=args.trials,
+                  seed=args.seed, context_shift=args.context_shift, data_path=args.data or f'data/{export_path(args.session).name}', trials=args.trials,
                   split_seed=args.seed if args.split_seed is None else args.split_seed)
     for key in ('max_epochs', 'patience', 'lctx_scale', 'lwin_scale', 'n_drift', 'test_fraction', 'select_fraction'):
         if getattr(args, key) is not None:
@@ -204,7 +212,7 @@ def main():
     assert bin_size_ms == config['dt'], "dt must equal the data bin size"
 
     onset_bins = get_target_onset_bins(data)
-    ctx_channels = get_context_channels(data, args.context, onset_bins, n_bins)
+    ctx_channels = get_context_channels(data, args.context, onset_bins, n_bins, config['context_shift'])
     drift_channels = get_drift_channels(n_trials, n_bins, config['n_drift'])
     all_trials = dataset.get_all_trials()
     n_task_inputs = all_trials['inputs'].shape[-1]
