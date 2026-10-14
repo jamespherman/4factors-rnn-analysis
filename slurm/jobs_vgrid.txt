@@ -1,0 +1,180 @@
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode free --seed 1 --output-dir results/verified_grid/none_free/08_13_seed1
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode global --seed 1 --output-dir results/verified_grid/none_global/08_13_seed1
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode spatial --seed 1 --output-dir results/verified_grid/none_spatial/08_13_seed1
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode free --seed 1 --output-dir results/verified_grid/shared_free/08_13_seed1
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode global --seed 1 --output-dir results/verified_grid/shared_global/08_13_seed1
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode spatial --seed 1 --output-dir results/verified_grid/shared_spatial/08_13_seed1
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets i --ie-mode free --seed 1 --output-dir results/verified_grid/sharedI_free/08_13_seed1
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets e --ie-mode free --seed 1 --output-dir results/verified_grid/sharedE_free/08_13_seed1
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context free --ie-mode free --seed 1 --output-dir results/verified_grid/free_free/08_13_seed1
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context trialvalue --ie-mode free --seed 1 --output-dir results/verified_grid/trialvalue_free/08_13_seed1
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode free --seed 1 --output-dir results/verified_grid/none_free/08_14_seed1
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode global --seed 1 --output-dir results/verified_grid/none_global/08_14_seed1
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode spatial --seed 1 --output-dir results/verified_grid/none_spatial/08_14_seed1
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode free --seed 1 --output-dir results/verified_grid/shared_free/08_14_seed1
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode global --seed 1 --output-dir results/verified_grid/shared_global/08_14_seed1
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode spatial --seed 1 --output-dir results/verified_grid/shared_spatial/08_14_seed1
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets i --ie-mode free --seed 1 --output-dir results/verified_grid/sharedI_free/08_14_seed1
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets e --ie-mode free --seed 1 --output-dir results/verified_grid/sharedE_free/08_14_seed1
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context free --ie-mode free --seed 1 --output-dir results/verified_grid/free_free/08_14_seed1
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context trialvalue --ie-mode free --seed 1 --output-dir results/verified_grid/trialvalue_free/08_14_seed1
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode free --seed 1 --output-dir results/verified_grid/none_free/08_15_seed1
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode global --seed 1 --output-dir results/verified_grid/none_global/08_15_seed1
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode spatial --seed 1 --output-dir results/verified_grid/none_spatial/08_15_seed1
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode free --seed 1 --output-dir results/verified_grid/shared_free/08_15_seed1
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode global --seed 1 --output-dir results/verified_grid/shared_global/08_15_seed1
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode spatial --seed 1 --output-dir results/verified_grid/shared_spatial/08_15_seed1
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets i --ie-mode free --seed 1 --output-dir results/verified_grid/sharedI_free/08_15_seed1
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets e --ie-mode free --seed 1 --output-dir results/verified_grid/sharedE_free/08_15_seed1
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context free --ie-mode free --seed 1 --output-dir results/verified_grid/free_free/08_15_seed1
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context trialvalue --ie-mode free --seed 1 --output-dir results/verified_grid/trialvalue_free/08_15_seed1
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode free --seed 2 --output-dir results/verified_grid/none_free/08_13_seed2
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode global --seed 2 --output-dir results/verified_grid/none_global/08_13_seed2
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode spatial --seed 2 --output-dir results/verified_grid/none_spatial/08_13_seed2
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode free --seed 2 --output-dir results/verified_grid/shared_free/08_13_seed2
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode global --seed 2 --output-dir results/verified_grid/shared_global/08_13_seed2
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode spatial --seed 2 --output-dir results/verified_grid/shared_spatial/08_13_seed2
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets i --ie-mode free --seed 2 --output-dir results/verified_grid/sharedI_free/08_13_seed2
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets e --ie-mode free --seed 2 --output-dir results/verified_grid/sharedE_free/08_13_seed2
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context free --ie-mode free --seed 2 --output-dir results/verified_grid/free_free/08_13_seed2
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context trialvalue --ie-mode free --seed 2 --output-dir results/verified_grid/trialvalue_free/08_13_seed2
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode free --seed 2 --output-dir results/verified_grid/none_free/08_14_seed2
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode global --seed 2 --output-dir results/verified_grid/none_global/08_14_seed2
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode spatial --seed 2 --output-dir results/verified_grid/none_spatial/08_14_seed2
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode free --seed 2 --output-dir results/verified_grid/shared_free/08_14_seed2
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode global --seed 2 --output-dir results/verified_grid/shared_global/08_14_seed2
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode spatial --seed 2 --output-dir results/verified_grid/shared_spatial/08_14_seed2
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets i --ie-mode free --seed 2 --output-dir results/verified_grid/sharedI_free/08_14_seed2
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets e --ie-mode free --seed 2 --output-dir results/verified_grid/sharedE_free/08_14_seed2
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context free --ie-mode free --seed 2 --output-dir results/verified_grid/free_free/08_14_seed2
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context trialvalue --ie-mode free --seed 2 --output-dir results/verified_grid/trialvalue_free/08_14_seed2
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode free --seed 2 --output-dir results/verified_grid/none_free/08_15_seed2
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode global --seed 2 --output-dir results/verified_grid/none_global/08_15_seed2
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode spatial --seed 2 --output-dir results/verified_grid/none_spatial/08_15_seed2
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode free --seed 2 --output-dir results/verified_grid/shared_free/08_15_seed2
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode global --seed 2 --output-dir results/verified_grid/shared_global/08_15_seed2
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode spatial --seed 2 --output-dir results/verified_grid/shared_spatial/08_15_seed2
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets i --ie-mode free --seed 2 --output-dir results/verified_grid/sharedI_free/08_15_seed2
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets e --ie-mode free --seed 2 --output-dir results/verified_grid/sharedE_free/08_15_seed2
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context free --ie-mode free --seed 2 --output-dir results/verified_grid/free_free/08_15_seed2
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context trialvalue --ie-mode free --seed 2 --output-dir results/verified_grid/trialvalue_free/08_15_seed2
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode free --seed 3 --output-dir results/verified_grid/none_free/08_13_seed3
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode global --seed 3 --output-dir results/verified_grid/none_global/08_13_seed3
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode spatial --seed 3 --output-dir results/verified_grid/none_spatial/08_13_seed3
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode free --seed 3 --output-dir results/verified_grid/shared_free/08_13_seed3
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode global --seed 3 --output-dir results/verified_grid/shared_global/08_13_seed3
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode spatial --seed 3 --output-dir results/verified_grid/shared_spatial/08_13_seed3
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets i --ie-mode free --seed 3 --output-dir results/verified_grid/sharedI_free/08_13_seed3
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets e --ie-mode free --seed 3 --output-dir results/verified_grid/sharedE_free/08_13_seed3
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context free --ie-mode free --seed 3 --output-dir results/verified_grid/free_free/08_13_seed3
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context trialvalue --ie-mode free --seed 3 --output-dir results/verified_grid/trialvalue_free/08_13_seed3
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode free --seed 3 --output-dir results/verified_grid/none_free/08_14_seed3
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode global --seed 3 --output-dir results/verified_grid/none_global/08_14_seed3
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode spatial --seed 3 --output-dir results/verified_grid/none_spatial/08_14_seed3
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode free --seed 3 --output-dir results/verified_grid/shared_free/08_14_seed3
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode global --seed 3 --output-dir results/verified_grid/shared_global/08_14_seed3
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode spatial --seed 3 --output-dir results/verified_grid/shared_spatial/08_14_seed3
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets i --ie-mode free --seed 3 --output-dir results/verified_grid/sharedI_free/08_14_seed3
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets e --ie-mode free --seed 3 --output-dir results/verified_grid/sharedE_free/08_14_seed3
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context free --ie-mode free --seed 3 --output-dir results/verified_grid/free_free/08_14_seed3
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context trialvalue --ie-mode free --seed 3 --output-dir results/verified_grid/trialvalue_free/08_14_seed3
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode free --seed 3 --output-dir results/verified_grid/none_free/08_15_seed3
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode global --seed 3 --output-dir results/verified_grid/none_global/08_15_seed3
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode spatial --seed 3 --output-dir results/verified_grid/none_spatial/08_15_seed3
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode free --seed 3 --output-dir results/verified_grid/shared_free/08_15_seed3
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode global --seed 3 --output-dir results/verified_grid/shared_global/08_15_seed3
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode spatial --seed 3 --output-dir results/verified_grid/shared_spatial/08_15_seed3
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets i --ie-mode free --seed 3 --output-dir results/verified_grid/sharedI_free/08_15_seed3
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets e --ie-mode free --seed 3 --output-dir results/verified_grid/sharedE_free/08_15_seed3
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context free --ie-mode free --seed 3 --output-dir results/verified_grid/free_free/08_15_seed3
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context trialvalue --ie-mode free --seed 3 --output-dir results/verified_grid/trialvalue_free/08_15_seed3
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode free --seed 4 --output-dir results/verified_grid/none_free/08_13_seed4
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode global --seed 4 --output-dir results/verified_grid/none_global/08_13_seed4
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode spatial --seed 4 --output-dir results/verified_grid/none_spatial/08_13_seed4
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode free --seed 4 --output-dir results/verified_grid/shared_free/08_13_seed4
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode global --seed 4 --output-dir results/verified_grid/shared_global/08_13_seed4
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode spatial --seed 4 --output-dir results/verified_grid/shared_spatial/08_13_seed4
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets i --ie-mode free --seed 4 --output-dir results/verified_grid/sharedI_free/08_13_seed4
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets e --ie-mode free --seed 4 --output-dir results/verified_grid/sharedE_free/08_13_seed4
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context free --ie-mode free --seed 4 --output-dir results/verified_grid/free_free/08_13_seed4
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context trialvalue --ie-mode free --seed 4 --output-dir results/verified_grid/trialvalue_free/08_13_seed4
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode free --seed 4 --output-dir results/verified_grid/none_free/08_14_seed4
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode global --seed 4 --output-dir results/verified_grid/none_global/08_14_seed4
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode spatial --seed 4 --output-dir results/verified_grid/none_spatial/08_14_seed4
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode free --seed 4 --output-dir results/verified_grid/shared_free/08_14_seed4
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode global --seed 4 --output-dir results/verified_grid/shared_global/08_14_seed4
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode spatial --seed 4 --output-dir results/verified_grid/shared_spatial/08_14_seed4
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets i --ie-mode free --seed 4 --output-dir results/verified_grid/sharedI_free/08_14_seed4
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets e --ie-mode free --seed 4 --output-dir results/verified_grid/sharedE_free/08_14_seed4
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context free --ie-mode free --seed 4 --output-dir results/verified_grid/free_free/08_14_seed4
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context trialvalue --ie-mode free --seed 4 --output-dir results/verified_grid/trialvalue_free/08_14_seed4
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode free --seed 4 --output-dir results/verified_grid/none_free/08_15_seed4
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode global --seed 4 --output-dir results/verified_grid/none_global/08_15_seed4
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode spatial --seed 4 --output-dir results/verified_grid/none_spatial/08_15_seed4
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode free --seed 4 --output-dir results/verified_grid/shared_free/08_15_seed4
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode global --seed 4 --output-dir results/verified_grid/shared_global/08_15_seed4
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode spatial --seed 4 --output-dir results/verified_grid/shared_spatial/08_15_seed4
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets i --ie-mode free --seed 4 --output-dir results/verified_grid/sharedI_free/08_15_seed4
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets e --ie-mode free --seed 4 --output-dir results/verified_grid/sharedE_free/08_15_seed4
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context free --ie-mode free --seed 4 --output-dir results/verified_grid/free_free/08_15_seed4
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context trialvalue --ie-mode free --seed 4 --output-dir results/verified_grid/trialvalue_free/08_15_seed4
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode free --seed 5 --output-dir results/verified_grid/none_free/08_13_seed5
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode global --seed 5 --output-dir results/verified_grid/none_global/08_13_seed5
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode spatial --seed 5 --output-dir results/verified_grid/none_spatial/08_13_seed5
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode free --seed 5 --output-dir results/verified_grid/shared_free/08_13_seed5
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode global --seed 5 --output-dir results/verified_grid/shared_global/08_13_seed5
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode spatial --seed 5 --output-dir results/verified_grid/shared_spatial/08_13_seed5
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets i --ie-mode free --seed 5 --output-dir results/verified_grid/sharedI_free/08_13_seed5
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets e --ie-mode free --seed 5 --output-dir results/verified_grid/sharedE_free/08_13_seed5
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context free --ie-mode free --seed 5 --output-dir results/verified_grid/free_free/08_13_seed5
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context trialvalue --ie-mode free --seed 5 --output-dir results/verified_grid/trialvalue_free/08_13_seed5
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode free --seed 5 --output-dir results/verified_grid/none_free/08_14_seed5
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode global --seed 5 --output-dir results/verified_grid/none_global/08_14_seed5
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode spatial --seed 5 --output-dir results/verified_grid/none_spatial/08_14_seed5
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode free --seed 5 --output-dir results/verified_grid/shared_free/08_14_seed5
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode global --seed 5 --output-dir results/verified_grid/shared_global/08_14_seed5
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode spatial --seed 5 --output-dir results/verified_grid/shared_spatial/08_14_seed5
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets i --ie-mode free --seed 5 --output-dir results/verified_grid/sharedI_free/08_14_seed5
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets e --ie-mode free --seed 5 --output-dir results/verified_grid/sharedE_free/08_14_seed5
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context free --ie-mode free --seed 5 --output-dir results/verified_grid/free_free/08_14_seed5
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context trialvalue --ie-mode free --seed 5 --output-dir results/verified_grid/trialvalue_free/08_14_seed5
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode free --seed 5 --output-dir results/verified_grid/none_free/08_15_seed5
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode global --seed 5 --output-dir results/verified_grid/none_global/08_15_seed5
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode spatial --seed 5 --output-dir results/verified_grid/none_spatial/08_15_seed5
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode free --seed 5 --output-dir results/verified_grid/shared_free/08_15_seed5
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode global --seed 5 --output-dir results/verified_grid/shared_global/08_15_seed5
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode spatial --seed 5 --output-dir results/verified_grid/shared_spatial/08_15_seed5
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets i --ie-mode free --seed 5 --output-dir results/verified_grid/sharedI_free/08_15_seed5
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets e --ie-mode free --seed 5 --output-dir results/verified_grid/sharedE_free/08_15_seed5
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context free --ie-mode free --seed 5 --output-dir results/verified_grid/free_free/08_15_seed5
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context trialvalue --ie-mode free --seed 5 --output-dir results/verified_grid/trialvalue_free/08_15_seed5
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode free --seed 6 --output-dir results/verified_grid/none_free/08_13_seed6
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode global --seed 6 --output-dir results/verified_grid/none_global/08_13_seed6
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode spatial --seed 6 --output-dir results/verified_grid/none_spatial/08_13_seed6
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode free --seed 6 --output-dir results/verified_grid/shared_free/08_13_seed6
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode global --seed 6 --output-dir results/verified_grid/shared_global/08_13_seed6
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode spatial --seed 6 --output-dir results/verified_grid/shared_spatial/08_13_seed6
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets i --ie-mode free --seed 6 --output-dir results/verified_grid/sharedI_free/08_13_seed6
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets e --ie-mode free --seed 6 --output-dir results/verified_grid/sharedE_free/08_13_seed6
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context free --ie-mode free --seed 6 --output-dir results/verified_grid/free_free/08_13_seed6
+--session 08_13 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context trialvalue --ie-mode free --seed 6 --output-dir results/verified_grid/trialvalue_free/08_13_seed6
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode free --seed 6 --output-dir results/verified_grid/none_free/08_14_seed6
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode global --seed 6 --output-dir results/verified_grid/none_global/08_14_seed6
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode spatial --seed 6 --output-dir results/verified_grid/none_spatial/08_14_seed6
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode free --seed 6 --output-dir results/verified_grid/shared_free/08_14_seed6
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode global --seed 6 --output-dir results/verified_grid/shared_global/08_14_seed6
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode spatial --seed 6 --output-dir results/verified_grid/shared_spatial/08_14_seed6
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets i --ie-mode free --seed 6 --output-dir results/verified_grid/sharedI_free/08_14_seed6
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets e --ie-mode free --seed 6 --output-dir results/verified_grid/sharedE_free/08_14_seed6
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context free --ie-mode free --seed 6 --output-dir results/verified_grid/free_free/08_14_seed6
+--session 08_14 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context trialvalue --ie-mode free --seed 6 --output-dir results/verified_grid/trialvalue_free/08_14_seed6
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode free --seed 6 --output-dir results/verified_grid/none_free/08_15_seed6
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode global --seed 6 --output-dir results/verified_grid/none_global/08_15_seed6
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context none --ie-mode spatial --seed 6 --output-dir results/verified_grid/none_spatial/08_15_seed6
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode free --seed 6 --output-dir results/verified_grid/shared_free/08_15_seed6
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode global --seed 6 --output-dir results/verified_grid/shared_global/08_15_seed6
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --ie-mode spatial --seed 6 --output-dir results/verified_grid/shared_spatial/08_15_seed6
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets i --ie-mode free --seed 6 --output-dir results/verified_grid/sharedI_free/08_15_seed6
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context shared --context-targets e --ie-mode free --seed 6 --output-dir results/verified_grid/sharedE_free/08_15_seed6
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context free --ie-mode free --seed 6 --output-dir results/verified_grid/free_free/08_15_seed6
+--session 08_15 --trials verified --lwin-scale 1 --lctx-scale 0 --split-seed 0 --context trialvalue --ie-mode free --seed 6 --output-dir results/verified_grid/trialvalue_free/08_15_seed6

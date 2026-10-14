@@ -150,7 +150,10 @@ def main():
                         help="'verified': successful trials with a verified PLDAPS match only, "
                              "with the reward input at the true delivery time")
     parser.add_argument('--hidden-i', type=int, default=0, help='Extra unrecorded I units')
-    parser.add_argument('--seed', type=int, default=1)
+    parser.add_argument('--seed', type=int, default=1, help='Initialization (and default split) seed')
+    parser.add_argument('--split-seed', type=int, default=None,
+                        help='Seed of the train/select/test split (default: --seed). Fix it to compare '
+                             'restarts and variants on the same trials')
     parser.add_argument('--data', default=None, help='Export file (default: the session export)')
     parser.add_argument('--output-dir', required=True)
     parser.add_argument('--max-epochs', type=int, default=None)
@@ -171,7 +174,8 @@ def main():
     config = dict(CONFIG)
     config.update(session=args.session, context=args.context, context_targets=args.context_targets,
                   ie_mode=args.ie_mode, frozen_from=args.frozen_from, hidden_i=args.hidden_i,
-                  seed=args.seed, data_path=args.data or SESSION_FILES[args.session], trials=args.trials)
+                  seed=args.seed, data_path=args.data or SESSION_FILES[args.session], trials=args.trials,
+                  split_seed=args.seed if args.split_seed is None else args.split_seed)
     for key in ('max_epochs', 'patience', 'lctx_scale', 'lwin_scale', 'n_drift', 'test_fraction', 'select_fraction'):
         if getattr(args, key) is not None:
             config[key] = getattr(args, key)
@@ -216,7 +220,7 @@ def main():
                   'ctx': torch.tensor(ctx_cond, device=device)}
 
     train_idx, select_idx, test_idx = three_way_split(
-        ctx_cond, config['test_fraction'], config['select_fraction'], config['seed'])
+        ctx_cond, config['test_fraction'], config['select_fraction'], config['split_seed'])
 
     tgt_valid, tgt_bins = get_target_window_index(onset_bins, n_bins, bin_size_ms, config['target_window_ms'])
     row = np.cumsum(tgt_valid) - 1
@@ -422,7 +426,26 @@ def main():
             break
 
     torch.save(best['state'], out_dir / 'model_best.pt')
-    summary = {'best_epoch': best['epoch'], 'best_val_select': best['select'],
+
+    # Selection-set Poisson log-likelihood of the best model (mean of 5 noise draws), for
+    # choosing among restarts that share a split (same formula as evaluate_context_models.py)
+    model.load_state_dict(best['state'])
+    model.eval()
+    sel = se['idx']
+    with torch.no_grad():
+        draws = []
+        for k in range(5):
+            torch.manual_seed(k)
+            draws.append(model(inputs[sel])[0][:, :, rec_units_t].cpu().numpy())
+    bin_s = bin_size_ms / 1000
+    mu = np.clip(np.mean(draws, axis=0), 1e-3, None) * bin_s
+    counts = np.round(np.transpose(data['firing_rates'], (2, 1, 0))[sel.cpu().numpy()] * bin_s)
+    ll = counts * np.log(mu) - mu
+    valid = mask[sel].cpu().numpy()
+    valid = (valid[:, :, 0] if valid.ndim == 3 else valid).reshape(-1) > 0
+    select_ll = float(np.nanmean(ll.reshape(-1, ll.shape[-1])[valid]))
+
+    summary = {'best_epoch': best['epoch'], 'best_val_select': best['select'], 'select_ll': select_ll,
                'val_grand_corr_at_best': history['val_grand_corr'][best['epoch'] - 1],
                'epochs_trained': epoch + 1, 'training_time_s': time.time() - t0}
     with open(out_dir / 'history.json', 'w') as f:

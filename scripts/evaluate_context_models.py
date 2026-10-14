@@ -206,7 +206,8 @@ def evaluate(model_dir: Path, sessions: dict) -> dict:
 
     return {'config': {k: config[k] for k in ('session', 'context', 'context_targets', 'ie_mode', 'hidden_i', 'seed', 'trials')},
             'll': ll, 'effects': model_eff, 'decomposition': decomposition, 'recorded_split': rec_split,
-            'recorded': sess['effects']}
+            'recorded': sess['effects'],
+            'select_ll': json.loads((model_dir / 'summary.json').read_text()).get('select_ll', np.nan)}
 
 
 def main():
@@ -243,6 +244,33 @@ def main():
                 if f'{variant}/{s}_seed{seed_key}' in results]
         return runs if len(runs) == len(A.SESSIONS) else None
 
+    def summarize_runs(runs, base):
+        """Effects, held-out checks and delta LL for one run per session, pooled over sessions."""
+        entry = {}
+        if base is not None:
+            entry['dll'] = 1000 * float(np.mean(np.concatenate([r['ll'] for r in runs])
+                                                - np.concatenate([b['ll'] for b in base])))
+        rec_pooled = {k: np.concatenate([r['recorded'][k] for r in runs]) for k in runs[0]['recorded']}
+        for k in ('reward_pre', 'block_pre', 'prob_vis', 'spatial'):
+            entry[f'{k}_recorded'] = float(np.nanmean(rec_pooled[k]))
+            m = np.concatenate([r['effects'][k] for r in runs])
+            ok = ~np.isnan(m) & ~np.isnan(rec_pooled[k])
+            entry[f'{k}_model'] = float(np.nanmean(m))
+            entry[f'{k}_r'] = float(np.corrcoef(m[ok], rec_pooled[k][ok])[0, 1]) if ok.sum() > 3 else np.nan
+            if all(r.get('recorded_split') for r in runs):
+                rt = np.concatenate([r['recorded_split']['test'][k] for r in runs])
+                rr = np.concatenate([r['recorded_split']['rest'][k] for r in runs])
+                ok = ~np.isnan(m) & ~np.isnan(rt) & ~np.isnan(rr)
+                if ok.sum() > 3:
+                    entry[f'{k}_r_test'] = float(np.corrcoef(m[ok], rt[ok])[0, 1])
+                    entry[f'{k}_ceiling_test'] = float(np.corrcoef(rr[ok], rt[ok])[0, 1])
+        dec = {c: np.concatenate([r['decomposition'][c] for r in runs if c in r['decomposition']])
+               for c in runs[0]['decomposition']}
+        total_abs = sum(np.abs(d) for d in dec.values())
+        entry['ie_share'] = float(np.nanmean(np.abs(dec['IE']) / (total_abs + 1e-9)))
+        entry['decomposition_mean'] = {c: float(np.nanmean(d)) for c, d in dec.items()}
+        return entry
+
     seeds_all = sorted({k.split('_seed')[-1] for k in results})
     summary = {}
     for v in variants:
@@ -251,29 +279,7 @@ def main():
             runs, base = pooled(v, sd), pooled(baseline, sd)
             if runs is None:
                 continue
-            entry = {}
-            if base is not None:
-                entry['dll'] = 1000 * float(np.mean(np.concatenate([r['ll'] for r in runs])
-                                                    - np.concatenate([b['ll'] for b in base])))
-            rec_pooled = {k: np.concatenate([r['recorded'][k] for r in runs]) for k in runs[0]['recorded']}
-            for k in ('reward_pre', 'block_pre', 'prob_vis', 'spatial'):
-                entry[f'{k}_recorded'] = float(np.nanmean(rec_pooled[k]))
-                m = np.concatenate([r['effects'][k] for r in runs])
-                ok = ~np.isnan(m) & ~np.isnan(rec_pooled[k])
-                entry[f'{k}_model'] = float(np.nanmean(m))
-                entry[f'{k}_r'] = float(np.corrcoef(m[ok], rec_pooled[k][ok])[0, 1]) if ok.sum() > 3 else np.nan
-                if all(r.get('recorded_split') for r in runs):
-                    rt = np.concatenate([r['recorded_split']['test'][k] for r in runs])
-                    rr = np.concatenate([r['recorded_split']['rest'][k] for r in runs])
-                    ok = ~np.isnan(m) & ~np.isnan(rt) & ~np.isnan(rr)
-                    if ok.sum() > 3:
-                        entry[f'{k}_r_test'] = float(np.corrcoef(m[ok], rt[ok])[0, 1])
-                        entry[f'{k}_ceiling_test'] = float(np.corrcoef(rr[ok], rt[ok])[0, 1])
-            dec = {c: np.concatenate([r['decomposition'][c] for r in runs if c in r['decomposition']])
-                   for c in runs[0]['decomposition']}
-            total_abs = sum(np.abs(d) for d in dec.values())
-            entry['ie_share'] = float(np.nanmean(np.abs(dec['IE']) / (total_abs + 1e-9)))
-            entry['decomposition_mean'] = {c: float(np.nanmean(d)) for c, d in dec.items()}
+            entry = summarize_runs(runs, base)
             per_seed.append(entry)
         if not per_seed:
             continue
@@ -297,6 +303,31 @@ def main():
             lines.append(f"| {v} | " + ' | '.join(
                 f"{avg.get(k + '_r_test', np.nan):+.2f} / {avg.get(k + '_ceiling_test', np.nan):+.2f}"
                 for k in ('reward_pre', 'block_pre', 'prob_vis', 'spatial')) + ' |')
+
+    # Best restart per variant and session, by selection-set log-likelihood. Only meaningful
+    # when restarts share a split (--split-seed); comparisons are then on the same test trials.
+    best = {}
+    for key, r in results.items():
+        v, run = key.split('/')
+        session = run.split('_seed')[0]
+        if not np.isnan(r['select_ll']) and r['select_ll'] > best.get((v, session), (None, -np.inf))[1]:
+            best[(v, session)] = (key, r['select_ll'])
+    best_runs = {v: [results[best[(v, s)][0]] for s in A.SESSIONS if (v, s) in best] for v in variants}
+    if len(best_runs.get(baseline, [])) == len(A.SESSIONS):
+        lines += ['', 'Best restart per variant and session (highest selection-set log-likelihood); '
+                  'held-out r / ceiling as above:', '',
+                  '| Variant | Delta LL x1000 | Reward pre r | Block pre r | Spatial r (all trials) | Chosen seeds |',
+                  '|---|---|---|---|---|---|']
+        for v in variants:
+            if len(best_runs[v]) != len(A.SESSIONS):
+                continue
+            e = summarize_runs(best_runs[v], best_runs[baseline])
+            summary.setdefault(v, {})['best_restart'] = e
+            seeds = ' '.join(best[(v, s)][0].split('_seed')[-1] for s in A.SESSIONS)
+            lines.append(f"| {v} | {e.get('dll', np.nan):+.2f} | "
+                         f"{e.get('reward_pre_r_test', np.nan):+.2f} / {e.get('reward_pre_ceiling_test', np.nan):+.2f} | "
+                         f"{e.get('block_pre_r_test', np.nan):+.2f} / {e.get('block_pre_ceiling_test', np.nan):+.2f} | "
+                         f"{e['spatial_r']:+.2f} | {seeds} |")
 
     report = '\n'.join(lines) + '\n'
     (root / 'evaluation_report.md').write_text(report, encoding='utf-8')
