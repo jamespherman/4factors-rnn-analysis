@@ -1,0 +1,8 @@
+{
+  "best_epoch": 729,
+  "best_val_select": 0.46789593162489235,
+  "select_ll": -0.5086784854496322,
+  "val_grand_corr_at_best": 0.30432798664709926,
+  "epochs_trained": 1029,
+  "training_time_s": 1632.2199306488037
+}

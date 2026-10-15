@@ -98,7 +98,11 @@ def recovery_stats(root: Path) -> dict:
                 st[v].append(r)
             ceil.append(c)
         diff = [a - b for a, b in zip(st['shared_free'], st['free_free'])]
-        out[t] = {'students': st, 'ceiling': mean(ceil), 'diff': diff,
+        # Held-out LL, shared - free (x1000); nanmean skips neurons silent in the test windows
+        ll_diff = [1000 * (np.nanmean(np.concatenate([raws[s][f'shared_free/{s}_seed{sd}']['ll'] for s in manifest]))
+                           - np.nanmean(np.concatenate([raws[s][f'free_free/{s}_seed{sd}']['ll'] for s in manifest])))
+                   for sd in seeds]
+        out[t] = {'students': st, 'ceiling': mean(ceil), 'diff': diff, 'll_diff': ll_diff,
                   'drift_amp': next(iter(manifest.values())).get('drift_amp', {})}
     return out
 
@@ -137,6 +141,11 @@ def gather() -> dict:
             'newton': grid_stats(raw, newton, model_on_test=(name == 'switch')),
             'spatial': grid_stats(raw, ALL_SESSIONS, model_on_test=False, key='spatial'),
         }
+    raw = load_raw(RES / 'grid_v12s')
+    if raw is not None:
+        ll = lambda v, sd: np.nanmean(np.concatenate([raw[f'{v}/{s}_seed{sd}']['ll'] for s in ALL_SESSIONS]))
+        seeds = sorted({k.rsplit('_seed', 1)[1] for k in raw}, key=int)
+        d['switch_ll_diff'] = [1000 * (ll('shared_free', sd) - ll('free_free', sd)) for sd in seeds]
     d['recovery'] = recovery_stats(RES / 'recovery_v12')
     d['recovery_drift'] = recovery_stats(RES / 'recovery_v12_drift')
     cal = RES / 'recovery_v12_drift' / 'drift_calibration.json'
@@ -367,7 +376,9 @@ per student; 7 sessions pooled). Panels: teachers; columns: students.</figcaptio
 shifted out of register with context; strength set per teacher so the ceiling matches the recordings; 6 restarts per student).</figcaption></figure>
 <figure>{fig_calibrated(d)}
 <figcaption><strong>Figure 8. The key contrast: shared minus per-unit student, on real data and on each teacher.</strong>
-Negative values favour a per-unit mechanism. Dots: restarts; bars: means.</figcaption></figure>
+With idealized teachers, negative values point to a per-unit mechanism; with realistic teachers the contrast is
+negative for every mechanism. Dots: restarts; bars: means.</figcaption></figure>
+{realistic_comparison(d)}
 
 <h2>7. Fit quality</h2>
 <p><span class="tag">F</span>The models fit trial-averaged responses well where the recordings are reliable (Fig. 9: median
@@ -405,13 +416,15 @@ def summary_text(d, g, sh_free, have_drift) -> str:
               f"{mean(rv['shared']['diff']):+.2f} for a shared one). ")
     if have_drift:
         rd = d['recovery_drift']
-        s += (f"With teachers as noisy as the data, the same contrast is {mean(rd['ext']['diff']):+.2f} and "
-              f"{mean(rd['local']['diff']):+.2f} for per-unit teachers and {mean(rd['shared']['diff']):+.2f} for the shared "
-              f"teacher. ")
+        s += (f"With teachers as noisy as the data, it no longer does: the contrast is negative for every teacher, "
+              f"{mean(rd['ext']['diff']):+.2f} and {mean(rd['local']['diff']):+.2f} for per-unit teachers but also "
+              f"{mean(rd['shared']['diff']):+.2f} for the shared teacher and {mean(rd['null']['diff']):+.2f} with no context "
+              f"at all. Held-out likelihood separates the two kinds of teacher only weakly. "
+              "With the present number of reward switches, these fits cannot decide whether SC reward-context input is "
+              "neuron-specific or a shared signal routed by the local circuit; the data favour neither.")
     else:
-        s += "Whether it still does with teachers as noisy as the data is running now. "
-    s += ("The data therefore do not show that SC reward-context input must be neuron-specific; a shared signal routed "
-          "by the local circuit is equally consistent with them.")
+        s += ("Whether it still does with teachers as noisy as the data is running now. The data therefore do not show "
+              "that SC reward-context input must be neuron-specific.")
     return s
 
 
@@ -433,14 +446,46 @@ def recovery_text(rv, rd, have_drift) -> str:
                  f"by whole reward cycles plus a quarter cycle so that it carries no reward-context signal, with a strength "
                  f"per teacher chosen so that its ceiling matches the recordings.</p>")
     if have_drift:
+        se = lambda v: np.std(v, ddof=1) / np.sqrt(len(v))
+        pm = lambda v, f='+.2f': f"{mean(v):{f}} ± {se(v):{f[1:]}}"
         t.append(f"<p><span class=\"tag\">F</span>With these realistic teachers (ceilings "
                  f"{min(rd[k]['ceiling'] for k in ('ext', 'local', 'shared')):.2f}–{max(rd[k]['ceiling'] for k in ('ext', 'local', 'shared')):.2f}), "
-                 f"shared minus per-unit was {mean(rd['ext']['diff']):+.2f} and {mean(rd['local']['diff']):+.2f} for the "
-                 f"per-unit teachers and {mean(rd['shared']['diff']):+.2f} for the shared teacher (Figs. 7, 8).</p>")
+                 f"the contrast loses its power (Figs. 7, 8). Shared minus per-unit was {pm(rd['ext']['diff'])} and "
+                 f"{pm(rd['local']['diff'])} for the per-unit teachers, but {pm(rd['shared']['diff'])} for the shared "
+                 f"teacher and {pm(rd['null']['diff'])} for the no-context teacher. Per-unit students now score higher "
+                 f"whatever the mechanism: their extra freedom lets them follow fluctuations at the held-out switches "
+                 f"that are unrelated to context. Even with no context in the teacher, per-unit students scored "
+                 f"{mean(rd['null']['students']['free_free']):.2f} against a ceiling of {rd['null']['ceiling']:.2f}, so "
+                 f"scores on held-out switches are biased upwards at this noise level.</p>")
     else:
         t.append("<p><span class=\"tag\">S</span>The realistic-teacher runs (840 student fits) are running on the cluster; "
                  "Fig. 7 and the realistic rows of Fig. 8 fill in when they finish.</p>")
     return ''.join(t)
+
+
+def realistic_comparison(d) -> str:
+    """Real data against the realistic teachers, on both contrasts."""
+    rd = d['recovery_drift']
+    if not all(t in rd for t in TEACHERS):
+        return ''
+    se = lambda v: np.std(v, ddof=1) / np.sqrt(len(v))
+    real_r = paired_diff(d['switch']['all'][0], 'shared_free', 'free_free')
+    real_ll = d.get('switch_ll_diff', [])
+    rows = [['Real data', f"{mean(real_r):+.2f} ± {se(real_r):.2f}",
+             f"{mean(real_ll):+.1f} ± {se(real_ll):.1f}" if real_ll else '–']]
+    for t in ('shared', 'ext', 'local', 'null'):
+        rows.append([f'{TEACHERS[t][0]} teacher', f"{mean(rd[t]['diff']):+.2f} ± {se(rd[t]['diff']):.2f}",
+                     f"{mean(rd[t]['ll_diff']):+.1f} ± {se(rd[t]['ll_diff']):.1f}"])
+    return (table(['', 'Shared − per-unit, held-out r', 'Shared − per-unit, held-out LL (×10⁻³)'], rows)
+            .replace('<details>', '<details open>').replace('<summary>Table view</summary>', '<summary>Real data vs realistic teachers</summary>')
+            + f"<p><span class=\"tag\">F</span>The real-data r contrast ({mean(real_r):+.2f}) lies above every realistic "
+              f"teacher, including the no-context one, so it does not match any of them well; the earlier argument that "
+              f"it sits on the shared prediction, made by scaling the idealized teachers' values by ceiling, does not "
+              f"survive the realistic test. Held-out likelihood behaves more as expected (positive for the shared teacher, "
+              f"negative for the per-unit → all teacher, near zero for the per-unit → I and no-context teachers), but its "
+              f"restart-to-restart spread is large, and the real-data value ({mean(real_ll):+.1f}) is within about one "
+              f"standard error of the shared, per-unit → I and no-context teachers, and about two from the "
+              f"per-unit → all teacher. Values are mean ± SE over 6 restarts.</p>")
 
 
 def conclusions_text(d, g, sh_free, have_drift) -> str:
@@ -453,11 +498,20 @@ def conclusions_text(d, g, sh_free, have_drift) -> str:
         "per-unit context reproduces the pattern is withdrawn.",
     ]
     if have_drift:
-        items.append("<strong>Recovery with realistic teachers</strong> tells how far the null result reflects the data rather "
-                     "than the method; see Section 6.")
+        items.append("<strong>With data-like noise, the fitting procedure cannot tell shared from per-unit context.</strong> "
+                     "On teachers whose reliability matches the recordings, per-unit students win the held-out-r contrast "
+                     "whatever the teacher's mechanism, and held-out likelihood separates mechanisms only weakly. The "
+                     "earlier reading that the real data match the shared prediction is withdrawn: the data favour neither.")
+        items.append("<strong>Scores on held-out switches are biased upwards</strong> at this noise level (per-unit students "
+                     "score about 0.2 on a teacher with no context), so they should be compared against matched "
+                     "synthetic controls, not against zero or the ceiling.")
     gaps = [
         "<strong>More switches per neuron</strong> would be needed to measure neuron-specific context effects: the ceiling "
         "rises with the number of switches averaged.",
+        "<strong>The realistic teachers still differ from the data.</strong> On held-out switches, per-unit students beat "
+        "no-context students by 0.13–0.31 on every teacher, but by only about 0.02 on the real data, and the real "
+        "shared − per-unit contrast lies above every teacher's. Teacher noise is a per-neuron gain on the neuron's own slow "
+        "rate changes; real fluctuations may be shared across neurons or structured differently.",
         "<strong>E vs I as the landing site</strong> of context input is only weakly identifiable even with idealized teachers.",
         "<strong>Newton 08_14</strong> has strong slow drift in many neurons (they are real neurons, not split clusters); "
         "possible cluster merges in the pipeline could change its inputs.",

@@ -47,6 +47,9 @@ Paired student differences (same split), mean [min, max] over restarts:
    per-unit one. Linear scaling by ceiling is only a rough guide; `results/recovery_v12_drift`
    tests it with teachers whose ceiling matches the data.
    (Corrected 2026-10-15: an earlier version gave −0.04, the sign of free − shared.)
+   **Superseded by `results/recovery_v12_drift/NOTE.md`:** with teachers at the data's ceiling,
+   shared − free is negative for every teacher, including the shared one, so this argument
+   does not hold.
 5. **Teachers are easier than the data.** Their context effect is identical at every switch,
    while recorded neurons' effects vary from switch to switch (ceiling 0.21). A calibrated test
    needs teachers whose ceiling matches the data, e.g. by lower gain or by adding the recorded
