@@ -14,6 +14,9 @@ Model sets:
                   regardless of cell type, so that is the unit compared here.
     cond:         results/retrained/cond/*_seed{seed} (scripts/train_session.py)
     cond_target:  results/retrained/cond_target/*_seed{seed} (scripts/train_session.py)
+    context:      a context grid fit to the corrected exports (scripts/train_context.py),
+                  --grid/--variant, restart --seed, all 7 sessions, verified trials; each
+                  neuron only within its stable period; 'val' = the run's test trials
 
 Trial sets:
     val: held-out validation trials only (default)
@@ -228,6 +231,55 @@ def process_session(session_id: str, model_dir: Path, trial_set: str, noise: str
     return result
 
 
+def process_context_session(session_id: str, model_dir: Path, trial_set: str, observation: str = 'poisson',
+                            n_draws: int = 10) -> dict:
+    """As process_session, for a train_context.py model (recurrent noise as trained)."""
+    sys.path.insert(0, str(Path(__file__).parent))
+    from src.sessions import load_export, stable_mask
+    from evaluate_context_models import load_context_model, build_inputs, run_with_currents
+    print(f"\nProcessing session {session_id} ({model_dir.relative_to(BASE_DIR).as_posix()})...")
+    model, config = load_context_model(model_dir)
+    data = load_export(config['session'], config['trials'])  # unstable trials are NaN
+    neuron_type = np.asarray(data['neuron_type']).ravel()
+    n_trials = data['firing_rates'].shape[2]
+    recorded_units = np.array(config['recorded_unit_indices'])
+    unit_is_e = recorded_units < config['n_exc']
+    stable = stable_mask(data).T  # [trials, neurons]
+
+    is_val = np.isin(np.arange(n_trials), config['test_idx'])
+    if trial_set == 'val':
+        eval_mask, loc_pref_mask = is_val, ~is_val
+    else:
+        eval_mask = np.ones(n_trials, dtype=bool)
+        loc_pref_mask = (np.arange(n_trials) % 2) == 0
+    loc_mask = ~loc_pref_mask if trial_set == 'all' else eval_mask
+
+    onset_bins = get_target_onset_bins(data)
+    recorded_rates = compute_window_rates(np.transpose(data['firing_rates'], (2, 1, 0)), onset_bins)
+    inputs = build_inputs(data, config)
+    rnn_draws = []
+    for draw in range(n_draws):
+        rates = run_with_currents(model, inputs, draw)[0][:, :, recorded_units]
+        if observation == 'poisson':
+            rates = sample_spike_rates(rates, seed=draw)
+        rnn_draws.append(np.where(stable, compute_window_rates(rates, onset_bins), np.nan))
+
+    trial_location = np.asarray(data['trial_location']).ravel()
+    preferred = compute_preferred_locations(recorded_rates, trial_location)
+    loc_preferred = compute_preferred_locations(recorded_rates, trial_location, loc_pref_mask)
+
+    def selectivity(rates: np.ndarray) -> dict:
+        factors = compute_factor_selectivity(rates, data, preferred, eval_mask)
+        sel = {f: factors[f]['selectivity'] for f in factors}
+        sel['location'] = compute_location_selectivity(rates, trial_location, loc_preferred['for_factors'], loc_mask)
+        return sel
+
+    rnn_sels = [selectivity(r) for r in rnn_draws]
+    return {'session': session_id, 'neuron_type': neuron_type, 'unit_is_e': unit_is_e,
+            'recorded': selectivity(recorded_rates),
+            'rnn': {p: np.mean([s[p] for s in rnn_sels], axis=0) for p in PANELS}}
+
+
 def summarize(all_data: list) -> dict:
     """Pearson correlation between recorded and RNN selectivity per panel."""
     stats = {}
@@ -292,8 +344,10 @@ def create_figure(all_data: list, stats: dict, title: str):
 
 def main():
     parser = argparse.ArgumentParser(description='Recorded vs RNN visual-epoch selectivity')
-    parser.add_argument('--models', default='cond_target', choices=['legacy', 'cond', 'cond_target'])
-    parser.add_argument('--seed', type=int, default=42, help='Seed of retrained models')
+    parser.add_argument('--models', default='cond_target', choices=['legacy', 'cond', 'cond_target', 'context'])
+    parser.add_argument('--seed', type=int, default=42, help='Seed of retrained models (restart for context)')
+    parser.add_argument('--grid', default='results/grid_v12', help='Context grid (--models context)')
+    parser.add_argument('--variant', default='free_free', help='Context grid variant (--models context)')
     parser.add_argument('--trials', default='val', choices=['val', 'all'])
     parser.add_argument('--noise', default='train', choices=['train', 'off'],
                         help="RNN recurrent noise: as in training (default) or off")
@@ -303,10 +357,16 @@ def main():
     args = parser.parse_args()
 
     device = 'cpu'
-    model_dirs = get_model_dirs(args.models, args.seed)
-    all_data = [process_session(s, model_dirs[s], args.trials, args.noise, args.observation,
-                                args.n_draws, device)
-                for s in SESSIONS]
+    if args.models == 'context':
+        from src.sessions import ALL_SESSIONS
+        all_data = [process_context_session(s, BASE_DIR / args.grid / args.variant / f'{s}_seed{args.seed}',
+                                            args.trials, args.observation, args.n_draws)
+                    for s in ALL_SESSIONS]
+    else:
+        model_dirs = get_model_dirs(args.models, args.seed)
+        all_data = [process_session(s, model_dirs[s], args.trials, args.noise, args.observation,
+                                    args.n_draws, device)
+                    for s in SESSIONS]
     stats = summarize(all_data)
 
     print("\nRecorded vs RNN selectivity (Pearson r, all neurons):")
@@ -315,13 +375,16 @@ def main():
               f"mean|rec|={s['mean_abs_recorded']:.3f}  mean|rnn|={s['mean_abs_rnn']:.3f}")
 
     label = args.models if args.models == 'legacy' else f'{args.models} (seed {args.seed})'
+    if args.models == 'context':
+        label = f'{args.variant} ({Path(args.grid).name}, restart {args.seed}), 7 sessions'
     title = (f"Models: {label}  |  trials: {'held-out validation' if args.trials == 'val' else 'all'}"
              f"  |  RNN noise: {'as trained' if args.noise == 'train' else 'off'}"
              f"{', Poisson spikes' if args.observation == 'poisson' else ''}"
              f" (mean of {args.n_draws} draws)")
     fig = create_figure(all_data, stats, title)
 
-    stem = f'figure_recorded_vs_rnn_{args.models}_{args.trials}'
+    models = f'{Path(args.grid).name}_{args.variant}' if args.models == 'context' else args.models
+    stem = f'figure_recorded_vs_rnn_{models}_{args.trials}'
     if args.models != 'legacy':
         stem += f'_seed{args.seed}'
     if args.noise == 'off':

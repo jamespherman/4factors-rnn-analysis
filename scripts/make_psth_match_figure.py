@@ -3,7 +3,7 @@
 Condition-specific PSTHs, recorded vs model: the best- and worst-matched units.
 
 For each session, the free_free model (per-unit context input) restart with the best
-selection-set likelihood in results/verified_grid is run on all verified trials (mean
+selection-set likelihood in a context grid (--grid) is run on all verified trials (mean
 over noise draws). Recorded and model rates are aligned to target onset and averaged
 within location x reward condition (8 conditions). A unit's match is the Pearson r
 between its recorded and model condition PSTHs, concatenated over conditions. Its
@@ -13,7 +13,7 @@ trials, Spearman-Brown corrected).
 Most trials are training trials, so this shows fit quality, not generalization.
 
 Usage:
-    python scripts/make_psth_match_figure.py [--variant free_free] [--n-show 6]
+    python scripts/make_psth_match_figure.py [--grid results/grid_v12] [--variant free_free] [--n-show 6]
 """
 
 import argparse
@@ -31,11 +31,11 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent))
 
 from src.data_loader import RNNDataset
-from src.sessions import load_export, stable_mask, DEFAULT_SESSIONS
+from src.sessions import load_export, stable_mask, ALL_SESSIONS
 from src.analysis.pipeline_selectivity import get_target_onset_bins
 from evaluate_context_models import load_context_model, build_inputs, run_with_currents, N_DRAWS
 
-GRID = Path('results/verified_grid')
+GRID = Path('results/grid_v12')  # set by --grid
 OUT_DIR = Path('results/psth_match')
 BIN_MS = 25.0
 WINDOW_BINS = (-12, 24)  # -300 to +600 ms around target onset
@@ -122,7 +122,8 @@ def session_units(variant: str, session: str) -> list:
         units.append({'session': session, 'neuron_id': int(ids[i]), 'type': 'E' if is_e[i] else 'I',
                       'r': float(match[i]), 'ceiling': float(ceiling[i]), 'pref': pref,
                       'rec': rec_m[:, :, i], 'rec_se': rec_se[:, :, i], 'model': mod_m[:, :, i],
-                      'mean_rate': float(np.nanmean(rec_m[:, :, i])), 'model_dir': model_dir.as_posix()})
+                      'mean_rate': float(np.nanmean(rec_m[:, :, i])), 'model_dir': model_dir.as_posix(),
+                      'train_frac': len(config['train_idx']) / len(onset)})
     return units, keys, [int(c.sum()) for c in conds]
 
 
@@ -151,21 +152,27 @@ def plot_unit(fig, spec, u: dict, keys: list, t: np.ndarray, first_col_label: bo
         ax.set_title(f'loc {loc}' + (' (pref)' if loc == u['pref'] else ''), fontsize=6.5, pad=2,
                      fontweight='bold' if loc == u['pref'] else 'normal')
         axes.append(ax)
-    axes[0].set_ylabel(f"{u['session']} #{u['neuron_id']} ({u['type']})\n"
+    short = u['session'].replace('Feynman_', 'F') if u['session'].startswith('Feynman') else 'N' + u['session']
+    axes[0].set_ylabel(f"{short} #{u['neuron_id']} ({u['type']})\n"
                        f"r = {u['r']:.2f}, ceiling {u['ceiling']:.2f}", fontsize=6.5)
     return axes
 
 
 def main():
+    global GRID
     parser = argparse.ArgumentParser(description='Best/worst unit PSTH matches, recorded vs model')
+    parser.add_argument('--grid', default=str(GRID))
+    parser.add_argument('--sessions', default='all')
     parser.add_argument('--variant', default='free_free')
     parser.add_argument('--n-show', type=int, default=6)
     parser.add_argument('--min-ceiling', type=float, default=0.6)
     args = parser.parse_args()
+    GRID = Path(args.grid)
+    sessions = ALL_SESSIONS if args.sessions == 'all' else args.sessions.split(',')
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
     units, n_trials = [], {}
-    for session in DEFAULT_SESSIONS:
+    for session in sessions:
         u, keys, counts = session_units(args.variant, session)
         units += u
         n_trials[session] = counts
@@ -178,6 +185,7 @@ def main():
     reliable = [u for u in units if u['ceiling'] >= args.min_ceiling]
     shortfall = sorted(reliable, key=lambda u: u['r'] - u['ceiling'])[:args.n_show]
 
+    train_frac = [u['train_frac'] for u in units]
     t = (np.arange(*WINDOW_BINS) + 0.5) * BIN_MS
     n = args.n_show
     fig = plt.figure(figsize=(19, 2.2 + 1.25 * n))
@@ -204,7 +212,7 @@ def main():
         ax.spines[s].set_visible(False)
     ax.legend(fontsize=7, frameon=False, loc='lower right')
     ax.axvline(args.min_ceiling, color='0.75', lw=0.8, ls=':', zorder=0)
-    ax.set_title(f'{len(units)} recorded units, 3 sessions: median r = {np.nanmedian(r):.2f}, '
+    ax.set_title(f'{len(units)} recorded units, {len(sessions)} sessions: median r = {np.nanmedian(r):.2f}, '
                  f'median ceiling = {np.nanmedian(ceil):.2f}', fontsize=8.5, loc='left')
 
     ax = fig.add_subplot(outer[0, 1:])
@@ -212,11 +220,12 @@ def main():
     ax.text(0, 1.0,
             'Condition-specific PSTHs, recorded vs model\n'
             f'Model: {args.variant} (per-unit context input), best restart per session by\n'
-            'selection-set likelihood, mean over 5 noise draws. Verified successful trials.\n'
+            f'selection-set likelihood ({GRID.name}), mean over 5 noise draws.\n'
+            'Verified successful trials; each neuron only within its stable period.\n'
             'Conditions: target location (columns) x reward on that trial (colour).\n'
             'r: Pearson r over the 8 condition PSTHs (-300 to +600 ms from target onset).\n'
             'Ceiling: split-half reliability of the recorded PSTHs (Spearman-Brown).\n'
-            'About 70% of trials were used for training: this shows fit, not generalization.',
+            f'About {100 * np.mean(train_frac):.0f}% of trials were used for training: this shows fit, not generalization.',
             fontsize=7.5, va='top', family='sans-serif')
     from matplotlib.lines import Line2D
     handles = [Line2D([], [], color=COLORS[1], lw=1.6, label='recorded, high reward'),
@@ -239,7 +248,7 @@ def main():
     stem = OUT_DIR / f'psth_best_worst_{args.variant}'
     fig.savefig(f'{stem}.png', dpi=200)
     fig.savefig(f'{stem}.pdf')
-    summary = {'variant': args.variant, 'models': sorted({u['model_dir'] for u in units}),
+    summary = {'grid': GRID.as_posix(), 'variant': args.variant, 'models': sorted({u['model_dir'] for u in units}),
                'trials_per_condition': {s: dict(zip([f'loc{l}_rew{w}' for l, w in keys], c)) for s, c in n_trials.items()},
                'n_units': n_all, 'r_vs_ceiling_corr': float(np.corrcoef(r, ceil)[0, 1]),
                'median_r': float(np.nanmedian(r)), 'median_ceiling': float(np.nanmedian(ceil)),

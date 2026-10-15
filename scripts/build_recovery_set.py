@@ -14,8 +14,16 @@ Per session, teachers are the grid restarts with the best selection-set likeliho
 Students: none / shared / sharedI / freeI / free, each with --restarts restarts, fit exactly
 as on real data.
 
+With --manifest, teachers and gains are reused from an earlier set; with --drift-amp, the
+synthetic sessions also carry the recorded neurons' slow fluctuations, shifted out of
+alignment with context (make_synthetic_data.py; calibrate with calibrate_teacher_drift.py).
+
 Usage:
     python scripts/build_recovery_set.py --grid results/grid_v12 --restarts 3
+    python scripts/build_recovery_set.py --manifest results/recovery_v12/manifest.json \
+        --drift-amp null=2,ext=1.25,local=1.5,shared=2 --restarts 6 \
+        --data-dir data/synthetic_v12_drift --results-dir results/recovery_v12_drift \
+        --jobs slurm/jobs_recovery_v12_drift.txt
 """
 
 import argparse
@@ -57,6 +65,9 @@ def main():
     parser.add_argument('--grid', default='results/grid_v12')
     parser.add_argument('--sessions', default='all')
     parser.add_argument('--restarts', type=int, default=3)
+    parser.add_argument('--manifest', default=None, help='Reuse teachers and gains from this manifest')
+    parser.add_argument('--drift-amp', default='0',
+                        help="Slow-fluctuation strength: one value, or per teacher as 'null=2,ext=1.25,...'")
     parser.add_argument('--data-dir', default='data/synthetic_v12')
     parser.add_argument('--results-dir', default='results/recovery_v12')
     parser.add_argument('--jobs', default='slurm/jobs_recovery_v12.txt')
@@ -65,33 +76,42 @@ def main():
     data_dir.mkdir(parents=True, exist_ok=True)
     sessions = ALL_SESSIONS if args.sessions == 'all' else args.sessions.split(',')
 
+    amps = ({k: float(v) for k, v in (kv.split('=') for kv in args.drift_amp.split(','))}
+            if '=' in args.drift_amp else {t: float(args.drift_amp) for t in TEACHERS})
     lines, manifest = [], {}
+    prior = json.loads(Path(args.manifest).read_text()) if args.manifest else {}
     for session in sessions:
-        teachers = {t: best_restart(grid, v, session) for t, v in TEACHERS.items()}
-        _, config = load_context_model(teachers['ext'])
-        data = load_export(config['session'], config['trials'])
-        sess = A.session_from_data(data, session)
-        gains = {'null': 1.0, 'ext': 1.0, 'local': 1.0}
-        ref_base = model_effects(teachers['ext'], 0.0, sess, data)['reward_pre']
-        ref_sd = context_sd(teachers['ext'], 1.0, ref_base, sess, data)
-        sh_base = model_effects(teachers['shared'], 0.0, sess, data)['reward_pre']
-        sds = {g: context_sd(teachers['shared'], g, sh_base, sess, data) for g in SHARED_GAINS}
-        gains['shared'] = float(min(SHARED_GAINS, key=lambda g: abs(np.log(max(sds[g], 1e-6) / ref_sd))))
-        manifest[session] = {'teachers': {t: d.as_posix() for t, d in teachers.items()}, 'gains': gains,
-                             'ext_context_sd': ref_sd, 'shared_context_sd_by_gain': sds}
-        print(f"{session}: ext context SD {ref_sd:.2f}; shared {', '.join(f'g{g}={v:.2f}' for g, v in sds.items())}"
-              f" -> g = {gains['shared']}", flush=True)
+        if session in prior:
+            teachers = {t: Path(d) for t, d in prior[session]['teachers'].items()}
+            gains = prior[session]['gains']
+            manifest[session] = dict(prior[session], drift_amp=amps)
+        else:
+            teachers = {t: best_restart(grid, v, session) for t, v in TEACHERS.items()}
+            _, config = load_context_model(teachers['ext'])
+            data = load_export(config['session'], config['trials'])
+            sess = A.session_from_data(data, session)
+            gains = {'null': 1.0, 'ext': 1.0, 'local': 1.0}
+            ref_base = model_effects(teachers['ext'], 0.0, sess, data)['reward_pre']
+            ref_sd = context_sd(teachers['ext'], 1.0, ref_base, sess, data)
+            sh_base = model_effects(teachers['shared'], 0.0, sess, data)['reward_pre']
+            sds = {g: context_sd(teachers['shared'], g, sh_base, sess, data) for g in SHARED_GAINS}
+            gains['shared'] = float(min(SHARED_GAINS, key=lambda g: abs(np.log(max(sds[g], 1e-6) / ref_sd))))
+            manifest[session] = {'teachers': {t: d.as_posix() for t, d in teachers.items()}, 'gains': gains,
+                                 'ext_context_sd': ref_sd, 'shared_context_sd_by_gain': sds,
+                                 'drift_amp': amps}
+            print(f"{session}: ext context SD {ref_sd:.2f}; shared "
+                  f"{', '.join(f'g{g}={v:.2f}' for g, v in sds.items())} -> g = {gains['shared']}", flush=True)
 
         for t, d in teachers.items():
             name = f'{t}_{session}'
             out = data_dir / f'{name}.mat'
             if not out.exists():
                 subprocess.run([sys.executable, 'scripts/make_synthetic_data.py', '--teacher', str(d),
-                                '--ctx-scale', str(gains[t]), '--out', str(out)], check=True)
+                                '--ctx-scale', str(gains[t]), '--drift-amp', str(amps[t]), '--out', str(out)], check=True)
             for seed in range(1, args.restarts + 1):
                 for student, flags in STUDENTS.items():
                     lines.append(f"--session {session} --data {out.as_posix()} --trials all --lwin-scale 1 "
-                                 f"--lctx-scale 0 --split-seed 0 {flags} --ie-mode free --seed {seed} "
+                                 f"--lctx-scale 0 --split switch {flags} --ie-mode free --seed {seed} "
                                  f"--output-dir {args.results_dir}/{name}/{student}/{session}_seed{seed}")
 
     with open(args.jobs, 'w', newline='\n') as f:  # LF endings: read by bash on CRC
