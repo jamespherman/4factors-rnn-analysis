@@ -27,7 +27,7 @@ Paired student differences (same split), mean [min, max] over restarts:
 | ext | −0.28 [−0.30, −0.26] | −0.33 [−0.42, −0.21] | +0.09 [+0.04, +0.11] |
 | local | −0.23 [−0.29, −0.18] | −0.19 [−0.27, −0.16] | +0.01 [−0.09, +0.08] |
 | shared | +0.10 [+0.02, +0.17] | +0.09 [−0.01, +0.27] | −0.02 |
-| **real data (grid_v12s, 6 restarts)** | −0.04 ± 0.05 (SE) | +0.00 ± 0.03 | |
+| **real data (grid_v12s, 6 restarts)** | +0.04 ± 0.05 (SE) | −0.00 ± 0.03 | |
 
 ## Findings
 1. **The procedure works when the teacher's pattern is reliable.** No false positives on null
@@ -40,10 +40,13 @@ Paired student differences (same split), mean [min, max] over restarts:
 3. **E-vs-I target: weakly identifiable.** For the ext teacher, free beats freeI (+0.09; held-out LL
    +0.5 vs −9.2). For the local teacher the two tie (+0.01), with freeI slightly ahead in LL
    (+4.2 vs +2.8).
-4. **Real data fall between the two cases and are not decisive.** On real data shared − free is
-   −0.04 ± 0.05, but the real ceiling is 0.21, against 0.47–0.64 for the teachers. Scaling the
+4. **Real data sit nearer the shared case, but this calibration is crude.** On real data shared − free is
+   +0.04 ± 0.05, but the real ceiling is 0.21, against 0.47–0.64 for the teachers. Scaling the
    teacher differences by ceiling predicts about −0.12 for a per-unit truth and about +0.03 for a
-   shared truth. The observed value lies between and within about 1.5 SE of both.
+   shared truth. The observed value matches the shared prediction and is about 3 SE above the
+   per-unit one. Linear scaling by ceiling is only a rough guide; `results/recovery_v12_drift`
+   tests it with teachers whose ceiling matches the data.
+   (Corrected 2026-10-15: an earlier version gave −0.04, the sign of free − shared.)
 5. **Teachers are easier than the data.** Their context effect is identical at every switch,
    while recorded neurons' effects vary from switch to switch (ceiling 0.21). A calibrated test
    needs teachers whose ceiling matches the data, e.g. by lower gain or by adding the recorded
