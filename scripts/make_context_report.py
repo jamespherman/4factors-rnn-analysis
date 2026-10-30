@@ -1,21 +1,23 @@
 #!/usr/bin/env python3
 """
-Build results/context_report_v12.html: a self-contained report on reward-context inputs
-on the corrected exports (pipeline 1.2.0, 7 sessions). It covers the population effect
-(results/context_analysis_v12), the context grid with an interleaved split
-(results/grid_v12) and with whole-switch held-out windows (results/grid_v12s), the
+Build results/context_report_<version>.html: a self-contained report on reward-context inputs
+for one export version (v12: 2026-10-14 corrected exports; v13: 2026-10-30 exports after curation
+round 2 and the new SC classic rule). It covers the population effect
+(results/context_analysis_<version>), the context grid with an interleaved split
+(results/grid_<version>) and with whole-switch held-out windows (results/grid_<version>s), the
 recovery test with idealized teachers (results/recovery_v12) and with teachers given the
-recordings' slow fluctuations (results/recovery_v12_drift), and the fit-quality figures
+recordings' slow fluctuations (results/recovery_v12_drift; built on v12 teachers), and the fit-quality figures
 (results/psth_match, results/r01_figure). Parts whose results are missing are marked as
 pending, so the report can be rebuilt as runs finish.
 
 Usage:
-    python scripts/make_context_report.py
+    python scripts/make_context_report.py [--version v13]
 """
 
 import base64
 import io
 import json
+import os
 import re
 import subprocess
 import sys
@@ -36,7 +38,9 @@ from src.analysis.task_context import get_task_context, get_switches
 
 ROOT = Path(__file__).parent.parent
 RES = ROOT / 'results'
-OUT = RES / 'context_report_v12.html'
+VERSION = 'v13'  # set by --version
+EXPORTS = {'v12': 'Corrected exports of 2026-10-14 (pipeline 1.2.0)',
+           'v13': 'Exports of 2026-10-30 (curation round 2, new SC classic rule; Newton 08_13 with fixed event timing)'}
 NEWTON_EFFECT = ('08_13', '08_14')  # sessions with a population reward-context effect
 
 R.VARIANTS['shared_free_qshift'] = ('Shifted shared → all', 'none', 'control: context shifted out of register')
@@ -110,7 +114,7 @@ def recovery_stats(root: Path) -> dict:
 def stage_a_sessions() -> list:
     """Per-session reward and block pre-target effects from the Stage A note."""
     rows = []
-    for line in (RES / 'context_analysis_v12' / 'NOTE.md').read_text(encoding='utf-8').splitlines():
+    for line in (RES / f'context_analysis_{VERSION}' / 'NOTE.md').read_text(encoding='utf-8').splitlines():
         m = re.search(r'^\s*\|\s*(\S+)\s*\|\s*(\d+)\s*\|\s*([+-]?[\d.]+)\s*\(p ([\d.]+)\)\s*\|\s*([+-]?[\d.]+)\s*\(p ([\d.]+)\)', line)
         if m:
             s = m.group(1).replace('Newton_', '')
@@ -127,12 +131,16 @@ def gather() -> dict:
         d['counts'][s] = {'trials': int(data['firing_rates'].shape[2]), 'E': int((nt == 1).sum()), 'I': int((nt == 2).sum()),
                           'switches': len(get_switches(get_task_context(data)['reward_map'])),
                           'stable': float(stable_mask(data).mean())}
-    stage = json.loads((RES / 'context_analysis_v12' / 'stage_a_results.json').read_text())
+    stage = json.loads((RES / f'context_analysis_{VERSION}' / 'stage_a_results.json').read_text())
     d['stage_a'] = stage['switch']['30']
+    sr = stage['sign_reversal']
+    d['prob_vis'] = (sr['mean_d1'] - sr['mean_d3']) / 2
+    d['psth'] = json.loads((RES / 'psth_match' / f'psth_match_grid_{VERSION}_free_free.json').read_text())
+    d['r01'] = json.loads((RES / 'r01_figure' / 'panel_data' / f'figure_recorded_vs_rnn_grid_{VERSION}_stats.json').read_text())
     d['stage_a_sessions'] = stage_a_sessions()
 
     newton = [s for s in ALL_SESSIONS if s in NEWTON_EFFECT]
-    for name, root in (('random', RES / 'grid_v12'), ('switch', RES / 'grid_v12s')):
+    for name, root in (('random', RES / f'grid_{VERSION}'), ('switch', RES / f'grid_{VERSION}s')):
         raw = load_raw(root)
         if raw is None:
             continue
@@ -141,7 +149,7 @@ def gather() -> dict:
             'newton': grid_stats(raw, newton, model_on_test=(name == 'switch')),
             'spatial': grid_stats(raw, ALL_SESSIONS, model_on_test=False, key='spatial'),
         }
-    raw = load_raw(RES / 'grid_v12s')
+    raw = load_raw(RES / f'grid_{VERSION}s')
     if raw is not None:
         ll = lambda v, sd: np.nanmean(np.concatenate([raw[f'{v}/{s}_seed{sd}']['ll'] for s in ALL_SESSIONS]))
         seeds = sorted({k.rsplit('_seed', 1)[1] for k in raw}, key=int)
@@ -273,7 +281,16 @@ img.fig { width:100%; height:auto; border-radius:4px; background:#fff; }
 
 
 def main():
+    global VERSION
+    import argparse
+    parser = argparse.ArgumentParser(description='Reward-context report')
+    parser.add_argument('--version', default=VERSION, choices=list(EXPORTS))
+    VERSION = parser.parse_args().version
+    if VERSION == 'v12':  # archived exports (src/sessions.py reads this at load time)
+        os.environ['FOURFACTORS_EXPORT_DIR'] = str(ROOT / 'data' / 'export_2026-10-14_v1.2')
+    out = RES / f'context_report_{VERSION}.html'
     d = gather()
+    loc = [v['r'] for v in d['r01']['location'].values()]
     commit = subprocess.run(['git', 'rev-parse', '--short', 'HEAD'], capture_output=True, text=True, cwd=ROOT).stdout.strip()
     c = d['counts']
     n_e, n_i = sum(x['E'] for x in c.values()), sum(x['I'] for x in c.values())
@@ -294,7 +311,7 @@ def main():
     rec_text = recovery_text(rv, rd, have_drift)
     body = f"""
 <h1>Reward-context inputs to SC on the corrected exports: what the RNN fits can and cannot tell apart</h1>
-<div class="meta">Corrected exports (pipeline 1.2.0), Feynman 08_12–08_15 and Newton 08_13–08_15. Built
+<div class="meta">{esc(EXPORTS[VERSION])}; Feynman 08_12–08_15 and Newton 08_13–08_15. Built
 {esc(__import__('datetime').date.today())} from commit <code>{esc(commit)}</code> by <code>scripts/make_context_report.py</code>.
 Prepared by Claude for James Herman. Supersedes the conclusions of <code>results/recovery_pilot_report.html</code>.</div>
 
@@ -336,15 +353,14 @@ context inputs: the reward map and the probability block. Variants differ only i
 <p><span class="tag">F</span>With test trials scattered through the session, per-unit models reproduced the neuron-by-neuron
 pattern well (r = {g(rnd, 'free_free'):.2f} for per-unit → all; ceiling {mean(rnd[1]):.2f}; Fig. 3). But a control whose
 context input was shifted a quarter cycle out of register with the real context reached {g(rnd, 'free_free_qshift'):.2f}.
-That shifted input carries no reward information at the switches, so most of the score came from something else:
+That shifted input carries no reward information at the switches, so {leak_share(rnd, g)} of the score came from something else:
 per-unit inputs let each unit follow its neuron's slow fluctuations on the training trials, and those fluctuations are
-shared with the neighbouring test trials. Shared-context models ({g(rnd, 'shared_free'):.2f}) scored about as high as
-the shifted control.</p>
+shared with the neighbouring test trials. Shared-context models scored {g(rnd, 'shared_free'):.2f}.</p>
 <figure>{fig_grid(d, 'random', 'Interleaved split', 'held-out r with the recorded reward-context effect (interleaved test trials)')}
-<figcaption><strong>Figure 3. With interleaved test trials, a context input shifted out of register scores nearly as
-well as the real one.</strong> One dot per restart, bar = mean, green line = reliability ceiling of the recorded effect.</figcaption></figure>
+<figcaption><strong>Figure 3. With interleaved test trials, a context input shifted out of register scores
+{g(rnd, 'free_free_qshift') / g(rnd, 'free_free'):.0%} of what the real one does.</strong> One dot per restart, bar = mean, green line = reliability ceiling of the recorded effect.</figcaption></figure>
 
-<h2>5. Holding out whole switches: the pattern is weak, and shared and per-unit context are indistinguishable</h2>
+<h2>5. Holding out whole switches: the pattern is weak{', and shared and per-unit context are indistinguishable' if abs(sh_free[0]) < 2 * sh_free[1] else ''}</h2>
 <p><span class="tag">S</span>We refit every variant holding out whole windows of ±30 trials around 2 random reward switches
 for testing (and 2 for checkpoint selection), different switches for each restart. A test switch then shares no slow
 fluctuations with training trials, and any effect a model predicts there must come from its context input.</p>
@@ -353,8 +369,9 @@ neuron's reward-context effect is only weakly reproducible. Against this ceiling
 {min(g(sw, v) for v in ('shared_free', 'sharedI_free', 'freeI_free', 'freeE_free', 'free_free')):.2f}–{max(g(sw, v) for v in ('shared_free', 'sharedI_free', 'freeI_free', 'freeE_free', 'free_free')):.2f},
 the shifted controls {g(sw, 'free_free_qshift'):.2f} and {g(sw, 'shared_free_qshift'):.2f}, and no context
 {g(sw, 'none_free'):.2f}. The no-context score is not zero, because which trials fall in the test windows already shapes
-the measured effect. Paired over restarts (Fig. 5), aligned context beats its shifted control by about 0.1, within 1–2
-standard errors, and shared minus per-unit is {sh_free[0]:+.2f} ± {sh_free[1]:.2f}.</p>
+the measured effect. Paired over restarts (Fig. 5), per-unit context minus its shifted control is {pm(paired_diff(sw[0], 'free_free', 'free_free_qshift'))},
+shared context minus its shifted control {pm(paired_diff(sw[0], 'shared_free', 'shared_free_qshift'))}, and shared minus per-unit
+{sh_free[0]:+.2f} ± {sh_free[1]:.2f}.</p>
 <figure>{fig_grid(d, 'switch', 'Switch-window split', 'held-out r with the recorded reward-context effect (held-out switches)')}
 <figcaption><strong>Figure 4. On held-out switches, no variant clearly beats the controls.</strong> Model effects measured on
 the same held-out trials as the recorded effect. Layout as Fig. 3.</figcaption></figure>
@@ -366,7 +383,7 @@ bars: means (hover for SE).</figcaption></figure>
 <p><span class="tag">S</span>Teachers are networks already fit to each session, whose mechanism is therefore known: no
 context, shared context (gain set so that its context-driven effects are as large as the per-unit teacher's), per-unit
 context to all units, and per-unit context to I units only. Spikes were generated from each teacher on the real trials,
-and students of every variant were fit to them exactly as to the real data, with the switch-window split.</p>
+and students of every variant were fit to them exactly as to the real data, with the switch-window split.{recovery_version_note()}</p>
 {rec_text}
 <figure>{fig_recovery(rv, ', idealized')}
 <figcaption><strong>Figure 6. Idealized teachers</strong> (no slow fluctuations beyond their own drift inputs; 3 restarts
@@ -382,13 +399,13 @@ negative for every mechanism. Dots: restarts; bars: means.</figcaption></figure>
 
 <h2>7. Fit quality</h2>
 <p><span class="tag">F</span>The models fit trial-averaged responses well where the recordings are reliable (Fig. 9: median
-r 0.60 against a median split-half reliability of 0.52 over 270 units; r and reliability correlate across units). Visual
-selectivity for location is reproduced on held-out trials (Fig. 10: r 0.57, range 0.32–0.84 over restarts); identity,
+r {d['psth']['median_r']:.2f} against a median split-half reliability of {d['psth']['median_ceiling']:.2f} over {d['psth']['n_units']} units; r and reliability correlate across units). Visual
+selectivity for location is reproduced on held-out trials (Fig. 10: r {mean(loc):.2f}, range {min(loc):.2f}–{max(loc):.2f} over restarts); identity,
 salience and probability selectivity are not.</p>
-<figure class="wide">{embed_png(RES / 'psth_match' / 'psth_best_worst_free_free.png')}
+<figure class="wide">{embed_png(RES / 'psth_match' / f'psth_best_worst_grid_{VERSION}_free_free.png')}
 <figcaption><strong>Figure 9. Condition PSTHs, recorded vs model</strong> (per-unit → all, interleaved-split fits, best
 restart per session): best and worst matches, and the reliable units the model fits worst.</figcaption></figure>
-<figure class="wide">{embed_png(RES / 'r01_figure' / 'figure_recorded_vs_rnn_grid_v12.png')}
+<figure class="wide">{embed_png(RES / 'r01_figure' / f'figure_recorded_vs_rnn_grid_{VERSION}.png')}
 <figcaption><strong>Figure 10. Visual-epoch selectivity, recorded vs model</strong> (50–250 ms after target onset, held-out
 trials, 6 restarts).</figcaption></figure>
 
@@ -397,18 +414,90 @@ trials, 6 restarts).</figcaption></figure>
 """
     page = (f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
             f'<title>Reward Context Report</title><style>{CSS}{EXTRA_CSS}</style></head><body><main>{body}</main></body></html>')
-    OUT.write_text(page, encoding='utf-8')
-    print(f"Wrote {OUT} ({len(page) / 1024:.0f} KB)")
+    out.write_text(page, encoding='utf-8')
+    print(f"Wrote {out} ({len(page) / 1024:.0f} KB)")
+
+
+def leak_share(rnd, g) -> str:
+    """How much of the interleaved per-unit score the shifted control reaches, in words."""
+    q = g(rnd, 'free_free_qshift') / g(rnd, 'free_free')
+    return 'most' if q >= 0.65 else 'about half' if q >= 0.35 else 'part'
+
+
+def pm(v) -> str:
+    return f"{mean(v):+.2f} ± {se(v):.2f}"
+
+
+def se(v) -> float:
+    return float(np.std(v, ddof=1) / np.sqrt(len(v)))
+
+
+def shared_vs_unit_phrase(sh_free) -> str:
+    """Real-data shared - per-unit contrast in words (mean, SE)."""
+    m, e = sh_free
+    if abs(m) < 2 * e:
+        return f"shared and per-unit context fit about equally well (shared minus per-unit {m:+.2f} ± {e:.2f})"
+    better = 'per-unit' if m < 0 else 'shared'
+    return f"{better} context scores higher (shared minus per-unit {m:+.2f} ± {e:.2f})"
+
+
+def real_vs_teachers(d) -> dict:
+    """Where the real-data contrasts sit relative to the realistic teachers."""
+    rd = d['recovery_drift']
+    real_r = paired_diff(d['switch']['all'][0], 'shared_free', 'free_free')
+    real_ll = d.get('switch_ll_diff', [])
+    tr = {t: mean(rd[t]['diff']) for t in TEACHERS}
+    lo, hi = min(tr.values()), max(tr.values())
+    if mean(real_r) - se(real_r) > hi:
+        r_txt = (f"lies above every realistic teacher ({lo:+.2f} to {hi:+.2f}), including the no-context one, so it "
+                 f"matches none of them well")
+    elif mean(real_r) + se(real_r) < lo:
+        r_txt = f"lies below every realistic teacher ({lo:+.2f} to {hi:+.2f}), so it matches none of them well"
+    else:
+        r_txt = (f"lies within the range of the realistic teachers ({lo:+.2f} to {hi:+.2f}), which includes the shared "
+                 f"and no-context teachers, so it does not discriminate between mechanisms")
+    z = {t: abs(mean(real_ll) - mean(rd[t]['ll_diff'])) / np.hypot(se(real_ll), se(rd[t]['ll_diff'])) for t in TEACHERS}
+    near = [TEACHERS[t][0][0].lower() + TEACHERS[t][0][1:] for t in TEACHERS if z[t] < 1]
+    mid = [TEACHERS[t][0][0].lower() + TEACHERS[t][0][1:] for t in TEACHERS if 1 <= z[t] < 2]
+    far = [TEACHERS[t][0][0].lower() + TEACHERS[t][0][1:] for t in TEACHERS if z[t] >= 2]
+    ll_txt = '; '.join(x for x in (
+        f"within one combined standard error of the {', '.join(near)} teacher{'s' if len(near) > 1 else ''}" if near else '',
+        f"one to two from the {', '.join(mid)} teacher{'s' if len(mid) > 1 else ''}" if mid else '',
+        f"more than two from the {', '.join(far)} teacher{'s' if len(far) > 1 else ''}" if far else '') if x)
+    fn = paired_diff(d['switch']['all'][0], 'free_free', 'none_free')
+    t_fn = [mean([a - b for a, b in zip(rd[t]['students']['free_free'], rd[t]['students']['none_free'])]) for t in TEACHERS]
+    return {'real_r': real_r, 'real_ll': real_ll, 'r_txt': r_txt, 'll_txt': ll_txt,
+            'free_none': mean(fn), 't_free_none': (min(t_fn), max(t_fn)), 'r_above': mean(real_r) - se(real_r) > hi}
+
+
+def teacher_gap(d) -> str:
+    """Open item if the realistic teachers differ visibly from the real data."""
+    c = real_vs_teachers(d)
+    lo, hi = c['t_free_none']
+    if not (c['r_above'] or c['free_none'] < lo - 0.05):
+        return ''
+    return ("<strong>The realistic teachers still differ from the data.</strong> On held-out switches, per-unit students "
+            f"beat no-context students by {lo:.2f}–{hi:.2f} on the teachers but by {c['free_none']:.2f} on the real data"
+            + (", and the real shared − per-unit contrast lies above every teacher's" if c['r_above'] else '')
+            + ". Teacher noise is a per-neuron gain on the neuron's own slow rate changes; real fluctuations may be "
+            "shared across neurons or structured differently.")
+
+
+def recovery_version_note() -> str:
+    if VERSION == 'v12':
+        return ''
+    return (" The recovery sets were built from teachers fit to the previous (2026-10-14) exports and calibrated "
+            "to their ceiling (0.21); they test the method, so they were not rebuilt for the new exports.")
 
 
 def summary_text(d, g, sh_free, have_drift) -> str:
     sw, rnd = d['switch']['all'], d['random']['all']
     s = (f"On interleaved test trials, per-unit models appeared to reproduce the pattern (r = {g(rnd, 'free_free'):.2f}), but "
-         f"a control with context shifted out of register scored almost as well ({g(rnd, 'free_free_qshift'):.2f}): the "
-         f"score mostly reflected slow fluctuations shared between training and test trials. Holding out whole reward "
+         f"a control with context shifted out of register also scored {g(rnd, 'free_free_qshift'):.2f}: {leak_share(rnd, g)} of the "
+         f"score reflected slow fluctuations shared between training and test trials. Holding out whole reward "
          f"switches removes that leak. The neuron-by-neuron pattern then barely repeats from switch to switch (ceiling "
-         f"{mean(sw[1]):.2f}), aligned context gains only about 0.1 over its controls, and shared and per-unit context fit "
-         f"equally well ({sh_free[0]:+.2f} ± {sh_free[1]:.2f}). ")
+         f"{mean(sw[1]):.2f}), aligned per-unit context beats its shifted control by "
+         f"{mean(paired_diff(sw[0], 'free_free', 'free_free_qshift')):+.2f}, and {shared_vs_unit_phrase(sh_free)}. ")
     rv = d['recovery']
     if all(t in rv for t in TEACHERS):
         s += (f"With idealized teachers the procedure separates the mechanisms clearly (shared minus per-unit "
@@ -419,7 +508,8 @@ def summary_text(d, g, sh_free, have_drift) -> str:
         s += (f"With teachers as noisy as the data, it no longer does: the contrast is negative for every teacher, "
               f"{mean(rd['ext']['diff']):+.2f} and {mean(rd['local']['diff']):+.2f} for per-unit teachers but also "
               f"{mean(rd['shared']['diff']):+.2f} for the shared teacher and {mean(rd['null']['diff']):+.2f} with no context "
-              f"at all. Held-out likelihood separates the two kinds of teacher only weakly. "
+              f"at all. Held-out likelihood separates the two kinds of teacher only weakly. The real-data contrast "
+              f"{real_vs_teachers(d)['r_txt']}. "
               "With the present number of reward switches, these fits cannot decide whether SC reward-context input is "
               "neuron-specific or a shared signal routed by the local circuit; the data favour neither.")
     else:
@@ -468,9 +558,8 @@ def realistic_comparison(d) -> str:
     rd = d['recovery_drift']
     if not all(t in rd for t in TEACHERS):
         return ''
-    se = lambda v: np.std(v, ddof=1) / np.sqrt(len(v))
-    real_r = paired_diff(d['switch']['all'][0], 'shared_free', 'free_free')
-    real_ll = d.get('switch_ll_diff', [])
+    c = real_vs_teachers(d)
+    real_r, real_ll = c['real_r'], c['real_ll']
     rows = [['Real data', f"{mean(real_r):+.2f} ± {se(real_r):.2f}",
              f"{mean(real_ll):+.1f} ± {se(real_ll):.1f}" if real_ll else '–']]
     for t in ('shared', 'ext', 'local', 'null'):
@@ -478,48 +567,42 @@ def realistic_comparison(d) -> str:
                      f"{mean(rd[t]['ll_diff']):+.1f} ± {se(rd[t]['ll_diff']):.1f}"])
     return (table(['', 'Shared − per-unit, held-out r', 'Shared − per-unit, held-out LL (×10⁻³)'], rows)
             .replace('<details>', '<details open>').replace('<summary>Table view</summary>', '<summary>Real data vs realistic teachers</summary>')
-            + f"<p><span class=\"tag\">F</span>The real-data r contrast ({mean(real_r):+.2f}) lies above every realistic "
-              f"teacher, including the no-context one, so it does not match any of them well; the earlier argument that "
-              f"it sits on the shared prediction, made by scaling the idealized teachers' values by ceiling, does not "
-              f"survive the realistic test. Held-out likelihood behaves more as expected (positive for the shared teacher, "
-              f"negative for the per-unit → all teacher, near zero for the per-unit → I and no-context teachers), but its "
-              f"restart-to-restart spread is large, and the real-data value ({mean(real_ll):+.1f}) is within about one "
-              f"standard error of the shared, per-unit → I and no-context teachers, and about two from the "
-              f"per-unit → all teacher. Values are mean ± SE over 6 restarts.</p>")
+            + f"<p><span class=\"tag\">F</span>The real-data r contrast ({mean(real_r):+.2f}) {c['r_txt']}. Held-out "
+              f"likelihood behaves more as expected (positive for the shared teacher, negative for the per-unit → all "
+              f"teacher), but its restart-to-restart spread is large; the real-data value ({mean(real_ll):+.1f}) is "
+              f"{c['ll_txt']}. Values are mean ± SE over 6 restarts.</p>")
 
 
 def conclusions_text(d, g, sh_free, have_drift) -> str:
     items = [
-        "<strong>Reward context modulates SC pre-target activity weakly</strong> (+0.28 sp/s), mainly in two Newton "
+        f"<strong>Reward context modulates SC pre-target activity weakly</strong> ({d['stage_a']['reward|pre|all']['mean_diff_sp_s']:+.2f} sp/s), mainly in two Newton "
         "sessions.",
         "<strong>The neuron-by-neuron pattern is not reliably measurable across switches</strong> with these data "
         f"(ceiling {mean(d['switch']['all'][1]):.2f}). Earlier, higher reliability came from slow fluctuations, not context.",
-        "<strong>Shared and per-unit context fit the real data equally well</strong>; the earlier conclusion that only "
-        "per-unit context reproduces the pattern is withdrawn.",
+        f"<strong>On held-out switches, {shared_vs_unit_phrase(sh_free)}.</strong>" + (
+            " Realistic teachers show the same per-unit advantage whatever their mechanism, so this does not identify "
+            "per-unit input." if sh_free[0] < -2 * sh_free[1] else ""),
     ]
     if have_drift:
         items.append("<strong>With data-like noise, the fitting procedure cannot tell shared from per-unit context.</strong> "
                      "On teachers whose reliability matches the recordings, per-unit students win the held-out-r contrast "
-                     "whatever the teacher's mechanism, and held-out likelihood separates mechanisms only weakly. The "
-                     "earlier reading that the real data match the shared prediction is withdrawn: the data favour neither.")
+                     "whatever the teacher's mechanism, and held-out likelihood separates mechanisms only weakly. "
+                     "The data favour neither mechanism.")
         items.append("<strong>Scores on held-out switches are biased upwards</strong> at this noise level (per-unit students "
                      "score about 0.2 on a teacher with no context), so they should be compared against matched "
                      "synthetic controls, not against zero or the ceiling.")
     gaps = [
         "<strong>More switches per neuron</strong> would be needed to measure neuron-specific context effects: the ceiling "
         "rises with the number of switches averaged.",
-        "<strong>The realistic teachers still differ from the data.</strong> On held-out switches, per-unit students beat "
-        "no-context students by 0.13–0.31 on every teacher, but by only about 0.02 on the real data, and the real "
-        "shared − per-unit contrast lies above every teacher's. Teacher noise is a per-neuron gain on the neuron's own slow "
-        "rate changes; real fluctuations may be shared across neurons or structured differently.",
+        teacher_gap(d) if have_drift else '',
         "<strong>E vs I as the landing site</strong> of context input is only weakly identifiable even with idealized teachers.",
         "<strong>Newton 08_14</strong> has strong slow drift in many neurons (they are real neurons, not split clusters); "
         "possible cluster merges in the pipeline could change its inputs.",
-        "<strong>Not reproduced by any model:</strong> the visual-response probability effect (−0.80 sp/s), and high-rate "
-        "transients (training clips rates at 120–160 sp/s).",
+        (f"<strong>Not reproduced by any model:</strong> the visual-response probability effect ({d['prob_vis']:+.2f} sp/s), and high-rate "
+         "transients (training clips rates at 120–160 sp/s).").replace('-0', '−0'),
     ]
     return ('<ul>' + ''.join(f'<li>{x}</li>' for x in items) + '</ul>'
-            + ''.join(f'<div class="gap"><span class="tag">Open</span>{x}</div>' for x in gaps))
+            + ''.join(f'<div class="gap"><span class="tag">Open</span>{x}</div>' for x in gaps if x))
 
 
 if __name__ == '__main__':

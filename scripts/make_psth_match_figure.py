@@ -245,7 +245,7 @@ def main():
                     a.set_xlabel('ms from target', fontsize=6.5, labelpad=1)
     fig.text(0.005, 0.5, 'firing rate (sp/s)', rotation=90, va='center', fontsize=8)
 
-    stem = OUT_DIR / f'psth_best_worst_{args.variant}'
+    stem = OUT_DIR / f'psth_best_worst_{Path(args.grid).name}_{args.variant}'
     fig.savefig(f'{stem}.png', dpi=200)
     fig.savefig(f'{stem}.pdf')
     summary = {'grid': GRID.as_posix(), 'variant': args.variant, 'models': sorted({u['model_dir'] for u in units}),
@@ -254,7 +254,7 @@ def main():
                'median_r': float(np.nanmedian(r)), 'median_ceiling': float(np.nanmedian(ceil)),
                'units': [{k: u[k] for k in ('session', 'neuron_id', 'type', 'r', 'ceiling', 'pref', 'mean_rate')}
                          for u in order]}
-    (OUT_DIR / f'psth_match_{args.variant}.json').write_text(json.dumps(summary, indent=1))
+    (OUT_DIR / f'psth_match_{Path(args.grid).name}_{args.variant}.json').write_text(json.dumps(summary, indent=1))
     print(f"saved {stem}.png; median r {np.nanmedian(r):.2f}, median ceiling {np.nanmedian(ceil):.2f}")
     for u in best + worst + shortfall:
         print(f"  {u['session']} #{u['neuron_id']} {u['type']} r={u['r']:.2f} ceil={u['ceiling']:.2f} rate={u['mean_rate']:.1f}")

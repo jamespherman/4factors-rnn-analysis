@@ -232,18 +232,36 @@ def evaluate(model_dir: Path, sessions: dict) -> dict:
 def main():
     parser = argparse.ArgumentParser(description='Evaluate context models')
     parser.add_argument('--root', default='results/context_pilot')
+    parser.add_argument('--shard', default=None,
+                        help="'k/n': evaluate every n-th model from the k-th (0-based), save "
+                             "evaluation_raw_shard<k>of<n>.npy and stop; run --merge afterwards")
+    parser.add_argument('--merge', action='store_true', help='Combine the shard files, then summarize')
     args = parser.parse_args()
     root = Path(args.root)
 
     sessions = {}  # (session, trial set) -> loaded session, filled as models need them
 
     results = {}
-    for model_dir in sorted(p.parent for p in root.glob('*/*/summary.json')):
-        try:
-            results[model_dir.relative_to(root).as_posix()] = evaluate(model_dir, sessions)
-            print(f"evaluated {model_dir}", flush=True)
-        except Exception as e:  # report and continue
-            print(f"FAILED {model_dir}: {e}", flush=True)
+    if args.merge:
+        shards = sorted(root.glob('evaluation_raw_shard*of*.npy'))
+        n = {int(f.stem.rsplit('of', 1)[1]) for f in shards}
+        assert len(n) == 1 and len(shards) == n.pop(), f"Incomplete shard set: {[f.name for f in shards]}"
+        for f in shards:
+            results.update(np.load(f, allow_pickle=True).item())
+    else:
+        model_dirs = sorted(p.parent for p in root.glob('*/*/summary.json'))
+        if args.shard:
+            k, n = map(int, args.shard.split('/'))
+            model_dirs = model_dirs[k::n]
+        for model_dir in model_dirs:
+            try:
+                results[model_dir.relative_to(root).as_posix()] = evaluate(model_dir, sessions)
+                print(f"evaluated {model_dir}", flush=True)
+            except Exception as e:  # report and continue
+                print(f"FAILED {model_dir}: {e}", flush=True)
+        if args.shard:
+            np.save(root / f'evaluation_raw_shard{k}of{n}.npy', results, allow_pickle=True)
+            return
 
     # Summaries per variant (pooled over sessions, mean over seeds)
     variants = sorted({k.split('/')[0] for k in results})

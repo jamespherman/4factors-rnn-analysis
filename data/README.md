@@ -28,9 +28,16 @@ After export, you should have:
 
 See `specs/DATA_SPEC.md` for detailed format documentation.
 
+## Export versions
+
+- `rnn_export_*.mat` here (2026-10-30): curation round 2 (F12 merge, F13 time splits) and the new
+  SC classic rule; 293 neurons (103 E, 190 I). Newton_08_13 is the 2026-10-30 re-export with fixed
+  event timing (the 2026-10-29 file had events shifted 0.45-0.65 s). Results: `*_v13*`.
+- `export_2026-10-14_v1.2/`: the previous exports (results `*_v12*`), described below.
+
 ## Export versions (2026-10-14)
 
-- `rnn_export_*.mat` here: corrected exports, pipeline 1.2.0, all 7 SC sessions (Feynman 08_12-15,
+- `rnn_export_*.mat` (now in `export_2026-10-14_v1.2/`): corrected exports, pipeline 1.2.0, all 7 SC sessions (Feynman 08_12-15,
   Newton 08_13-15). Successful trials only (`trial_outcome` = 21), true reward times, and
   `neuron_stable_trials` [neurons x trials]; rates outside a neuron's stable period are masked
   (src/sessions.py). `trial_audit/`: the matching audit CSVs.
