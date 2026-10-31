@@ -142,13 +142,25 @@ of units at |delta| 0.2, ~20% power) is not excluded; one well-powered session; 
 classic units on the side of interest; assumes model log-rate effects transfer at recorded rates. This shows where
 identity x value is bound (upstream), not whether SC receives graded priority or a decided outcome (section 6).
 
-## 6. Priority hub vs outcome hub: single-target RT vs value
-Hand-built networks: Spearman(RT, belief value of the shown identity) is -0.32 for A and B (graded) vs +0.02 for C
-(categorical); the recorded value is -0.21, which favours a graded signal (priority hub). [Trained-ensemble result:
-PENDING, CRC job running, ~5 pm.]
-**Visualisation:** distribution of the RT-value correlation per architecture (per network or per simulated session)
-with the recorded -0.21 as a vertical line; or binned RT vs value curves for the three architectures beside the
-monkey's.
+## 6. Priority hub vs outcome hub: single-target RT vs value (not yet decided)
+- **Hand-built networks.** Spearman(RT, belief value of the shown identity) is -0.32 for A and B (graded) and +0.02
+  for C (categorical). The recorded -0.21 favours a graded signal (priority hub).
+- **Trained ensemble, calibrated to the monkey's 08-20 choices** (CRC run; `results/hub_models/sig_v2/`; 21 networks
+  x 10 sessions). Every architecture is near zero:
+  - A -0.06 to +0.02, AE -0.07 to +0.04, B -0.15 to +0.06, C -0.05 to 0.00.
+  - The cause: matching the monkey's weak use of value in choice (P(high) ~0.56) sets the value-engaged fraction
+    low (0.2-0.65), and the trained networks' RTs are too fast and near a floor (95-145 ms vs 209 ms recorded).
+  - The trained networks therefore cannot test this signature yet.
+  - The recorded pattern, an RT clearly sensitive to value while choice barely uses value, is itself a constraint
+    that no trained network reproduces. It needs retraining with a weaker time cost (slower, value-sensitive RTs).
+- **Uncalibrated, fully value-engaged runs** (from the bicuculline simulations): A -0.29, AE -0.22, B -0.15,
+  C +0.03. The graded vs categorical ordering holds, but the B-C gap is small.
+- **The same calibrated run replicates the S8 identity result at matched behaviour.** Identity-coding excess:
+  resolvers A 3.6, AE 2.7; hubs B and C 0.0. The resolver exclusion (section 5) does not depend on calibration.
+
+**Visualisation:** distribution of the RT-value correlation per architecture (hand-built and trained), with the
+recorded -0.21 as a vertical line. Use it only if the retrained networks resolve the trained-network discrepancy;
+otherwise present the hand-built contrast as a prediction for the proposed experiments.
 
 ## 7. In-silico bicuculline: predictions (new today)
 Notes: `results/hub_models/bicuculline/summary.md`, `per_network.csv`; plan `plans/2026-10-31_bicuculline_plan.md`
@@ -198,8 +210,7 @@ enters through excitation.
 
 7d. **Priority vs outcome hub, preliminary from the same simulations** (uncalibrated, all trials value-engaged):
 control single-target RT-value rho in trained networks A -0.29, AE -0.22, B -0.15, C +0.03 (recorded -0.21). The
-graded vs categorical split of the hand-builds holds in trained networks. Calibrated numbers come from the CRC run
-(section 6).
+graded vs categorical split of the hand-builds holds in trained networks. The calibrated run is in section 6.
 
 ## 8. Experiments that would decide the remaining questions (and model predictions to accompany them)
 - Variable-timing conflict task with luminant salience and time pressure (onset asynchrony between salient and rich
