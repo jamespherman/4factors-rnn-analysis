@@ -53,7 +53,18 @@ goal-vs-stimulus conflict with location-only inhibition if the factors arrive as
 6. Between the colliculi: no evidence that the other SC drives ipsilateral responses; cross-SC coupling is flat at
    the spike-timing and single-trial levels. Sparse strong commissural inhibition is excluded; weak inhibition
    converging from hundreds of neurons is not.
-7. Models: the fitted RNNs reproduce location tuning but not identity or salience selectivity, get the probability
+7. Bilateral conflict task (Newton 08-19/20; bilateral-SC-recordings session,
+   `docs\NOTE_2026-10-31_competition_for_4factors.md`):
+   - Behaviour (08-20): reward biases choice (+0.28 per 100 ms), salience barely (slight low-salience preference,
+     p = 0.053); conflict costs +16 ms RT. 08-19: nothing detectable.
+   - Early choice signal: not answerable (minimum detectable AUC 0.61-0.69). Choice information beyond the pre-target
+     state first appears at +100-150 ms (added CP 0.60) and is 0.80 pre-saccade.
+   - The SC left-right signal carries choice but no reward-difference coding in any window, and the pre-target
+     state's weight on choice does not depend on how strong the reward evidence is.
+   - No normalisation by the competitor's reward, at good power (>= 0.98 for a 10% rate drop per 100 ms of
+     competitor reward). The salience competitor is not estimable (collinear with the target's salience).
+   - Both nulls fit SC receiving an already-weighted outcome rather than computing it, but neither is diagnostic.
+8. Models: the fitted RNNs reproduce location tuning but not identity or salience selectivity, get the probability
    sign wrong, and cannot identify the route of the reward-context input; their weights cannot decide the question.
 
 ## How this bears on resolver vs hub
@@ -61,7 +72,9 @@ goal-vs-stimulus conflict with location-only inhibition if the factors arrive as
   each other in SC; spatial competition is visible.
 - Leaning hub-with-local-execution (weakly): goal-directed signals act as gains set before the target (pre-target
   reward and prior; reward x expectation at the visual-response peak), rather than being built up by SC dynamics
-  after target onset; stimulus- and goal-driven effects sit on separate axes with only a small interaction. This is
+  after target onset; stimulus- and goal-driven effects sit on separate axes with only a small interaction; in the
+  bilateral conflict task SC carries the choice but not the reward difference, and its response to a target is not
+  normalised by the competitor's reward (well powered). This is
   what a circuit receiving pre-weighted goal signals would show, but a resolver could also use pre-set gains.
 - Not supported by our data: factor-specific inhibition inside SC; SC state deciding between locations; a relay of
   competition through the other colliculus.
