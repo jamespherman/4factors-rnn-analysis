@@ -181,3 +181,4 @@ cython_debug/
 .cursorindexingignore
 # Synthetic recovery sessions (regenerate with scripts/build_recovery_set.py)
 data/synthetic_v12/*.mat
+data/spike_cache/
