@@ -1,0 +1,51 @@
+## Feynman, putative interneurons (n=79)
+Failed criteria:
+  (c) ipsi activation                                      25 (32%)
+  (c) ipsi activation + (d) vis/sac suppression            22 (28%)
+  (d) vis/sac suppression                                  12 (15%)
+  (a) no contra activation                                  6 (8%)
+  (a) no contra activation + (d) vis/sac suppression        6 (8%)
+  (a) no contra activation + (c) ipsi activation            5 (6%)
+  (a) no contra activation + (c) ipsi activation + (d) vis/sac suppression   3 (4%)
+Activation pattern over the 4 task locations (any epoch):
+  contra only                          12 (15%)  median visual location ROC 0.63
+  both hemifields                      47 (59%)  median visual location ROC 0.64
+  ipsi only                             8 (10%)  median visual location ROC 0.58
+  no activation (suppression only)     12 (15%)  median visual location ROC 0.49
+Activated (any location) in epoch: visual 56%, delay 32%, saccade 56%
+Contra-ipsi index of evoked response, median: visual +0.52, delay +0.11, saccade +0.27
+
+## Feynman, classic SC (n=40)
+Activation pattern over the 4 task locations (any epoch):
+  contra only                          38 (95%)  median visual location ROC 0.58
+  both hemifields                       2 (5%)  median visual location ROC 0.61
+Activated (any location) in epoch: visual 72%, delay 22%, saccade 80%
+Contra-ipsi index of evoked response, median: visual +0.61, delay +0.72, saccade +0.42
+Visual location ROC < 0.6: 27; of these activated in visual epoch 17, delay 4, saccade 21; saccade-epoch contra-ipsi index median +0.39
+
+## Newton, putative interneurons (n=111)
+Failed criteria:
+  (c) ipsi activation                                      30 (27%)
+  (c) ipsi activation + (d) vis/sac suppression            29 (26%)
+  (d) vis/sac suppression                                  26 (23%)
+  (a) no contra activation + (d) vis/sac suppression       14 (13%)
+  (a) no contra activation + (c) ipsi activation + (d) vis/sac suppression   5 (5%)
+  (a) no contra activation                                  4 (4%)
+  (a) no contra activation + (c) ipsi activation            3 (3%)
+Activation pattern over the 4 task locations (any epoch):
+  contra only                          26 (23%)  median visual location ROC 0.66
+  both hemifields                      59 (53%)  median visual location ROC 0.65
+  ipsi only                             8 (7%)  median visual location ROC 0.56
+  no activation (suppression only)     18 (16%)  median visual location ROC 0.54
+Activated (any location) in epoch: visual 62%, delay 48%, saccade 63%
+Contra-ipsi index of evoked response, median: visual +0.52, delay +0.15, saccade +0.19
+Sessions with vertical-meridian targets (counted as ipsilateral): 36 neurons; ipsi activation flagged 24, of which only at the vertical meridian 19; non-classic only because of that: 6
+
+## Newton, classic SC (n=63)
+Activation pattern over the 4 task locations (any epoch):
+  contra only                          52 (83%)  median visual location ROC 0.64
+  both hemifields                      11 (17%)  median visual location ROC 0.86
+Activated (any location) in epoch: visual 83%, delay 68%, saccade 76%
+Contra-ipsi index of evoked response, median: visual +0.74, delay +0.93, saccade +0.82
+Sessions with vertical-meridian targets (counted as ipsilateral): 31 neurons; ipsi activation flagged 7, of which only at the vertical meridian 4
+Visual location ROC < 0.6: 20; of these activated in visual epoch 10, delay 8, saccade 11; saccade-epoch contra-ipsi index median +0.66
