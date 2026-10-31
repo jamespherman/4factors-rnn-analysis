@@ -1,0 +1,69 @@
+A_g20_s0 A 0 up_latency=70 id_sc_latency=70
+B_g20_s0 B 0 up_latency=70
+C_g20_s0 C 0 up_latency=70
+A_g20_s1 A 1 up_latency=70 id_sc_latency=70
+B_g20_s1 B 1 up_latency=70
+C_g20_s1 C 1 up_latency=70
+A_g20_s2 A 2 up_latency=70 id_sc_latency=70
+B_g20_s2 B 2 up_latency=70
+C_g20_s2 C 2 up_latency=70
+A_g20_s3 A 3 up_latency=70 id_sc_latency=70
+B_g20_s3 B 3 up_latency=70
+C_g20_s3 C 3 up_latency=70
+A_g20_s4 A 4 up_latency=70 id_sc_latency=70
+B_g20_s4 B 4 up_latency=70
+C_g20_s4 C 4 up_latency=70
+A_g20_s5 A 5 up_latency=70 id_sc_latency=70
+B_g20_s5 B 5 up_latency=70
+C_g20_s5 C 5 up_latency=70
+A_g50_s0 A 0 up_latency=100 id_sc_latency=100
+B_g50_s0 B 0 up_latency=100
+C_g50_s0 C 0 up_latency=100
+A_g50_s1 A 1 up_latency=100 id_sc_latency=100
+B_g50_s1 B 1 up_latency=100
+C_g50_s1 C 1 up_latency=100
+A_g50_s2 A 2 up_latency=100 id_sc_latency=100
+B_g50_s2 B 2 up_latency=100
+C_g50_s2 C 2 up_latency=100
+A_g50_s3 A 3 up_latency=100 id_sc_latency=100
+B_g50_s3 B 3 up_latency=100
+C_g50_s3 C 3 up_latency=100
+A_g50_s4 A 4 up_latency=100 id_sc_latency=100
+B_g50_s4 B 4 up_latency=100
+C_g50_s4 C 4 up_latency=100
+A_g50_s5 A 5 up_latency=100 id_sc_latency=100
+B_g50_s5 B 5 up_latency=100
+C_g50_s5 C 5 up_latency=100
+A_g80_s0 A 0 up_latency=130 id_sc_latency=130
+B_g80_s0 B 0 up_latency=130
+C_g80_s0 C 0 up_latency=130
+A_g80_s1 A 1 up_latency=130 id_sc_latency=130
+B_g80_s1 B 1 up_latency=130
+C_g80_s1 C 1 up_latency=130
+A_g80_s2 A 2 up_latency=130 id_sc_latency=130
+B_g80_s2 B 2 up_latency=130
+C_g80_s2 C 2 up_latency=130
+A_g80_s3 A 3 up_latency=130 id_sc_latency=130
+B_g80_s3 B 3 up_latency=130
+C_g80_s3 C 3 up_latency=130
+A_g80_s4 A 4 up_latency=130 id_sc_latency=130
+B_g80_s4 B 4 up_latency=130
+C_g80_s4 C 4 up_latency=130
+A_g80_s5 A 5 up_latency=130 id_sc_latency=130
+B_g80_s5 B 5 up_latency=130
+C_g80_s5 C 5 up_latency=130
+Afast_g50_s0 A 0 up_latency=100
+Afast_g50_s1 A 1 up_latency=100
+Afast_g50_s2 A 2 up_latency=100
+Afast_g50_s3 A 3 up_latency=100
+Afast_g50_s4 A 4 up_latency=100
+Afast_g50_s5 A 5 up_latency=100
+Ahaz_g50_s0 A 0 up_latency=100 urgency=2.0 urgency_locus=hazard id_sc_latency=100
+Bhaz_g50_s0 B 0 up_latency=100 urgency=2.0 urgency_locus=hazard
+Chaz_g50_s0 C 0 up_latency=100 urgency=2.0 urgency_locus=hazard
+Ahaz_g50_s1 A 1 up_latency=100 urgency=2.0 urgency_locus=hazard id_sc_latency=100
+Bhaz_g50_s1 B 1 up_latency=100 urgency=2.0 urgency_locus=hazard
+Chaz_g50_s1 C 1 up_latency=100 urgency=2.0 urgency_locus=hazard
+Ahaz_g50_s2 A 2 up_latency=100 urgency=2.0 urgency_locus=hazard id_sc_latency=100
+Bhaz_g50_s2 B 2 up_latency=100 urgency=2.0 urgency_locus=hazard
+Chaz_g50_s2 C 2 up_latency=100 urgency=2.0 urgency_locus=hazard

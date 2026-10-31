@@ -19,7 +19,7 @@ import torch
 
 from .config import SRSConfig
 from .network import SRSNet
-from .task import make_training_trials, build_inputs
+from .task import make_training_trials, make_urgent_trials, build_inputs
 from .rollout import sample_saccades, log_prob, evaluate, valid_mask
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -44,7 +44,13 @@ def load_net(path, device="cpu"):
     cfg = SRSConfig.from_dict(ck["config"])
     cfg.device = device
     net = SRSNet(cfg).to(device)
-    net.load_state_dict(ck["state_dict"])
+    # Buffers added after a checkpoint was saved are regenerated deterministically from cfg.seed by the constructor
+    # (e.g. shape_u, added with shape_vis); tolerate exactly those, fail on anything else.
+    tolerated = {"shape_u"}
+    missing, unexpected = net.load_state_dict(ck["state_dict"], strict=False)
+    bad = [k for k in missing if k not in tolerated] + list(unexpected)
+    if bad:
+        raise RuntimeError(f"load_net: incompatible checkpoint {path}: {bad}")
     net.eval()
     return net
 
@@ -53,7 +59,7 @@ def step_batch(net, cfg, table, gen):
     dev = next(net.parameters()).device
     inp = build_inputs(cfg, table, dev, generator=gen)
     out = net(inp, generator=gen)
-    logits = net.hazard_logits(out["pool"])
+    logits = net.hazard_logits(out["pool"], inp)
     T = logits.shape[1]
     valid = valid_mask(cfg, inp, T)
     ev, step, loc, _ = sample_saccades(logits.detach(), valid, generator=gen)
@@ -104,7 +110,8 @@ def train(cfg, name, out_root=None, verbose=True):
     for stage, n_it in zip(("S1", "S2", "S3"), cfg.stage_iters):
         for it in range(1, n_it + 1):
             it_total += 1
-            table = make_training_trials(cfg, cfg.batch_size, rng, stage)
+            gen_trials = make_urgent_trials if cfg.task_mode == "urgent" else make_training_trials
+            table = gen_trials(cfg, cfg.batch_size, rng, stage)
             if stage in cfg.nuisance_stages:
                 n = cfg.batch_size
                 w = rng.uniform(cfg.train_engaged_min, 1.0)

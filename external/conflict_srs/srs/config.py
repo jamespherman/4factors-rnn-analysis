@@ -36,6 +36,8 @@ class SRSConfig:
     vis_latency: float = 50.0       # visual / identity onset latency into SC
     up_latency: float = 70.0        # identity onset latency into the upstream module
     go_latency: float = 50.0        # fixation-offset (go) latency
+    id_sc_latency: float = -1.0     # A: identity onset latency into SC (< 0: = vis_latency); set = up_latency for
+                                    # matched timing with the hubs' upstream (urgent-task comparison, 4factors copy)
     vis_sustained: float = 0.5
     vis_transient: float = 0.5
     vis_tau: float = 50.0
@@ -87,6 +89,14 @@ class SRSConfig:
     nuisance_stages: tuple = ("S3",)
     train_engaged_min: float = 1.0  # per batch w ~ U(train_engaged_min, 1); engaged ~ Bernoulli(w) per trial
     train_side_bias_max: float = 0.0  # side_bias ~ U(-max, max) per trial
+    task_mode: str = "srs"          # "srs" (recorded delayed task) | "urgent" (go signal, targets at variable dt)
+    urgent_dts: tuple = (-150.0, -100.0, -50.0, 0.0, 50.0, 100.0, 150.0)   # dt = target onset - go (ms)
+    urgent_go_min: float = 300.0    # fixation onset -> go (ms), uniform
+    urgent_go_max: float = 500.0
+    urgency: float = 0.0            # go-locked urgency: hazard logits += s * relu(t - t_go - go_latency) / 100 ms,
+    urgency_sd: float = 0.3         # s ~ lognormal(log(urgency), urgency_sd) per trial (0 = off); urgent stage S3
+    urgency_locus: str = "sc"       # "sc": non-spatial additive drive onto both SC pools (passes through SC dynamics;
+                                    # primary) | "hazard": added to both hazard logits (readout-level; robustness)
     time_cost: float = 0.0          # RT pressure: reward -= time_cost * RT(ms) on completed trials (training only)
     seed: int = 0
     device: str = "cuda"

@@ -52,7 +52,10 @@ def evaluate(cfg, inp, step, loc, generator=None):
     valid_time = responded & ~fixbreak
     lc = loc.clamp(min=0)
     ar = torch.arange(loc.shape[0], device=loc.device)
-    on_target = valid_time & (inp["present"][ar, lc] > 0)
+    # a target only counts once it is on the screen (matters only for onset-asynchrony / go-before-target tables;
+    # in the recorded task both targets are on long before go): an earlier saccade to its location is inaccurate
+    visible = t_step >= inp["on"][ar, lc]
+    on_target = valid_time & (inp["present"][ar, lc] > 0) & visible
     inaccurate = valid_time & ~on_target
     outcome = torch.full_like(step, NORESP)
     outcome = torch.where(on_target, torch.full_like(step, COMPLETED), outcome)

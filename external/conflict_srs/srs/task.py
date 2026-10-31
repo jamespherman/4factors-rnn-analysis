@@ -25,8 +25,8 @@ import numpy as np
 import torch
 
 COLS = ["trial_type", "id_L", "id_R", "sal_L", "sal_R", "rew_L", "rew_R", "V1", "V2", "side_bias",
-        "fix_dur", "delay", "onset_L", "onset_R", "engaged"]
-DEFAULTS = dict(side_bias=0.0, onset_L=0.0, onset_R=0.0, delay=450.0, engaged=1.0)
+        "fix_dur", "delay", "onset_L", "onset_R", "engaged", "urg_slope"]
+DEFAULTS = dict(side_bias=0.0, onset_L=0.0, onset_R=0.0, delay=450.0, engaged=1.0, urg_slope=0.0)
 # engaged (mixture/lapse route): 1 = value belief delivered as is; 0 = both identities get the mean belief
 # (value carries no difference on that trial, so choice falls to side bias / salience / noise); fractions allowed.
 
@@ -163,6 +163,25 @@ def make_training_trials(cfg, n, rng, stage="S3"):
                 onset_L=np.zeros(n), onset_R=np.zeros(n), mean1=m1, mean2=m2, engaged=np.ones(n))
 
 
+def make_urgent_trials(cfg, n, rng, stage="S3"):
+    """Urgent (compelled-saccade) variant: go at fixation onset + U(urgent_go_min, urgent_go_max); targets at
+    dt = target onset - go drawn from cfg.urgent_dts (delay = -dt; dt > 0: go before targets). S1 keeps the recorded
+    delayed timing (learn fixation); S2 urgent timing without urgency; S3 urgent timing with go-locked urgency."""
+    tab = make_training_trials(cfg, n, rng, stage)
+    if stage == "S1":
+        return tab
+    dt = rng.choice(np.asarray(cfg.urgent_dts, float), n)
+    go = np.round(rng.uniform(cfg.urgent_go_min, cfg.urgent_go_max, n) / cfg.dt) * cfg.dt
+    tab["fix_dur"] = go + dt
+    tab["delay"] = -dt
+    tab["dt_go"] = dt
+    if stage == "S3" and cfg.urgency > 0:
+        tab["urg_slope"] = np.exp(np.log(cfg.urgency) + cfg.urgency_sd * rng.standard_normal(n))
+    else:
+        tab["urg_slope"] = np.zeros(n)
+    return tab
+
+
 # ----------------------------------------------------------------------------- recorded-like sessions
 def make_session(cfg, rng, n_blocks=8, k=1.5, n_choice=(12, 48), alpha=0.1, belief_noise=0.0, v0=None):
     """A session with the recorded block structure (no failures/repeats; for trial-matched simulation use the
@@ -267,11 +286,13 @@ def build_inputs(cfg, table, device, generator=None):
         (cfg.vis_sustained + cfg.vis_transient * torch.exp(-tv.clamp(min=0) / cfg.vis_tau))
     # identity features per location: [T1@L, T2@L, T1@R, T2@R]
     tu = t[None, :, None] - (on + cfg.up_latency)[:, None, :]
+    id_lat = cfg.vis_latency if getattr(cfg, "id_sc_latency", -1.0) < 0 else cfg.id_sc_latency
+    after_id = (t[None, :, None] - (on + id_lat)[:, None, :] >= 0).float()
     id_sc, id_up = [], []
     for loc in (0, 1):
         for k in (1, 2):
             m = (ids[:, loc] == k).float()[:, None]
-            id_sc.append(after[:, :, loc] * m)
+            id_sc.append(after_id[:, :, loc] * m)
             id_up.append((tu[:, :, loc] >= 0).float() * m)
     id_sc = torch.stack(id_sc, -1)
     id_up = torch.stack(id_up, -1)
@@ -291,7 +312,9 @@ def build_inputs(cfg, table, device, generator=None):
             z_sh = (1 - a) * z_sh + s * torch.randn(B, device=device, generator=generator)
             z_si = (1 - a) * z_si + s * torch.randn(B, 2, device=device, generator=generator)
             slow[:, i] = cfg.slow_shared * z_sh[:, None] + cfg.slow_side * z_si
-    return dict(fix=fix, vis=vis, id_sc=id_sc, id_up=id_up, belief=belief, bias=bias, slow=slow,
+    # go-locked urgency (non-spatial ramp added to both hazard logits; 0 unless urg_slope is set)
+    urg = tb["urg_slope"][:, None] * torch.relu(t[None, :] - (t_go + cfg.go_latency)[:, None]) / 100.0
+    return dict(fix=fix, vis=vis, id_sc=id_sc, id_up=id_up, belief=belief, bias=bias, slow=slow, urg=urg,
                 t=t, t_go=t_go, on=on, present=present, ids=ids,
                 rew=torch.stack([tb["rew_L"], tb["rew_R"]], 1) / cfg.value_scale,
                 idsign=torch.where(ids == 1, 1.0, torch.where(ids == 2, -1.0, 0.0)))

@@ -207,6 +207,8 @@ class SRSNet(nn.Module):
             ext = inp["vis"] @ self.w_vis.T
         ext = ext - cfg.w_snr * (snr @ self.pool_of.T) * self.snr_gain
         ext = ext + (inp["slow"] @ self.pool_of.T)
+        if "urg" in inp and getattr(cfg, "urgency_locus", "sc") == "sc":     # go-locked urgency onto both pools
+            ext = ext + inp["urg"][..., None] * self.pool_of.sum(1)
         if cfg.bias_locus == "SC":
             ext = ext + inp["bias"] @ self.pool_of.T
         if self.w_fix_sc is not None:
@@ -229,8 +231,11 @@ class SRSNet(nn.Module):
         pool = torch.stack([R[..., self.idx.pool(0)].mean(-1), R[..., self.idx.pool(1)].mean(-1)], -1)
         return dict(sc=R, snr=snr, dis=dis, up=R_up, pool=pool)
 
-    def hazard_logits(self, pool):
-        return F.softplus(self.g_raw) * (pool - self.theta)
+    def hazard_logits(self, pool, inp=None):
+        z = F.softplus(self.g_raw) * (pool - self.theta)
+        if inp is not None and "urg" in inp and getattr(self.cfg, "urgency_locus", "sc") == "hazard":
+            z = z + inp["urg"][:, :z.shape[1], None]
+        return z
 
     def value(self, out, tfrac):
         return self.W_val(torch.cat([out["sc"], out["up"], tfrac], -1)).squeeze(-1)

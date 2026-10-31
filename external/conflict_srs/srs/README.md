@@ -91,3 +91,12 @@ S3 noisy beliefs (`belief_noise`). `stage_iters` default 1500,1500,1500, batch 2
   slow pool noise / belief noise / side bias verified on CPU. C needs larger upstream noise to become stochastic.
 - Training loop: CPU smoke test (a few iterations) passes for A, B, C. Full training not yet run (no local GPU):
   run a pilot (1 seed per arch) and check that S1 reaches high completion before trusting S2/S3.
+
+## Redesign support (2026-10-31; variable-timing conflict task)
+- Not built or trained here. The table already carries `onset_L/onset_R` (asynchrony), negative `delay` (go before
+  targets) and `sal_gain` (luminant salience ~1); `make_training_trials` still generates only the recorded timing.
+- Fix: `evaluate` now requires the chosen target to be on the screen at the saccade step (an earlier saccade to its
+  location = inaccurate). No effect on recorded-task tables (targets are on long before go).
+- Open choices for whoever builds the redesign (`response_window` is go-locked; `fix` drops at go, so the
+  SNr fixation component is released before the targets when delay < 0); `up_latency − vis_latency` (20 ms
+  default) sets how long the salient target leads the value signal and so the switch time.

@@ -94,7 +94,7 @@ def simulate(net, table, seed=0, perturb=None, chunk=512, return_rates=True, ret
         inp = build_inputs(cfg, sub, dev, generator=g)
         T = inp["t"].shape[0]
         out = net(inp, noise=noise, generator=g)
-        logits = net.hazard_logits(out["pool"])
+        logits = net.hazard_logits(out["pool"], inp)
         valid = valid_mask(cfg, inp, T)
         _, step, loc, _ = sample_saccades(logits, valid, generator=g)
         ev = evaluate(cfg, inp, step, loc, generator=g)
