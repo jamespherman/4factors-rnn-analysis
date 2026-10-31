@@ -1,222 +1,303 @@
-# Is SC a hub or a resolver? Findings, model predictions and candidate visualisations (Aim 1; 2026-10-31)
+# Is SC a hub or a resolver? Findings, model predictions and candidate visualisations (Aim 1; v2, 2026-10-31)
 
-For R01 planning. Each finding lists the evidence, its strength and caveats, and **Visualisation:** a plot that would
-demonstrate it, so pieces can be picked individually. Detailed notes and code are given per section (repo
+For R01 planning. Each finding lists the evidence, its strength and caveats, and a **Visualisation:** a plot that would
+demonstrate it, so pieces can be picked individually. v2 reorganises v1 (git history) by how much weight each piece
+can bear, and adds a recommendation on bicuculline (section E). Notes and code are cited per item (repo
 `4factors-rnn-analysis`, branch `restore-lost-work`; bilateral analyses by the bilateral-SC-recordings session in
 `Newton_SC_2026/docs/`).
 
-Terms. **Resolver**: SC's own recurrent/inhibitory dynamics weigh goal-directed against stimulus-driven factors and
-pick the winner. **Hub**: the weighing happens upstream (basal ganglia-thalamo-cortical loops) and SC receives and
-executes the result, either as graded priority delivered by SNr disinhibition (**priority hub**) or as an
-already-made choice (**outcome hub**). Data sets: 4factors unilateral recordings (Feynman, Newton; single targets;
-reward cue x location prior x salience x identity) and bilateral Newton recordings in the srsClassic conflict task
-(08-19, 08-20; reward tied to target identity with unsignalled block reversals; salience as isoluminant hue contrast).
+**Terms.**
+- **Resolver**: SC's own recurrent and inhibitory dynamics weigh goal-directed against stimulus-driven factors and
+  pick the winner.
+- **Hub**: the weighing happens upstream (basal ganglia-thalamo-cortical loops); SC receives and executes the result.
+  - **Priority hub**: SC receives graded priority, delivered by SNr disinhibition.
+  - **Outcome hub**: SC receives an already-made choice.
 
----------------------------------------------------------------------------------------------------------------------
+**Data.**
+- 4factors unilateral recordings (Feynman, Newton): single targets; reward cue x location prior x salience x identity.
+- Bilateral Newton recordings in the srsClassic conflict task (08-19, 08-20): reward tied to target identity with
+  unsignalled block reversals; salience as isoluminant hue contrast.
 
-## 1. Recorded SC: goal signals arrive as pre-set gains, not as a computed priority (4factors data)
-Notes: `results/competition/SYNTHESIS.md`, `NOTE_P1_P2.md`, `p3_interactions/`, `p4_timing/`.
+**Models** (from conflict-task-RNN `code/srs`): bilateral SC E-I networks (Dale's law) with an upstream BG-like
+module, SNr tonic inhibition and a stochastic saccade readout, trained by REINFORCE on srsClassic. All four
+architectures share an identical SC:
+- **A**, resolver: identity and belief enter SC through fixed random weights, so SC must bind identity x belief x
+  location itself.
+- **AE**: as A, but with input onto E units only.
+- **B**, priority hub: the upstream module gets identity and belief and sends graded per-location disinhibition.
+- **C**, outcome hub: the upstream module is a softmax winner-take-all.
 
-1a. **Reward cue x location prior interact in behaviour.** The high-reward cue speeds saccades to the expected
-location and slows them to the unexpected opposite location (Feynman reward x opposite +17.9% RT, p < 1e-6; peak
-velocity mirrors it). The reward cue amplifies the prior rather than adding a location-independent benefit.
-**Visualisation:** RT (or % change from low-reward) by target location class (expected / 90-deg neighbour /
-opposite), lines for high vs low reward cue, one panel per monkey; the crossing lines show the interaction.
+Every architecture also carries a weak sensory shape code in SC.
 
-1b. **The same interaction is present in classic SC neurons, and it is set before the target appears.** Reward cue
-enlarges the visual response to an expected target and shrinks it to an unexpected one (reward x expectation
-+0.27 SD, p = 7e-6; putative interneurons +0.08, p = 0.07), peaking 80-100 ms after target onset; the reward cue
-itself raises pre-target activity (+0.31 sp/s) and the prior raises it slightly at the expected location
-(+0.24 sp/s). A gain applied by a pre-target signal, rather than something built up after target onset.
-**Visualisation:** population PSTHs (classic units, target in RF) for the four reward x expectation cells, aligned
-on target onset, with a shaded pre-target baseline and an inset of the interaction term over time (sliding window,
-with CI) showing it is present from the first visual response.
+**How to read the tiers.**
+- **A. Solid** (can carry a figure panel and a claim).
+- **B. Supporting data** (consistent with a hub; suggestive, not decisive alone).
+- **C. Predictions for the proposed experiments** (present as hypotheses, not findings).
+- **D. Model validation and method** (optional, for rigor).
+- **E. Bicuculline: recommendation.**
 
-1c. **No common "priority" axis.** Stimulus-driven factors (image vs bullseye, salience; onset 50-70 ms) are aligned
-across neurons (r = 0.40), but goal and stimulus effects are not (|r| <= 0.12); goal x stimulus interaction is weak
-(-0.08 SD, p = 0.03).
-**Visualisation:** scatter of per-neuron reward-effect vs salience-effect (and vs image effect), with the r value and
-its null band; contrast with a scatter of salience vs image effect (aligned). A single-number alternative: a small
-matrix of cross-neuron correlations between factor effects.
+=====================================================================================================================
 
-1d. **Map-wide competitive dynamics after target onset.** When the target appears away from the expected location,
-the prior's head start there is cancelled within ~100 ms, and every non-target location drops below baseline from
-~150 ms (-1.5 sp/s). Pre-saccadic suppression is strongest for the opposite (180-deg) target (putative interneurons
-33% vs 19% at 90 deg; classic 12% vs 3%). Consistent with SC's spatial winner-take-all; inputs that update at target
-onset predict the same.
-**Visualisation:** PSTH of units whose RF is at the expected location on trials where the target appears elsewhere,
-expected vs non-expected block, showing the early advantage and its cancellation, plus the below-baseline dip;
-side bar chart of % units with pre-saccadic suppression by target angle.
-
-1e. **SC state predicts RT, but not location-specifically.** Higher pre-target activity predicts faster saccades
-whether the neuron's RF holds the target, the expected competitor or neither (-5 to -6% RT per SD). A competition
-between locations predicts slower RTs when the competitor's site is more active; the data show general readiness.
-**Visualisation:** RT change per SD of pre-target rate, bars for "RF at target", "RF at expected competitor",
-"RF elsewhere" (all negative, overlapping CIs), against a dashed bar showing the sign a local competition predicts.
-
-## 2. Bilateral conflict task: SC carries the choice, not the reward comparison (bilateral-SC-recordings)
-Notes: `Newton_SC_2026/docs/NOTE_2026-10-31_competition_for_4factors.md`; `results/competition/SYNTHESIS.md` item 7.
-
-2a. **Behaviour.** Reward biases choice (+0.28 per 100 ms reward difference, 08-20), salience barely (p = 0.053);
-conflict costs +16 ms. Single-target RT falls with the belief value of the shown identity (Spearman -0.21, 08-20;
-delta-rule belief fitted to choices, `results/hub_models/belief/summary.md`). 08-19 shows little reward use.
-**Visualisation:** psychometric curve P(choose right) vs fitted belief-value difference, split by salience
-configuration (congruent/conflict); inset: single-target RT vs belief value of the shown target (binned means).
-
-2b. **No reward-difference coding and no competitor normalisation.** The left-minus-right SC signal carries the
-upcoming choice (added choice probability 0.60 at +100-150 ms, 0.80 pre-saccade) but not the reward difference in
-any window; a unit's response to its target is not reduced by the competitor's reward (power >= 0.98 for a 10% drop
-per 100 ms). A resolver comparing values in SC predicts both effects; a circuit receiving a pre-weighted signal
-predicts neither.
-**Visualisation:** two small panels: (i) time course of the reward-difference coefficient and the choice
-coefficient in the L-R population signal, with null bands (choice rises, reward-difference stays at zero); (ii)
-per-unit competitor-reward coefficient distribution centred at zero with the predicted -10%/100 ms shift drawn.
-Caveat: the early choice window is underpowered (minimum detectable AUC 0.61-0.69).
-
-## 3. The two colliculi: no relay of competition through the commissure
-Notes: `results/intercollicular/SUMMARY.md`, `PHASE1_NOTE.md`, bilateral note `NOTE_2026-10-31_intercollicular_for_4factors.md`.
-
-3a. **Ipsilateral responses look externally driven.** Non-classic units respond at the ipsilateral 90-deg neighbour
-as often as at the equidistant contralateral one (27% vs 25%), with no relay latency (excess 3.7 ms, CI -1.3 to 6.8),
-not saccade-locked, salience- but not reward-modulated.
-**Visualisation:** latency scatter (ipsi vs contra response onset per unit) on the identity line, with the predicted
-relay offset band (10-27 ms) shaded.
-
-3b. **Bilateral: ipsiversive activity is not a delayed copy of the other SC.** Ipsiversive activation rises with
-the other side's contraversive burst (lag -6 ms, CI -8 to +18; a relay of the recorded neurons predicts +10-27 ms);
-cross-SC CCGs are flat in every group. A relay is excluded only if it converges from fewer than ~170-500 neurons
-(r·N ≈ 5-10); a weak, broadly convergent commissural input is not excluded.
-**Visualisation:** overlaid onset-aligned PSTHs of side X's contraversive burst and side Y's ipsiversive response
-(with the simulated relay prediction as a dashed, shifted curve); inset: pooled cross-SC CCG (flat) vs the CCG a
-sparse relay would produce.
-
-3c. **Candidate monosynaptic connections link neurons with similar selectivity.** Sharp 1-4 ms CCG peaks (1% of pairs,
-all class combinations) connect units with more similar factor profiles than matched unconnected pairs (5-factor r
-+0.84 vs +0.56; without location +0.43 vs +0.22, p = 0.013, mostly face/non-face identity). Shared input would also
-produce this. Inhibitory troughs (8) are too rare to test whether inhibition is factor-specific.
-**Visualisation:** example sharp-peak CCG with jitter band; histogram of selectivity-profile similarity for connected
-vs matched unconnected pairs.
-
-## 4. Data-fitted RNNs: what the SC circuit fit reproduces
-Notes: `results/selectivity_by_type/NOTE.md`, scatter figures there; earlier context-model reports.
-
-4a. **Location tuning reproduced; identity and salience selectivity not; probability sign wrong.** RNN units fit to
-individual neurons keep spatial tuning (per-neuron r 0.83-0.90, ~60-70% of recorded magnitude), match or exceed
-reward selectivity, are at chance for identity and salience (although both are model inputs), and respond more on
-high-probability trials where recorded neurons respond less. So fitted weights cannot identify which route factor
-signals take, and "unstructured I->E weights" cannot by itself support the hub view.
-**Visualisation:** per-factor scatter of recorded vs RNN ROC selectivity (one panel per factor, E and I units in
-separate colours, monkeys by marker shape), already made (`results/selectivity_by_type/`).
-
-## 5. Task-trained models: the resolver predicts an identity code that recorded SC lacks (strongest new result)
+## A. SOLID: the resolver predicts an identity code that recorded SC lacks
 Notes: `results/hub_models/S8_RESULT.md`; plan `plans/2026-10-31_hub_resolver_models_plan.md` (v2, reviewed);
-models from conflict-task-RNN `code/srs` (bilateral SC E-I networks with Dale's law, upstream BG-like module, SNr
-tonic inhibition, stochastic saccade readout; REINFORCE training on srsClassic with curriculum).
+trained-ensemble signatures in `results/hub_models/sig_v2/`.
 
-Architectures, all with identical SC: **A** resolver (identity and belief enter SC through fixed random weights, so
-SC must bind identity x belief x location itself), **AE** (same, input onto E units only), **B** priority hub
-(upstream gets identity and belief and sends graded per-location disinhibition via SNr), **C** outcome hub
-(upstream softmax winner-take-all, near-categorical disinhibition). Every architecture also carries a weak sensory
-shape code in SC (so a positive identity effect would be ambiguous; a null is not).
+A1. **Logic.**
+- In srsClassic, reward is tied to target identity and reverses between blocks.
+- A resolver must bind identity to block value inside SC, so its SC neurons carry identity information beyond value.
+- A hub binds identity to value upstream, so SC receives value only.
+- A positive identity effect in the recordings would be ambiguous, because it could be sensory shape coding. A null
+  is not ambiguous.
 
-5a. **Logic.** In srsClassic, reward is tied to target identity and reverses between blocks. A resolver must bind
-identity to block value inside SC, so its SC neurons carry identity beyond value. A hub binds upstream, so SC gets
-value only.
+**Visualisation:** schematic, two circuits side by side. Resolver: identity and value both enter SC and are combined
+there. Hub: they combine upstream and a single value or priority arrow enters SC. Below each, the predicted SC
+response to the same target in rich vs poor blocks.
 
-5b. **Every trained resolver network carries the code; no hub does.** Fraction of units (contralateral to the
-target, single-target trials) with |identity effect beyond value| > 0.2: A 0.42-0.61, AE 0.28-0.58 (6 seeds each),
-B and C <= 0.04. Hand-built networks agree (A 0.40, B/C ~0).
-**Visualisation:** per-network distributions of the per-unit identity effect (violin or ECDF), coloured by
+A2. **Every trained resolver network carries the code; no hub network does.**
+- Measure: fraction of units (contralateral to the target, single-target trials) with |identity effect beyond
+  value| > 0.2.
+- Trained resolvers (6 seeds each): A 0.42-0.61, AE 0.28-0.58.
+- Trained hubs (B and C): <= 0.04.
+- Hand-built networks agree: A 0.40, B and C ~0.
+- Robust to calibration: with the networks matched to the monkey's choices, the identity-coding excess (in units of
+  mean |z| above a permutation null) is A 3.6, AE 2.7, and B and C 0.0.
+
+**Visualisation:** per-network distributions (violin or ECDF) of the per-unit identity effect, coloured by
 architecture, with the recorded 08-20 distribution and its permutation null overlaid.
 
-5c. **Recorded SC is at the null, and would have detected the resolver code.** 08-20 (301 single-target trials,
-8 blocks, 27-31 contralateral units): mean |delta| 0.131 vs null 95th percentile 0.166; quasi-Poisson |z| 0.54-0.62
-(chance); 08-19 also null. Planting each network's per-unit effects into the real counts: P(detect) A 1.00, AE 1.00
-(delay window), B 0.00, C 0.00; every one of the 12 resolver networks >= 0.99 in the delay and pre-saccadic windows.
-**Visualisation:** the key panel: P(detect) per network (dots, grouped by architecture; delay and pre-saccadic
-windows) with the recorded result marked "null", i.e. resolvers all at the top, hubs at the floor. Optional companion:
-observed statistic vs the distribution of the statistic for planted-resolver data and for the null.
+A3. **Recorded SC is at the null, and would have detected the resolver code.**
+- 08-20: 301 single-target trials, 8 blocks, 27-31 contralateral units.
+  - Mean |delta| is 0.131, against a null 95th percentile of 0.166.
+  - Quasi-Poisson |z| is 0.54-0.62 (chance).
+- 08-19 is also at the null.
+- Detection test: each network's per-unit effects were planted into the real counts.
+  - P(detect), delay window: A 1.00, AE 1.00, B 0.00, C 0.00.
+  - Each of the 12 resolver networks is detected at P >= 0.99 in both the delay and pre-saccadic windows.
 
-5d. **Caveats.** A resolver with a much sparser or weaker identity code than any network we trained (e.g. a quarter
-of units at |delta| 0.2, ~20% power) is not excluded; one well-powered session; the recorded populations had few
-classic units on the side of interest; assumes model log-rate effects transfer at recorded rates. This shows where
-identity x value is bound (upstream), not whether SC receives graded priority or a decided outcome (section 6).
+**Visualisation (the key panel):** P(detect) per network, one dot per network grouped by architecture, for the delay
+and pre-saccadic windows, with the recorded outcome marked "null". Resolvers sit at the top, hubs at the floor.
+Optional companion: the observed statistic against its distribution under planted-resolver data and under the null.
 
-## 6. Priority hub vs outcome hub: single-target RT vs value (not yet decided)
-- **Hand-built networks.** Spearman(RT, belief value of the shown identity) is -0.32 for A and B (graded) and +0.02
-  for C (categorical). The recorded -0.21 favours a graded signal (priority hub).
-- **Trained ensemble, calibrated to the monkey's 08-20 choices** (CRC run; `results/hub_models/sig_v2/`; 21 networks
-  x 10 sessions). Every architecture is near zero:
-  - A -0.06 to +0.02, AE -0.07 to +0.04, B -0.15 to +0.06, C -0.05 to 0.00.
-  - The cause: matching the monkey's weak use of value in choice (P(high) ~0.56) sets the value-engaged fraction
-    low (0.2-0.65), and the trained networks' RTs are too fast and near a floor (95-145 ms vs 209 ms recorded).
-  - The trained networks therefore cannot test this signature yet.
-  - The recorded pattern, an RT clearly sensitive to value while choice barely uses value, is itself a constraint
-    that no trained network reproduces. It needs retraining with a weaker time cost (slower, value-sensitive RTs).
-- **Uncalibrated, fully value-engaged runs** (from the bicuculline simulations): A -0.29, AE -0.22, B -0.15,
-  C +0.03. The graded vs categorical ordering holds, but the B-C gap is small.
-- **The same calibrated run replicates the S8 identity result at matched behaviour.** Identity-coding excess:
-  resolvers A 3.6, AE 2.7; hubs B and C 0.0. The resolver exclusion (section 5) does not depend on calibration.
+A4. **Caveats (state these in the text).**
+- A resolver with a much sparser or weaker identity code than any network we trained is not excluded. Example: a
+  quarter of units at |delta| 0.2 would be detected with only ~20% power.
+- Only one session is well powered, and the recordings had few classic units on the side of interest.
+- The test assumes model log-rate effects transfer to recorded neurons at recorded rates.
+- What it shows: identity x value is bound upstream of SC. It does not show whether SC receives graded priority or a
+  decided outcome (C1).
+- Natural next step, which is also an aim: repeat this test at higher power in the proposed bilateral recordings.
 
-**Visualisation:** distribution of the RT-value correlation per architecture (hand-built and trained), with the
-recorded -0.21 as a vertical line. Use it only if the retrained networks resolve the trained-network discrepancy;
-otherwise present the hand-built contrast as a prediction for the proposed experiments.
+## B. SUPPORTING DATA: SC looks like a recipient of pre-weighted goal signals
 
-## 7. In-silico bicuculline: predictions (new today)
-Notes: `results/hub_models/bicuculline/summary.md`, `per_network.csv`; plan `plans/2026-10-31_bicuculline_plan.md`
-(v2, independently reviewed); `scripts/srs_bicuculline.py`. All 24 networks (hand-built A, B, C; trained A, AE, B
-x 6 seeds; C x 3). Bicuculline in the left SC scales GABA-A synapses onto its E units (local and commissural I -> E,
-and SNr -> E) by 1 - d, d = 0.05-0.35; ~1,900 trials x 3 seeds per network and condition. Controls: local-only and
-SNr-only blockade, muscimol (d 0.5), and a value-clamped upstream.
+### B1-B5: 4factors data (`results/competition/SYNTHESIS.md`, `NOTE_P1_P2.md`, `p3_interactions/`, `p4_timing/`)
 
-7a. **The models reproduce the classic bicuculline phenotype (validation).** In every architecture, a growing dose
-speeds saccades into the injected field (d 0.2: 17-42 ms faster; other field unchanged) and biases choice toward it.
-At d >= 0.35 the networks make irrepressible saccades into that field (fixation breaks on 20-70% of trials, 99-100%
-toward the injected field; at d 0.9 on every trial), as Hikosaka & Wurtz (1985) found. Muscimol does the opposite
-(RT into the field +120-210 ms, choice away). The models therefore behave like real SC under GABA-A blockade.
-**Visualisation:** dose-response curves (x = d; y = RT change into the injected vs the other field, and
-fixation-break rate), one line per architecture with the network range shaded. They overlap, which is the point of 7b.
+B1. **Reward cue x location prior interact in behaviour.**
+- The high-reward cue speeds saccades to the expected location and slows them to the unexpected opposite location.
+- Feynman: reward x opposite +17.9% RT (p < 1e-6); peak velocity mirrors it.
+- So the reward cue amplifies the prior rather than adding a benefit that ignores location.
 
-7b. **Behaviour alone does not distinguish resolver from hub.** At tolerable doses (fixation breaks <= 10%), all
-architectures show the same dose-dependent speeding and side bias. RT vs value on single-target trials does not
-flatten in either class, because disinhibition compresses RTs toward a floor in all of them. The resolver-specific
-prediction proposed earlier (choice proportions changing in a conflict-dependent way, against execution deficits
-only for a hub) is not borne out: no architecture shows a distinctive behavioural signature.
-**Visualisation:** a 2 x 2 of choice bias (change in P(choose injected field)) vs RT speeding, one dot per network
-and dose, coloured by architecture: one shared cloud.
+**Visualisation:** RT (or % change from low reward) by target location class (expected / 90-deg neighbour /
+opposite), with lines for the high and low reward cue, one panel per monkey. The crossing lines show the interaction.
 
-7c. **The neural signature: value modulation at the injected site shrinks only in the priority hub.** In B, value
-reaches SC by modulating SNr inhibition, so blocking GABA-A at the site removes part of the channel that carries
-it. The proportional value modulation of the injected-field SC population (delay window; per 100 ms of belief value)
-falls with dose: d 0.2: 0.84-0.92 of control in all 6 trained B networks (hand-built 0.81); d 0.35: 0.73-0.91.
-In resolvers, value enters SC through excitatory inputs, and the modulation is preserved or grows (d 0.2: 10 of 12
-trained A/AE networks 0.96-2.5; hand-built A 1.04). The opposite field is unchanged in all networks. Clamping the
-upstream to be value-free abolishes SC value modulation in B (index ~0) but not in A/AE (median 0.92-0.97).
-- Strength: directional and consistent (6/6 B vs 10/12 resolvers), but modest (13-25% at tolerable doses).
-- Caveats:
-  - It requires recording at the injection site, where rates rise sharply.
-  - The value modulation it acts on is small in trained networks (11-16% per 100 ms of value).
-  - Two trained resolver networks (A_s0, A_s5) fall in the hub range.
-  - Some trained resolvers' upstream carries a non-spatial value signal (rho -0.57 to 0.60).
-  - Outcome hubs (C) have almost no SC value modulation to begin with, so bicuculline cannot separate B from C.
-- An SNr-terminal-selective blockade would give a larger dissociation (B 0.47-0.85 vs A/AE median ~1.0 at SNr-only
-  d 0.5), but it produces fixation breaks on more than half the trials and is not a practical primate experiment.
-- Bottom line: bicuculline is an excellent validation and perturbation tool, but a weak test of resolver vs hub.
-  The variable-timing task and the identity test (5c) at higher power are stronger.
-**Visualisation:** value-modulation index (injected field) vs dose, one thin line per trained network coloured by
-architecture (B lines below 1, resolver lines at or above 1), with a dashed line at 1 and the opposite field as a grey
-reference. A companion schematic: in B, value enters through the SNr synapse that bicuculline blocks; in A, it
-enters through excitation.
+B2. **The same interaction appears in classic SC neurons, set before the target appears.**
+- The reward cue enlarges the visual response to an expected target and shrinks the response to an unexpected one:
+  reward x expectation +0.27 SD (p = 7e-6); putative interneurons +0.08 (p = 0.07).
+- The interaction peaks 80-100 ms after target onset.
+- Before the target, the reward cue raises activity (+0.31 sp/s), and the prior raises it slightly at the expected
+  location (+0.24 sp/s).
+- This is a gain applied by a signal present before the target, not something built up after it.
 
-7d. **Priority vs outcome hub, preliminary from the same simulations** (uncalibrated, all trials value-engaged):
-control single-target RT-value rho in trained networks A -0.29, AE -0.22, B -0.15, C +0.03 (recorded -0.21). The
-graded vs categorical split of the hand-builds holds in trained networks. The calibrated run is in section 6.
+**Visualisation:** population PSTHs (classic units, target in RF) for the four reward x expectation cells, aligned on
+target onset, with the pre-target baseline shaded. Inset: the interaction term over time (sliding window, with CI).
 
-## 8. Experiments that would decide the remaining questions (and model predictions to accompany them)
-- Variable-timing conflict task with luminant salience and time pressure (onset asynchrony between salient and rich
-  targets): a resolver's outcome depends on when each signal arrives in SC; a hub's tracks the goal signal's arrival
-  from the loop. [Model simulation not yet run.]
-- Bilateral recordings with mirrored, interleaved targets and enough classic units per side, to repeat the identity
-  (5c) and normalisation (2b) tests at higher power and test commissural competition directly.
-- Unilateral SC inactivation while recording the opposite SC (opposite-direction pre-saccadic suppression should
-  vanish only if relayed).
+B3. **No common "priority" axis.**
+- Stimulus-driven factors (image vs bullseye, salience; onset 50-70 ms) are aligned across neurons (r = 0.40).
+- Goal and stimulus effects are not aligned (|r| <= 0.12).
+- The goal x stimulus interaction is weak (-0.08 SD, p = 0.03).
+
+**Visualisation:** scatter of per-neuron reward effect vs salience effect, with r and its null band, beside the
+salience vs image scatter (aligned). Compact alternative: a small matrix of cross-neuron correlations between factor
+effects.
+
+B4. **Competitive dynamics across the whole map after target onset.**
+- When the target appears away from the expected location, the prior's head start there is cancelled within
+  ~100 ms.
+- Every non-target location drops below baseline from ~150 ms (-1.5 sp/s).
+- Pre-saccadic suppression is strongest for the opposite (180-deg) target: interneurons 33% vs 19% at 90 deg;
+  classic 12% vs 3%.
+- This is SC's spatial winner-take-all at work. It is compatible with both views: a hub also uses SC's spatial
+  winner-take-all to execute.
+
+**Visualisation:** PSTH of units whose RF is at the expected location, on trials where the target appears elsewhere,
+expected vs non-expected block (early advantage, its cancellation, the dip below baseline). Side bar chart: % of
+units with pre-saccadic suppression by target angle.
+
+B5. **SC state predicts RT, but not location-specifically.**
+- Higher pre-target activity predicts faster saccades whether the RF holds the target, the expected competitor, or
+  neither (-5 to -6% RT per SD).
+- A competition between locations predicts slower RTs when the competitor's site is more active.
+- What the data show instead is general readiness.
+
+**Visualisation:** bars of RT change per SD of pre-target rate for "RF at target", "RF at expected competitor" and
+"RF elsewhere" (all negative, overlapping CIs), against a dashed bar with the sign a local competition predicts.
+
+### B6-B7: bilateral conflict task (`Newton_SC_2026/docs/NOTE_2026-10-31_competition_for_4factors.md`)
+
+B6. **Behaviour.**
+- Choice:
+  - Reward biases choice: +0.28 per 100 ms of reward difference (08-20).
+  - Salience barely affects it (p = 0.053).
+  - Conflict costs +16 ms.
+- RT: single-target RT falls with the belief value of the shown identity (Spearman -0.21, 08-20), using a
+  delta-rule belief fitted to choices (`results/hub_models/belief/summary.md`).
+- So RT tracks value more clearly than choice does. 08-19 shows little use of reward.
+
+**Visualisation:** psychometric curve, P(choose right) vs fitted belief-value difference, split by congruent vs
+conflict trials. Inset: single-target RT vs belief value (binned).
+
+B7. **No reward-difference coding and no competitor normalisation.**
+- The left-minus-right SC signal carries the upcoming choice: added choice probability 0.60 at +100-150 ms, 0.80
+  pre-saccade.
+- It carries no reward difference in any window.
+- A unit's response is not reduced by the competitor's reward (power >= 0.98 for a 10% drop per 100 ms).
+- A resolver comparing values in SC predicts both effects; a recipient of a pre-weighted signal predicts neither.
+- Caveat: the early choice window is underpowered (minimum detectable AUC 0.61-0.69).
+
+**Visualisation:**
+- (i) Time course of the reward-difference and choice coefficients in the left-minus-right signal, with null bands.
+- (ii) Distribution of per-unit competitor-reward coefficients, centred at zero, with the predicted -10% per 100 ms
+  shift drawn in.
+
+### B8-B10: the two colliculi (`results/intercollicular/SUMMARY.md`; bilateral `NOTE_2026-10-31_intercollicular_for_4factors.md`)
+
+B8. **Ipsilateral responses look externally driven.**
+- Non-classic units respond at the ipsilateral 90-deg neighbour as often as at the equidistant contralateral one
+  (27% vs 25%).
+- There is no relay latency (excess 3.7 ms, CI -1.3 to 6.8).
+- The responses are not saccade-locked, and are salience- but not reward-modulated.
+
+**Visualisation:** latency scatter (ipsilateral vs contralateral onset per unit) on the identity line, with the
+predicted relay band (10-27 ms) shaded.
+
+B9. **Ipsiversive activity is not a delayed copy of the other SC.**
+- It rises with the other side's contraversive burst (lag -6 ms, CI -8 to +18); a relay of the recorded neurons
+  predicts +10-27 ms.
+- Cross-SC CCGs are flat in every group.
+- Limit: a relay is excluded only if it would converge from fewer than ~170-500 neurons. A weak, broadly convergent
+  commissural input is not excluded.
+
+**Visualisation:** onset-aligned PSTHs of side X's burst and side Y's ipsiversive response, with the simulated relay
+as a dashed, shifted curve. Inset: the pooled cross-SC CCG, flat, against the CCG a sparse relay would produce.
+
+B10. **Candidate monosynaptic connections link neurons with similar selectivity.**
+- Sharp 1-4 ms CCG peaks occur in about 1% of pairs, across all class combinations.
+- Connected pairs have more similar factor profiles than matched unconnected pairs: +0.84 vs +0.56; without
+  location, +0.43 vs +0.22 (p = 0.013), mostly face/non-face.
+- Shared input would also produce this.
+- Inhibitory troughs (8) are too rare to test whether inhibition is factor-specific.
+
+**Visualisation:** an example sharp-peak CCG with its jitter band, and a histogram of profile similarity for
+connected vs matched unconnected pairs.
+
+### B11: data-fitted RNNs (`results/selectivity_by_type/NOTE.md`)
+
+B11. **Weights fitted to the data cannot locate the computation.**
+- RNN units fitted to individual neurons keep their spatial tuning (r 0.83-0.90, at ~60-70% of recorded magnitude)
+  and match reward selectivity.
+- They are at chance for identity and salience, although both are model inputs.
+- They get the sign of the probability effect wrong.
+- So "unstructured I->E weights" cannot by itself support the hub view. This motivates the task-trained approach
+  in A.
+
+**Visualisation:** per-factor scatter of recorded vs RNN ROC selectivity (already made, `results/selectivity_by_type/`).
+
+## C. PREDICTIONS FOR THE PROPOSED EXPERIMENTS (hypotheses, not findings)
+
+C1. **Priority hub vs outcome hub: does SC receive graded value or a decided outcome?**
+- Hand-built prediction:
+  - Single-target RT falls with the value of the shown target under graded input: Spearman -0.32 (priority hub B,
+    and resolver A).
+  - It is flat under categorical input: +0.02 (outcome hub C).
+  - The monkey's -0.21 points toward graded input.
+- Trained networks, fully value-engaged and uncalibrated, give the same ordering: B -0.15, C +0.03.
+- Trained networks calibrated to the monkey's weak use of value in choice cannot yet test it: all are -0.15 to
+  +0.06, because their RTs are too fast (95-145 ms vs 209 ms) and value is engaged on only a fraction of trials.
+- No trained network yet reproduces the monkey's pattern: RT is value-sensitive while choice barely uses value.
+  Retraining with a weaker time cost is the next modelling step.
+- Present as: "a graded (priority) hub predicts that SC activity and RT scale with the value of a lone target; a
+  categorical (outcome) hub predicts neither."
+
+**Visualisation:** binned RT vs value for the three hand-built architectures beside the monkey's curve. Or the
+RT-value correlation per architecture, with the recorded -0.21 as a vertical line.
+
+C2. **Variable-timing conflict task** (luminant salience, time pressure, onset asynchrony between the salient and
+the rich target).
+- Resolver: the outcome depends on when each signal reaches SC, within SC's competitive window.
+- Hub: the outcome follows the arrival of the goal signal from the loop.
+- No model simulation has been run yet; this is the next modelling step after retraining. Treat as a qualitative
+  prediction for now.
+
+**Visualisation (once simulated):** P(choose rich target) vs onset asynchrony, one curve per architecture, with the
+architecture-specific inflection marked.
+
+C3. **Higher-powered bilateral recordings** (mirrored, interleaved targets; enough classic units per side).
+- They repeat A3 and B7 at the power the models say is needed: the hub predicts a null, the resolver a code.
+- They also test commissural competition directly (B9).
+
+**Visualisation:** a power curve, P(detect) of the resolver identity code vs the number of contralateral units and
+blocks, with the planned yield marked. This can be computed from the existing planting analysis.
+
+## D. MODEL VALIDATION AND METHOD (optional, for rigor)
+
+D1. **The models reproduce the classic SC bicuculline/muscimol phenotypes** (`results/hub_models/bicuculline/`).
+- Bicuculline (all 24 networks, d 0.05-0.35):
+  - Saccades into the injected field speed up (d 0.2: 17-42 ms faster; other field unchanged), and choice biases
+    toward it.
+  - At d >= 0.35, the networks make irrepressible saccades into that field (fixation breaks on 20-70% of trials,
+    99-100% toward it), as Hikosaka & Wurtz (1985) reported.
+- Muscimol does the opposite: RT into the field +120-210 ms, and choice moves away from it.
+- This supports using the models for prediction.
+
+**Visualisation:** dose-response curves (RT change into the injected vs the other field; fixation-break rate), one
+line per architecture with the network range shaded.
+
+D2. **Method: matched sampling and detection by planting.**
+- Models are sampled at recorded unit counts, firing rates and overdispersion, and tested with the recorded
+  pipeline's statistics against permutation nulls.
+- Detection probability comes from planting model effect sizes into the real counts.
+- Useful as a methods schematic if space allows.
+
+## E. BICUCULLINE: RECOMMENDATION — not necessary for resolver vs hub; safe to cut
+
+**Recommendation.** Leave bicuculline injection and recording out of the resolver vs hub aim. Nothing in the
+argument depends on it. The modelling gives a principled reason to omit it, so its absence is not a gap a reviewer
+can fairly point to.
+
+What the simulations show:
+- **Behaviour doesn't separate the architectures.** At doses an animal can work under, resolver, priority-hub and
+  outcome-hub networks all show the same dose-dependent speeding and side bias. RT vs value does not flatten in any
+  of them, because disinhibition compresses RTs toward a floor everywhere. The earlier prediction ("resolver:
+  conflict-dependent choice changes; hub: execution deficits only") does not hold.
+- **The neural signature is modest.**
+  - With recording at the injection site, value modulation shrinks only in the priority hub: to 0.84-0.92 of
+    control in 6 of 6 trained networks at d 0.2, vs 0.96-2.5 in 10 of 12 resolvers.
+  - That is a 13-25% reduction of a modulation that is itself small (11-16% per 100 ms of value).
+  - It has to be measured where firing rates are rising sharply.
+  - Two resolver networks overlap the hub range.
+  - It cannot separate the priority hub from the outcome hub.
+- **Stronger tests already exist.** The identity-code test (A3) and its higher-powered repeat (C3), plus the
+  variable-timing task (C2), separate resolver from hub more directly and with less risk.
+
+Optional sentence for the proposal, if a reviewer might ask why SC GABA-A blockade isn't proposed: "In simulations
+of all candidate architectures, local GABA-A blockade in SC produced the same behavioural phenotype, the classic
+disinhibition of saccades into the injected field (Hikosaka & Wurtz 1985), and only a small neural difference between
+them. We therefore do not use it to distinguish resolver from hub."
+
+Caveats on the recommendation:
+- It rests on four architectures in one task.
+- A resolver built on inhibition that is specific to a factor, rather than to a location, could respond differently
+  to GABA-A blockade.
+  - Neither our data nor the literature suggest such a resolver. B10 found too few inhibitory connections to test
+    factor-specific inhibition at all.
+- If a future aim asks how SC's local inhibition shapes the spatial winner-take-all, separately from resolver vs hub,
+  bicuculline would become relevant again.
