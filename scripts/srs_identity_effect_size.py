@@ -17,8 +17,14 @@ tab = from_recorded(str(ROOT / 'results/hub_models/belief/08-20_trials_with_beli
 blocks = np.cumsum(np.r_[0, np.diff(tab['block_type']) != 0])
 nets = {'A_hand': build_handbuilt('A', SRSConfig(device='cpu')), 'B_hand': build_handbuilt('B', SRSConfig(device='cpu')),
         'C_hand': build_handbuilt('C', SRSConfig(device='cpu'), c_gain=1.1)}
-for a in 'ABC':
-    nets[f'{a}_s0'] = load_net(str(ROOT / f'results/hub_models/trained/{a}_s0/model.pt'))
+import glob
+if len(sys.argv) > 1 and sys.argv[1] == 'v2':
+    nets = {}
+    for d in sorted(glob.glob(str(ROOT / 'results/hub_models/trained_v2/*/model.pt'))):
+        nets[Path(d).parent.name] = load_net(d)
+else:
+    for a in 'ABC':
+        nets[f'{a}_s0'] = load_net(str(ROOT / f'results/hub_models/trained/{a}_s0/model.pt'))
 rng = np.random.default_rng(0)
 rows = []
 import pandas as pd
@@ -57,6 +63,6 @@ for lab, net in nets.items():
             deltas = np.abs(deltas)
             print(f'{lab:7s} {wname:6s} {grp:6s} {np.median(deltas):.3f}  {np.mean(deltas > 0.1):.2f}  {np.mean(deltas > 0.2):.2f}')
 
-out = ROOT / 'results' / 'hub_models' / 'identity_delta_true.csv'
+out = ROOT / 'results' / 'hub_models' / ('identity_delta_true_v2.csv' if len(sys.argv) > 1 else 'identity_delta_true.csv')
 pd.DataFrame(rows).to_csv(out, index=False)
 print('saved', out)

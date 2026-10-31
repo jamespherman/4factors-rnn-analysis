@@ -238,7 +238,8 @@ def main():
     n_draws = int(sys.argv[1]) if len(sys.argv) > 1 else 30
     trained = sys.argv[2:]                       # optional: label=path/to/model.pt ...
     if trained:
-        OUT = OUT.parent / 'stage1_trained'
+        import os
+        OUT = Path(os.environ.get('STAGE0_OUT', OUT.parent / 'stage1_trained'))
         OUT.mkdir(parents=True, exist_ok=True)
         specs = [(x.split('=')[0], [{'path': x.split('=')[1]}]) for x in trained]
     else:
