@@ -23,7 +23,12 @@ Bilateral results (bilateral-SC-recordings session, Newton 2026-08-19/20):
   pre-saccadic suppression) and X spikes ~0.10-0.2 per 7-ms efficacy window (from n = 1.4 spikes in -100..0 ms),
   r·N_X ≈ 5-10. A relay is excluded only if it converges from fewer than ~170-500 X neurons; a weak convergent
   relay is not excluded. (Plausibility of that convergence is an open anatomy question.)
-- Pending: C2 (population source with saccade covariates).
+- C2 (population source, X -> Y ridge increment over saccade metrics): uninformative by its pre-stated power gate
+  (relay power 0.00-0.02); beyond saccade metrics X barely predicts Y (held-out r 0.004-0.04).
+- C4: cross-SC CCGs flat in every Y group (ipsi-index top tercile q <= 0.014-0.021; non-classic Y fixation
+  <= 0.026-0.036, pre-saccade <= 0.07-0.10).
+- Bilateral bottom line: nothing shows the other SC driving Y's ipsi responses; consistent with H-external, a broadly
+  convergent weak commissural input is not excluded.
 
 ## Phase 3 (unilateral within-SC CCGs, `b3_ccg/summary.md`)
 - 13,578 directed pairs on different channels. Most jitter-significant short-lag excess is broad (±8 ms; 7-12% of
@@ -35,6 +40,17 @@ Bilateral results (bilateral-SC-recordings session, Newton 2026-08-19/20):
 - Troughs: 8 (mostly I->I); too few to interpret, as expected (Trepka et al. 2022: troughs ~40x rarer than peaks).
 - B4: waveform trough-to-peak (classic 0.40 ms, non-classic 0.35-0.43 ms) and depth do not separate groups
   (all p > 0.1). Nothing points to a distinct commissural-source group.
+
+## B5: factor selectivity of candidate monosynaptic pairs (`b5_pair_selectivity/summary.md`)
+- 113 sharp-peak pairs (80 units; E->E 9, E->I 21, I->E 21, I->I 62) and 5 trough pairs (all I->I).
+- Peak pairs have more similar visual-epoch selectivity than session- and distance-matched unconnected pairs:
+  5-factor profile r median +0.84 vs +0.56 (p < 0.001), mostly location; without location (identity, salience,
+  reward, probability) +0.43 vs +0.22 (p = 0.013), driven by identity (face/non-face) agreement and weakly
+  probability. Per presynaptic unit (42 units) +0.30.
+- Salience: of 7 peak pairs where both units are salience-selective, 5 have opposite signs, but they come from two
+  presynaptic units in Feynman 08_15 (units 8 and 17, low-salience preferring) - an anecdote, not a pattern.
+- Caveat: shared input would also make pairs similar; sharp asymmetric peaks favour, but do not prove, a direct
+  connection.
 
 ## Decisions (plan decision rules)
 - 162 of 190 non-classic units respond at ipsi locations, so removing them from the I pool (the plan's A-check)
