@@ -44,6 +44,9 @@ class SRSConfig:
     value_scale: float = 300.0      # ms of juice -> model units
     a_input_gain: float = 1.0       # A: fixed random identity/belief weights onto SC (scale)
     a_input_targets: str = "all"    # A: which SC units get identity/belief input: "all" | "E" | "E_other"
+    shape_vis: float = 0.0          # purely visual shape (bar orientation) preference of visually driven SC E units:
+                                    # drive x relu(1 + shape_vis * u_k * sign(identity)), u_k ~ N(0,1) fixed per unit,
+                                    # sign = +1 for T1, -1 for T2; identical in A, B, C (block-invariant identity code)
     bias_locus: str = "SC"          # "SC" (side bias onto pools) or "upstream"
     learn_sc_fix: bool = True       # learnable fixation-input weights onto SC units
 
@@ -80,6 +83,11 @@ class SRSConfig:
     stage_iters: tuple = (1500, 1500, 1500)   # S1 single-target, S2 true values, S3 noisy beliefs
     belief_noise: float = 40.0      # ms SD of belief around block means in training stage S3
     p_choice: float = 0.5           # fraction of choice trials in training stages S2-S3
+    # nuisance randomisation during training (so trained nets respond gracefully when these inputs are set)
+    nuisance_stages: tuple = ("S3",)
+    train_engaged_min: float = 1.0  # per batch w ~ U(train_engaged_min, 1); engaged ~ Bernoulli(w) per trial
+    train_side_bias_max: float = 0.0  # side_bias ~ U(-max, max) per trial
+    time_cost: float = 0.0          # RT pressure: reward -= time_cost * RT(ms) on completed trials (training only)
     seed: int = 0
     device: str = "cuda"
     eval_every: int = 250

@@ -293,4 +293,5 @@ def build_inputs(cfg, table, device, generator=None):
             slow[:, i] = cfg.slow_shared * z_sh[:, None] + cfg.slow_side * z_si
     return dict(fix=fix, vis=vis, id_sc=id_sc, id_up=id_up, belief=belief, bias=bias, slow=slow,
                 t=t, t_go=t_go, on=on, present=present, ids=ids,
-                rew=torch.stack([tb["rew_L"], tb["rew_R"]], 1) / cfg.value_scale)
+                rew=torch.stack([tb["rew_L"], tb["rew_R"]], 1) / cfg.value_scale,
+                idsign=torch.where(ids == 1, 1.0, torch.where(ids == 2, -1.0, 0.0)))

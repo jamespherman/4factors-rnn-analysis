@@ -62,6 +62,8 @@ def step_batch(net, cfg, table, gen):
     tfrac = (inp["t"] / inp["t"][-1])[None, :, None].expand(logits.shape[0], T, 1)
     V = net.value(out, tfrac)
     R = res["reward"]
+    if cfg.time_cost > 0:
+        R = R - cfg.time_cost * torch.nan_to_num(res["rt"], nan=0.0).clamp(min=0) * (res["outcome"] == 0).float()
     act = active.float()
     n = act.sum()
     adv = (R[:, None] - V).detach()
@@ -103,6 +105,11 @@ def train(cfg, name, out_root=None, verbose=True):
         for it in range(1, n_it + 1):
             it_total += 1
             table = make_training_trials(cfg, cfg.batch_size, rng, stage)
+            if stage in cfg.nuisance_stages:
+                n = cfg.batch_size
+                w = rng.uniform(cfg.train_engaged_min, 1.0)
+                table["engaged"] = (rng.random(n) < w).astype(float)
+                table["side_bias"] = rng.uniform(-cfg.train_side_bias_max, cfg.train_side_bias_max, n)
             loss, res = step_batch(net, cfg, table, gen)
             opt.zero_grad()
             loss.backward()

@@ -75,6 +75,15 @@ S3 noisy beliefs (`belief_noise`). `stage_iters` default 1500,1500,1500, batch 2
   `cfg.dis_tau` (ms) low-pass on the upstream disinhibition for all architectures (0 = off).
 - RT resolution: `cfg.rt_substep` (default True; event time uniform within its 10-ms step) and `cfg.rt_jitter_sd`
   (ms of Gaussian motor jitter). Outcome classification uses the event step, so jitter never creates fixation breaks.
+- `cfg.shape_vis` (default 0): purely visual bar-orientation preference of the visually driven SC E units (the E pool
+  at the target's location): drive × relu(1 + shape_vis·u_k·sign(identity)), u_k ~ N(0,1) fixed per unit (separate
+  RNG stream, so all other weights are unchanged), sign +1 for T1 and −1 for T2; same in A, B, C, same time course
+  as the visual input. Gives every architecture a block-invariant identity code. Non-pool E units get no visual input.
+- Training-time nuisance randomisation (stages listed in `nuisance_stages`, default ("S3",)): per batch
+  w ~ U(`train_engaged_min`, 1) and engaged ~ Bernoulli(w) per trial; side_bias ~ U(−`train_side_bias_max`, +max) per
+  trial. Defaults (1.0, 0.0) = off. Side bias always enters through FIXED weights (onto the pools for
+  bias_locus="SC", onto the upstream per-location outputs for "upstream"), so training cannot unlearn it.
+- RT pressure: `time_cost` (reward units per ms of RT, completed trials, training only; e.g. 5e-4).
 - `engaged` is filled with 1 wherever a table lacks it (bug fix: training trials lacked the column).
 
 ## Status (2026-10-31)

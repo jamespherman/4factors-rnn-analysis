@@ -14,6 +14,11 @@ Signatures (Python approximations of bilateral-SC-recordings' analyses; the exac
       (Poisson GLM; per 100 ms); population mean coefficient and t (delay and pre-saccadic windows).
   S8  single-target trials, same units: counts ~ identity + belief value; population mean |identity| effect beyond
       value (z of the identity coefficient, averaged over units) - identity coding in SC.
+  S8 (revised after bilateral-SC-recordings' review): GLM counts ~ value + identity + identity x block (rich identity);
+      excess of mean |z| over a permutation null (identity shuffled within block x salience) for the identity main effect
+      (S8_excess: includes purely sensory shape coding) and for identity x block beyond value (S8int_excess: binding).
+      Counts are overdispersed (trial-level lognormal gain, SD OVERDISP) to match recorded variability; z values are
+      quasi-Poisson (dispersion from Pearson X2), as bilateral-SC-recordings reports for the recordings (0.54-0.62).
   S9  single-target RT vs belief value of the shown identity (Spearman; behavioural; recorded 08-20: -0.21).
 Rates (softplus units) are mapped per unit to recorded-like spike rates: r = base + gain * r_model with base ~ lognormal
 (median 3 sp/s) and gain set so the unit's peak trial-averaged modulation ~ lognormal (median 15 sp/s); counts Poisson.
@@ -31,12 +36,16 @@ ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT / 'external' / 'conflict_srs'))
 from srs import SRSConfig, build_handbuilt, simulate  # noqa: E402
 from srs.task import from_recorded  # noqa: E402
+sys.path.insert(0, str(ROOT)); from src.srs_load import load_net  # noqa: E402
 
 torch.set_num_threads(1)
 OUT = ROOT / 'results' / 'hub_models' / 'stage0'
 BELIEF = ROOT / 'results' / 'hub_models' / 'belief' / '08-20_trials_with_belief.csv'
 UNITS = {'L': (19, 6), 'R': (27, 0)}           # 08-20 recorded units per SC and classic (pool-E) count
 DT = 10
+OVERDISP = 0.4          # SD of log trial gain per unit (Fano ~1.2-1.5 at recorded rates); 0 = Poisson
+N_PERM = 10
+SHAPE_VIS = 0.25        # block-invariant sensory shape coding in every architecture (hand-builds)
 
 
 def monkey_targets(tab):
@@ -63,15 +72,24 @@ def with_nuisance(tab, w, bias, rng):
     return t
 
 
+def make_net(arch, hb):
+    """Hand-built network for arch 'A'|'B'|'C', or a trained network if hb has 'path'."""
+    if 'path' in hb:
+        return load_net(hb['path'], device='cpu')
+    return build_handbuilt(arch, SRSConfig(device='cpu', shape_vis=SHAPE_VIS), **hb)
+
+
 def calibrate(arch, tab, target, hb_grid, seeds=3):
     best = None
     for hb in hb_grid:
-      for w in (0.0, 0.1, 0.2, 0.3, 0.45, 0.6):
-        for bias in (-0.3, -0.15, 0.0, 0.15, 0.3):
+      ws = (0.0, 0.1, 0.2, 0.3, 0.45, 0.6) if 'path' not in hb else (0.2, 0.35, 0.5, 0.65, 0.8, 1.0)
+      bs = (-0.3, -0.15, 0.0, 0.15, 0.3) if 'path' not in hb else tuple(np.round(np.arange(-0.3, 0.31, 0.075), 3))
+      for w in ws:
+        for bias in bs:
             b = []
             for s in range(seeds):
                 rng = np.random.default_rng(100 + s)
-                net = build_handbuilt(arch, SRSConfig(device='cpu'), **hb)
+                net = make_net(arch, hb)
                 b.append(behaviour(simulate(net, with_nuisance(tab, w, bias, rng), seed=s)))
             m = {k: np.mean([x[k] for x in b]) for k in b[0]}
             loss = ((m['p_right'] - target['p_right']) ** 2 + (m['p_high'] - target['p_high']) ** 2
@@ -101,6 +119,9 @@ def spike_counts(res, rng):
     gain = mod / np.maximum(np.nanmax(tavg, 0) - np.nanmin(tavg, 0), 1e-3)
     rate = base + gain * (r - np.nanmin(tavg, 0))                           # sp/s
     rate[pad] = 0.0                                                         # after the trial ends
+    if OVERDISP > 0:                                                        # trial-level gain noise (overdispersion)
+        g = np.exp(OVERDISP * rng.standard_normal((rate.shape[0], 1, rate.shape[2])) - OVERDISP ** 2 / 2)
+        rate = rate * g
     tgt = np.where(np.isnan(t['onset_step_L']), t['onset_step_R'], np.fmin(t['onset_step_L'], t['onset_step_R']))
     sac = t['go_step'] + np.round(np.nan_to_num(t['rt'], nan=0) / DT)
     T = r.shape[1]
@@ -158,10 +179,21 @@ def signatures(res, cnt):
     shown_loc = np.where(t['id_R'] > 0, 1, 0)
     shown_id = np.where(t['id_R'] > 0, t['id_R'], t['id_L'])
     v_shown = np.where(shown_id == 1, t['V1'], t['V2']) / 100
+    rich = np.where(t['block_mean_t1_ms'] > t['block_mean_t2_ms'], 1.0, -1.0) if 'block_mean_t1_ms' in t else np.sign(t['V1'] - t['V2'])
+    idv = np.where(shown_id == 1, 1.0, -1.0)
+    sal_shown = np.where(t['id_R'] > 0, t['sal_R'], t['sal_L'])
+    prng = np.random.default_rng(7)
+
+    def z_identity(y, ok, ident):
+        X = sm.add_constant(np.c_[v_shown[ok], ident[ok], ident[ok] * rich[ok]])
+        f = sm.GLM(y[ok], X, family=sm.families.Poisson()).fit(scale='X2')     # quasi-Poisson (dispersion from X2)
+        return abs(f.tvalues[2]), abs(f.tvalues[3])
+
     for w in ('delay', 'presac'):
-        c7, z8 = [], []
+        c7, zm, zi, nm, ni = [], [], [], [], []
         for side_name, loc in (('L', 1), ('R', 0)):
             sel = st & (shown_loc == loc)
+            strata = [np.flatnonzero(sel & (rich == r) & (sal_shown == sv)) for r in (-1, 1) for sv in np.unique(sal_shown[sel])]
             for u in np.flatnonzero(cnt['sides'] == side_name):
                 y = cnt[w][:, u]
                 ok = sel & ~np.isnan(y)
@@ -170,14 +202,26 @@ def signatures(res, cnt):
                 try:
                     f7 = sm.GLM(y[ok], sm.add_constant(v_shown[ok]), family=sm.families.Poisson()).fit()
                     c7.append(f7.params[1])
-                    f8 = sm.GLM(y[ok], sm.add_constant(np.c_[v_shown[ok], (shown_id[ok] == 1).astype(float)]),
-                                family=sm.families.Poisson()).fit()
-                    z8.append(abs(f8.tvalues[2]))
+                    a, b = z_identity(y, ok, idv)
+                    zm.append(a)
+                    zi.append(b)
+                    pa, pb = [], []
+                    for _ in range(N_PERM):
+                        perm = idv.copy()
+                        for g in strata:
+                            perm[g] = prng.permutation(perm[g])
+                        x1, x2 = z_identity(y, ok, perm)
+                        pa.append(x1)
+                        pb.append(x2)
+                    nm.append(np.mean(pa))
+                    ni.append(np.mean(pb))
                 except Exception:
                     pass
         c7 = np.array(c7)
         out[f'S7_{w}_t'] = float(np.mean(c7) / (np.std(c7, ddof=1) / np.sqrt(len(c7)))) if len(c7) > 2 else np.nan
-        out[f'S8_{w}_absz'] = float(np.mean(z8)) if z8 else np.nan
+        out[f'S8_{w}_absz'] = float(np.mean(zm)) if zm else np.nan
+        out[f'S8_{w}_excess'] = float(np.mean(zm) - np.mean(nm)) if zm else np.nan
+        out[f'S8int_{w}_excess'] = float(np.mean(zi) - np.mean(ni)) if zi else np.nan
     from scipy.stats import spearmanr
     ok = st & ~np.isnan(t['rt'])
     out['S9_rt_value_rho'] = float(spearmanr(v_shown[ok], t['rt'][ok])[0])
@@ -185,20 +229,28 @@ def signatures(res, cnt):
 
 
 def main():
+    global OUT
     OUT.mkdir(parents=True, exist_ok=True)
     tab = from_recorded(str(BELIEF))
     target = monkey_targets(tab)
     print('monkey 08-20 targets', target, flush=True)
     rows, cal = [], {}
     n_draws = int(sys.argv[1]) if len(sys.argv) > 1 else 30
-    for arch in 'ABC':
-        grid = [{}] if arch != 'C' else [{'c_gain': g, 'theta': th} for g in (1.0, 1.1, 1.2) for th in (0.75, 0.85)]
+    trained = sys.argv[2:]                       # optional: label=path/to/model.pt ...
+    if trained:
+        OUT = OUT.parent / 'stage1_trained'
+        OUT.mkdir(parents=True, exist_ok=True)
+        specs = [(x.split('=')[0], [{'path': x.split('=')[1]}]) for x in trained]
+    else:
+        specs = [(a, [{}] if a != 'C' else [{'c_gain': g, 'theta': th} for g in (1.0, 1.1, 1.2) for th in (0.75, 0.85)])
+                 for a in 'ABC']
+    for arch, grid in specs:
         loss, w, bias, m, hb = calibrate(arch, tab, target, grid)
-        cal[arch] = {'w': w, 'bias': bias, **m, **hb}
+        cal[arch] = {'w': w, 'bias': bias, **m, **{k: v for k, v in hb.items() if k != 'path'}}
         print(arch, 'calibrated', cal[arch], flush=True)
         for d in range(n_draws):
             rng = np.random.default_rng(1000 + d)
-            net = build_handbuilt(arch, SRSConfig(device='cpu'), **hb)
+            net = make_net(arch, hb)
             res = simulate(net, with_nuisance(tab, w, bias, rng), seed=d)
             sig = signatures(res, spike_counts(res, rng))
             rows.append({'arch': arch, 'draw': d, **behaviour(res), **sig})
@@ -218,10 +270,12 @@ def report(df, cal, target):
     L.append('\n## Signature distributions (mean +- SD over draws) and separation')
     stats = [c for c in df.columns if c.startswith('S')]
     for s in stats:
-        cells = ' | '.join(f'{a}: {df[df.arch == a][s].mean():+.2f} +- {df[df.arch == a][s].std():.2f}' for a in 'ABC')
+        labels = list(dict.fromkeys(df.arch))
+        cells = ' | '.join(f'{a}: {df[df.arch == a][s].mean():+.2f} +- {df[df.arch == a][s].std():.2f}' for a in labels)
         sep = []
+        fam = df.arch.str[0]
         for a1, a2 in (('B', 'C'), ('A', 'B'), ('A', 'C')):
-            x1, x2 = df[df.arch == a1][s].dropna(), df[df.arch == a2][s].dropna()
+            x1, x2 = df[fam == a1][s].dropna(), df[fam == a2][s].dropna()
             if len(x1) > 5 and len(x2) > 5 and x1.std() > 0 and x2.std() > 0:
                 k1, k2 = gaussian_kde(x1), gaussian_kde(x2)
                 ell = np.mean(np.log(k1(x1) + 1e-12) - np.log(k2(x1) + 1e-12))

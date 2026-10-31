@@ -122,8 +122,8 @@ class SRSNet(nn.Module):
         up_mask = np.ones((nU, n_up_in), np.float32)
         if cfg.arch == "A":
             up_mask[:, 3:7] = 0.0           # no identity-at-location input: no identity x belief conjunction upstream
-        if cfg.bias_locus != "upstream":
-            up_mask[:, 7:9] = 0.0
+        up_mask[:, 7:9] = 0.0              # side bias never enters via learnable weights (it would be unlearned);
+                                           # with bias_locus == "upstream" it is added to the upstream output instead
         self.register_buffer("up_mask", torch.tensor(up_mask))
         self.b_up = nn.Parameter(torch.zeros(nU))
         n_out = 3 if cfg.arch == "C" else 2
@@ -143,6 +143,9 @@ class SRSNet(nn.Module):
         self.register_buffer("unit_gain", torch.ones(N), persistent=False)
         self.dis_override = None
         self.hand_upstream = None
+        # fixed per-unit shape (orientation) preference; separate RNG stream so all other weights are unchanged
+        u = np.random.default_rng(cfg.seed + 7919).normal(0, 1, N).astype(np.float32)
+        self.register_buffer("shape_u", torch.tensor(u))
 
     # ------------------------------------------------------------------
     @property
@@ -170,6 +173,8 @@ class SRSNet(nn.Module):
                 outs.append(F.softplus(x))
             R_up = torch.stack(outs, 1)
             o = R_up @ self.W_o.T + self.b_o
+            if cfg.bias_locus == "upstream":   # fixed-weight side bias on the per-location upstream outputs
+                o = torch.cat([o[..., :2] + inp["bias"], o[..., 2:]], -1)
             if cfg.arch == "C":
                 dis = cfg.c_dis_gain * cfg.dis_max * torch.softmax(cfg.c_beta * o, -1)[..., :2]
             else:
@@ -193,7 +198,13 @@ class SRSNet(nn.Module):
         dis, R_up = self.upstream(inp, noise, generator)
         snr = F.relu(cfg.snr_tonic + cfg.snr_fix * inp["fix"] - dis)                   # [B,T,2]
         # external input to SC units
-        ext = inp["vis"] @ self.w_vis.T
+        if cfg.shape_vis > 0:
+            ext = 0
+            for loc in (0, 1):
+                fac = F.relu(1 + cfg.shape_vis * self.shape_u * inp["idsign"][:, None, loc:loc + 1])   # [B,1,N]
+                ext = ext + inp["vis"][..., loc:loc + 1] * self.w_vis[:, loc] * fac
+        else:
+            ext = inp["vis"] @ self.w_vis.T
         ext = ext - cfg.w_snr * (snr @ self.pool_of.T) * self.snr_gain
         ext = ext + (inp["slow"] @ self.pool_of.T)
         if cfg.bias_locus == "SC":
