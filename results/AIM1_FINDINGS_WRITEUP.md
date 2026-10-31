@@ -32,7 +32,8 @@ Every architecture also carries a weak sensory shape code in SC.
 **How to read the tiers.**
 - **A. Solid** (can carry a figure panel and a claim).
 - **B. Supporting data** (consistent with a hub; suggestive, not decisive alone).
-- **C. Predictions for the proposed experiments** (present as hypotheses, not findings).
+- **C. Predictions for the proposed experiments** (present as hypotheses, not findings; C1 now has model
+  backing and pilot support).
 - **D. Model validation and method** (optional, for rigor).
 - **E. Bicuculline: recommendation.**
 
@@ -213,22 +214,40 @@ B11. **Weights fitted to the data cannot locate the computation.**
 
 ## C. PREDICTIONS FOR THE PROPOSED EXPERIMENTS (hypotheses, not findings)
 
-C1. **Priority hub vs outcome hub: does SC receive graded value or a decided outcome?**
-- Hand-built prediction:
-  - Single-target RT falls with the value of the shown target under graded input: Spearman -0.32 (priority hub B,
-    and resolver A).
-  - It is flat under categorical input: +0.02 (outcome hub C).
-  - The monkey's -0.21 points toward graded input.
-- Trained networks, fully value-engaged and uncalibrated, give the same ordering: B -0.15, C +0.03.
-- Trained networks calibrated to the monkey's weak use of value in choice cannot yet test it: all are -0.15 to
-  +0.06, because their RTs are too fast (95-145 ms vs 209 ms) and value is engaged on only a fraction of trials.
-- No trained network yet reproduces the monkey's pattern: RT is value-sensitive while choice barely uses value.
-  Retraining with a weaker time cost is the next modelling step.
-- Present as: "a graded (priority) hub predicts that SC activity and RT scale with the value of a lone target; a
-  categorical (outcome) hub predicts neither."
+C1. **Priority hub vs outcome hub: does SC receive graded value or a decided outcome?** Status: the model contrast
+is now established; its match to the data is suggestive (one session). It can be presented as a model-backed
+prediction with preliminary support.
+- **Models (solid).** Single-target RT falls with the value of the shown target only when SC receives a graded
+  signal.
+  - Hand-built networks: priority hub -0.32, outcome hub +0.02.
+  - Trained networks, value engaged on every trial: priority hub -0.10 to -0.50 in all 6 networks (median -0.17);
+    outcome hub -0.01 to -0.08 in all 3. The ranges do not overlap (rank-sum p = 0.024).
+  - Robust to moving RTs off the floor: raising the readout threshold slows RTs by 25-35 ms and changes no
+    network's value by more than 0.05 (`results/hub_models/rt_shift_pilot/`).
+  - The outcome hub's upstream signal on single-target trials is not graded with value (rho -0.14), so it behaves
+    categorically, as intended.
+- **Why the calibrated runs gave ~0 for everything.** Matching the monkey's weak use of value in choice removed the
+  value input on most trials, on single-target trials too, which mechanically shrinks this signature. Retraining is
+  therefore not needed for this contrast.
+- **Data (suggestive).**
+  - 08-20: -0.21 (n = 301, p = 0.0003). This is inside the priority-hub range and about 2.3 SE beyond the most
+    negative outcome-hub network.
+  - Partial engagement only shrinks the signature, so no trained outcome hub reaches -0.21 at any level of
+    engagement.
+  - 08-19: +0.03 (n = 184, p = 0.72), but the monkey barely used reward in that session.
+  - The monkey's RT tracks value more strongly than its choices do. The model's engagement mixture cannot produce
+    that, which suggests the monkey's weak choice-value use is specific to choice (e.g. a side or salience policy
+    on two-target trials) rather than a loss of value information.
+- **Caveats.**
+  - Value could speed saccades through a route outside SC's input (e.g. a separate vigour signal acting on
+    brainstem or cortex), which the models do not include.
+  - One informative session.
+- Present as: "a graded (priority) hub predicts that RT and SC activity scale with the value of a lone target; a
+  categorical (outcome) hub predicts neither. Pilot data favour the graded hub."
 
-**Visualisation:** binned RT vs value for the three hand-built architectures beside the monkey's curve. Or the
-RT-value correlation per architecture, with the recorded -0.21 as a vertical line.
+**Visualisation:** RT-value correlation per network (dots) for priority-hub and outcome-hub networks (hand-built
+marked separately), with the recorded 08-20 value and its CI as a horizontal band. Alternative: binned RT vs value
+curves for one representative network of each type beside the monkey's.
 
 C2. **Variable-timing conflict task** (luminant salience, time pressure, onset asynchrony between the salient and
 the rich target).
@@ -241,11 +260,26 @@ the rich target).
 architecture-specific inflection marked.
 
 C3. **Higher-powered bilateral recordings** (mirrored, interleaved targets; enough classic units per side).
-- They repeat A3 and B7 at the power the models say is needed: the hub predicts a null, the resolver a code.
+- They repeat A3 and B7 with enough power to exclude weaker or sparser resolvers than the trained networks: the hub
+  predicts a null, the resolver a code.
 - They also test commissural competition directly (B9).
+- Power analysis (`scripts/srs_identity_power.py`; `results/hub_models/identity_power/summary.md`):
+  - Assumptions: per-unit effects drawn from the trained resolvers; recorded-like rates and overdispersion;
+    19 single-target trials per identity per block.
 
-**Visualisation:** a power curve, P(detect) of the resolver identity code vs the number of contralateral units and
-blocks, with the planned yield marked. This can be computed from the existing planting analysis.
+    | Resolver | 30 units x 8 blocks | 50 x 8 | 80 x 8 |
+    |---|---|---|---|
+    | As trained | 1.00 | 1.00 | 1.00 |
+    | Half strength | 1.00 | 1.00 | 1.00 |
+    | Only a quarter of units coding | 0.83 | 0.97 | 0.99 |
+    | Half strength, half of units | 0.90 | 0.96 | 1.00 |
+
+  - The 08-20 yield (27-31 units, 8 blocks) already excludes trained-strength resolvers.
+  - About 50 contralateral units x 8 blocks per session excludes sparse resolvers at >= 0.95.
+  - With 4 blocks, about 80 units are needed.
+
+**Visualisation:** power vs the number of contralateral units (x), one line per resolver variant, solid for 8 blocks
+and dashed for 4. Mark the 08-20 yield and the planned yield, and draw a horizontal line at 0.8 or 0.95.
 
 ## D. MODEL VALIDATION AND METHOD (optional, for rigor)
 

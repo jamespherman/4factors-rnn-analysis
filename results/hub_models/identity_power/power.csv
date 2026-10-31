@@ -1,0 +1,97 @@
+n_units,n_blocks,resolver,power
+10,2,trained resolver,0.8975
+10,2,half strength,0.5325
+10,2,quarter of units code,0.365
+10,2,"half strength, half of units",0.3425
+10,4,trained resolver,0.9425
+10,4,half strength,0.725
+10,4,quarter of units code,0.4525
+10,4,"half strength, half of units",0.3975
+10,8,trained resolver,0.9775
+10,8,half strength,0.9025
+10,8,quarter of units code,0.5325
+10,8,"half strength, half of units",0.6075
+10,12,trained resolver,0.9875
+10,12,half strength,0.9175
+10,12,quarter of units code,0.6325
+10,12,"half strength, half of units",0.675
+20,2,trained resolver,0.9875
+20,2,half strength,0.8025
+20,2,quarter of units code,0.52
+20,2,"half strength, half of units",0.4875
+20,4,trained resolver,0.995
+20,4,half strength,0.9175
+20,4,quarter of units code,0.5925
+20,4,"half strength, half of units",0.57
+20,8,trained resolver,1.0
+20,8,half strength,0.9875
+20,8,quarter of units code,0.7525
+20,8,"half strength, half of units",0.8075
+20,12,trained resolver,1.0
+20,12,half strength,0.98
+20,12,quarter of units code,0.7825
+20,12,"half strength, half of units",0.8625
+30,2,trained resolver,0.9975
+30,2,half strength,0.8925
+30,2,quarter of units code,0.5775
+30,2,"half strength, half of units",0.6175
+30,4,trained resolver,1.0
+30,4,half strength,0.985
+30,4,quarter of units code,0.79
+30,4,"half strength, half of units",0.81
+30,8,trained resolver,1.0
+30,8,half strength,0.9975
+30,8,quarter of units code,0.8325
+30,8,"half strength, half of units",0.9025
+30,12,trained resolver,1.0
+30,12,half strength,1.0
+30,12,quarter of units code,0.8875
+30,12,"half strength, half of units",0.9475
+50,2,trained resolver,1.0
+50,2,half strength,0.98
+50,2,quarter of units code,0.7575
+50,2,"half strength, half of units",0.725
+50,4,trained resolver,1.0
+50,4,half strength,1.0
+50,4,quarter of units code,0.89
+50,4,"half strength, half of units",0.89
+50,8,trained resolver,1.0
+50,8,half strength,1.0
+50,8,quarter of units code,0.9675
+50,8,"half strength, half of units",0.96
+50,12,trained resolver,1.0
+50,12,half strength,1.0
+50,12,quarter of units code,0.965
+50,12,"half strength, half of units",0.9925
+80,2,trained resolver,1.0
+80,2,half strength,0.9975
+80,2,quarter of units code,0.9
+80,2,"half strength, half of units",0.8275
+80,4,trained resolver,1.0
+80,4,half strength,1.0
+80,4,quarter of units code,0.9775
+80,4,"half strength, half of units",0.97
+80,8,trained resolver,1.0
+80,8,half strength,1.0
+80,8,quarter of units code,0.9925
+80,8,"half strength, half of units",0.9975
+80,12,trained resolver,1.0
+80,12,half strength,1.0
+80,12,quarter of units code,0.995
+80,12,"half strength, half of units",1.0
+120,2,trained resolver,1.0
+120,2,half strength,1.0
+120,2,quarter of units code,0.9625
+120,2,"half strength, half of units",0.96
+120,4,trained resolver,1.0
+120,4,half strength,1.0
+120,4,quarter of units code,0.9925
+120,4,"half strength, half of units",0.995
+120,8,trained resolver,1.0
+120,8,half strength,1.0
+120,8,quarter of units code,1.0
+120,8,"half strength, half of units",1.0
+120,12,trained resolver,1.0
+120,12,half strength,1.0
+120,12,quarter of units code,0.9975
+120,12,"half strength, half of units",1.0
