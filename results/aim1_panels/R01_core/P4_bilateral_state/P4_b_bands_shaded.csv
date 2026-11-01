@@ -1,0 +1,3 @@
+band,lag_lo_ms,lag_hi_ms
+short_lr,2,8
+short_rl,-8,-2

@@ -1,0 +1,5 @@
+reward_cue,target,window,mean_sp_s,sem_sp_s,ci95_lo,ci95_hi,n_units,n_trials_total
+high,expected,50-250 ms re target onset,7.8891,1.5313,4.8119,10.966,50,5801
+high,unexpected,50-250 ms re target onset,6.8907,1.3648,4.1481,9.6333,50,1021
+low,expected,50-250 ms re target onset,6.3116,1.3296,3.6396,8.9835,50,5496
+low,unexpected,50-250 ms re target onset,8.2008,1.4208,5.3456,11.056,50,968
