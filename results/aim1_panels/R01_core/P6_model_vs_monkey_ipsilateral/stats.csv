@@ -1,0 +1,8 @@
+statistic,value,ci95_lo,ci95_hi,n,source
+monkey putative interneurons activated by ipsilateral target,0.325,0.256,0.402,154 units,g1 rows (p<0.01 paired t; visual window)
+monkey putative interneurons activated by contralateral target,0.487,0.409,0.565,154 units,g1 rows
+monkey classic neurons activated by ipsilateral target,0.153,0.088,0.253,72 units,g1 rows
+model I units activated by ipsilateral target (trained),0.02-0.04,,,10 networks,conflict-task-RNN probe_main_tables.md
+model I units activated by ipsilateral target (+ cross-midline E->I),0.07-0.16,,,5 networks,probe_commEI_tables.md
+model I units activated by contralateral target,0.45-0.62,,,10 networks,probe_main_tables.md
+model E units activated by ipsilateral target,0.00,,,10 networks,probe_main_tables.md
