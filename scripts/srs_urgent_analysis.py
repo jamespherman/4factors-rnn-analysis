@@ -6,10 +6,13 @@ Urgent-task predictions for resolver (A), priority hub (B) and outcome hub (C) n
                       targets on opposite sides) and congruent trials; 4-parameter logistic fit (lower/upper asymptote,
                       midpoint, slope) overall, by value-gap tercile (|block mean T1 - T2|), and at test salience gains
                       0.3 / 1 / 2 (trained at 1)
-  value latency       measured value-arrival latency: single-target trials, shown-location pool rate for the rich vs
-                      the poor identity, aligned on target onset (first of 3 consecutive bins with t > 3)
+  value latency       measured value-arrival latency, primary: choice trials, value component of the rich-minus-poor
+                      location pool difference (mean of congruent and conflict trials, which cancels salience), aligned
+                      on target onset; half-maximum time (first of 3 bins above half its 0-200 ms peak).
+                      Secondary: single-target trials, shown-location pool for rich vs poor identity (first of 3
+                      consecutive bins with t > 3; weak because one target is always chosen)
   divergence vs dt    conflict trials: time after target onset at which the rich-minus-salient pool difference turns
-                      and stays positive, per dt; slope vs dt (0 = target-locked, 1 = go-locked)
+                      and stays positive, per dt; slope vs dt (dt = target - go: 0 = target-locked, -1 = go-locked)
   error trials        rich-pool rate 100-150 ms after target onset on capture errors vs correct conflict trials (both
                       with saccades > 150 ms after target onset), as a ratio
   S8 (time-resolved)  fraction of contralateral units with |identity effect beyond value| > 0.2 in target-aligned
@@ -159,11 +162,24 @@ def analyse(net, seed=0):
             if min(ts) > 3:
                 lat = (j - 5) * dt_ms
                 break
-        out['value_latency_ms'] = float(lat)
-        # divergence on conflict trials per dt
+        out['value_latency_single_ms'] = float(lat)
         rich_loc = rich_R.astype(int)
         d = r['pool'][np.arange(N_TRIALS), :, rich_loc] - r['pool'][np.arange(N_TRIALS), :, 1 - rich_loc]
         D = aligned(d, on_step, end)
+        dv = 0.5 * (np.nanmean(D[congruent], 0) + np.nanmean(D[conflict], 0))
+        n_ok = np.minimum(np.sum(np.isfinite(D[congruent]), 0), np.sum(np.isfinite(D[conflict]), 0))
+        post = dv[5:5 + 21]
+        lat2 = np.nan
+        if np.isfinite(post).any() and np.nanmax(post) > 0:
+            half = 0.5 * np.nanmax(post)
+            for j in range(5, 5 + 19):
+                if n_ok[j + 2] >= 20 and np.all(dv[j:j + 3] > half):
+                    lat2 = (j - 5) * dt_ms
+                    break
+        out['value_latency_ms'] = float(lat2)
+        out['value_component_peak'] = float(np.nanmax(post)) if np.isfinite(post).any() else np.nan
+        out['value_component_trace'] = [None if not np.isfinite(v) else float(v) for v in dv]
+        # divergence on conflict trials per dt
         div = {}
         for dtv in np.unique(tab['dt_go']):
             mm = conflict & (tab['dt_go'] == dtv)
