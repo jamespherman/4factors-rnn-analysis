@@ -1,0 +1,134 @@
+group,condition,trial_set,unit_class,statistic,mean,sd,median,min,max,n_networks,n_sig_pos,n_sig_neg,test,p
+bilateral,commissure_cut,dT_le_0,E,partial_r,0.31804984213562226,0.038552709869737564,0.30918746423124244,0.27493407562302724,0.3681228938297929,10,10.0,0.0,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,commissure_cut,dT_le_0,E,raw_r,0.31761518120765686,0.038232605904340744,0.30816206336021423,0.2746228873729706,0.36828452348709106,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,commissure_cut,dT_le_0,E,bias_coef,-0.14920970816209372,0.6867427143634617,0.045157389818005635,-1.9418226334220452,0.3444299431753451,10,,,Wilcoxon signed-rank vs 0 across networks,1.0
+bilateral,commissure_cut,dT_le_0,E,bias_z,-0.12519298007269491,1.4705698655506918,0.20468161056697678,-3.4599863183993476,1.1988840387384074,10,,,Wilcoxon signed-rank vs 0 across networks,0.845703125
+bilateral,commissure_cut,dT_le_0,E,bias_coef_celladj,-0.10995875331239735,0.6385773616466515,0.06400426172939298,-1.7526792628756118,0.3966045244521756,10,,,Wilcoxon signed-rank vs 0 across networks,0.845703125
+bilateral,commissure_cut,dT_le_0,E,bias_z_celladj,-0.06032475443107501,1.496738004559956,0.27517461136929605,-3.437317014412662,1.4618977080685118,10,,,Wilcoxon signed-rank vs 0 across networks,0.6953125
+bilateral,commissure_cut,dT_le_0,E,n_trials_celladj,545.1,151.01909371555197,582.0,239.0,754.0,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,commissure_cut,dT_le_0,E,p_majority_choice,0.9926694849679111,0.0027270378942842294,0.9934598518070468,0.9888154550076258,0.9959246051961284,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,commissure_cut,dT_le_0,I,partial_r,-0.02004349580771857,0.02028027064617198,-0.014017803365042544,-0.047762458047917004,0.013692384040687667,10,0.0,2.0,Wilcoxon signed-rank vs 0 across networks,0.01953125
+bilateral,commissure_cut,dT_le_0,I,raw_r,-0.0199870727956295,0.02010791189968586,-0.014623267576098442,-0.04848409444093704,0.0122844772413373,10,,,Wilcoxon signed-rank vs 0 across networks,0.01953125
+bilateral,commissure_cut,dT_le_0,I,bias_coef,0.06584323290519054,0.1870244357878532,0.07605289336204854,-0.2648610827601334,0.4187922801925684,10,,,Wilcoxon signed-rank vs 0 across networks,0.275390625
+bilateral,commissure_cut,dT_le_0,I,bias_z,0.19675368583287237,0.6132318347987308,0.27542233988339865,-0.9120744786878864,1.203209711849759,10,,,Wilcoxon signed-rank vs 0 across networks,0.322265625
+bilateral,commissure_cut,dT_le_0,I,bias_coef_celladj,0.06219852231196452,0.1836261349396158,0.061677754929777194,-0.231457883058295,0.40344520484510726,10,,,Wilcoxon signed-rank vs 0 across networks,0.375
+bilateral,commissure_cut,dT_le_0,I,bias_z_celladj,0.18336616272566414,0.6060358155114919,0.2239980719755546,-0.7794708484319894,1.1524204630486958,10,,,Wilcoxon signed-rank vs 0 across networks,0.431640625
+bilateral,commissure_cut,dT_le_0,I,n_trials_celladj,545.1,151.01909371555197,582.0,239.0,754.0,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,commissure_cut,dT_le_0,I,p_majority_choice,0.9926694849679111,0.0027270378942842294,0.9934598518070468,0.9888154550076258,0.9959246051961284,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,intact,all_dT,E,partial_r,0.3300718703025285,0.043083773876641175,0.33385886240681784,0.27603452147548757,0.3971027923464176,10,10.0,0.0,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,intact,all_dT,E,raw_r,0.9499703645706177,0.00964764691889286,0.9492943286895752,0.9372619390487671,0.9637578725814819,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,intact,all_dT,E,bias_coef,-0.022180104922746493,0.06943659929497253,-0.03844641450751441,-0.11459955590233989,0.07776885960749186,10,,,Wilcoxon signed-rank vs 0 across networks,0.322265625
+bilateral,intact,all_dT,E,bias_z,-0.2761308982642188,0.8816921958420174,-0.46007437579356086,-1.5225392307610521,0.937785717117823,10,,,Wilcoxon signed-rank vs 0 across networks,0.322265625
+bilateral,intact,all_dT,E,bias_coef_celladj,-0.028488996028402647,0.08088514165053225,-0.0012026963434307028,-0.13694972170827174,0.09006290272420511,10,,,Wilcoxon signed-rank vs 0 across networks,0.4921875
+bilateral,intact,all_dT,E,bias_z_celladj,-0.3255812476927725,0.9387154637076164,-0.007875603174231874,-1.652796308461958,1.066143198999361,10,,,Wilcoxon signed-rank vs 0 across networks,0.4921875
+bilateral,intact,all_dT,E,n_trials_celladj,1755.0,165.20828604454977,1806.0,1461.0,1971.0,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,intact,all_dT,E,p_majority_choice,0.942560313406916,0.003730763796459005,0.942456785232735,0.9379518072289157,0.9506578947368421,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,intact,all_dT,I,partial_r,-0.0492051110649916,0.016976265990351864,-0.05314334662509139,-0.06998210837951574,-0.01915400322117595,10,0.0,8.0,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,intact,all_dT,I,raw_r,-0.11241843551397324,0.24491021037101746,-0.10046982765197754,-0.4805457293987274,0.3965018391609192,10,,,Wilcoxon signed-rank vs 0 across networks,0.130859375
+bilateral,intact,all_dT,I,bias_coef,-0.007996669234303406,0.11343283922153163,-0.04519234659115203,-0.18679971984394433,0.18558290448130443,10,,,Wilcoxon signed-rank vs 0 across networks,0.76953125
+bilateral,intact,all_dT,I,bias_z,-0.1733048872312358,1.1877514429115306,-0.4534490755382445,-2.3272352785147885,1.6443960304140144,10,,,Wilcoxon signed-rank vs 0 across networks,0.76953125
+bilateral,intact,all_dT,I,bias_coef_celladj,-0.003768175953525182,0.13580834426172747,-0.031052170239158947,-0.22526563743732544,0.2222217172912495,10,,,Wilcoxon signed-rank vs 0 across networks,0.556640625
+bilateral,intact,all_dT,I,bias_z_celladj,-0.17126998408282096,1.154016639176334,-0.23488272925605277,-2.3649064595685876,1.457820418944158,10,,,Wilcoxon signed-rank vs 0 across networks,0.625
+bilateral,intact,all_dT,I,n_trials_celladj,1755.0,165.20828604454977,1806.0,1461.0,1971.0,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,intact,all_dT,I,p_majority_choice,0.942560313406916,0.003730763796459005,0.942456785232735,0.9379518072289157,0.9506578947368421,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,intact,dT_le_0,E,partial_r,0.43945783376272907,0.04331658888521344,0.4336158541603251,0.3833990383325843,0.5152664816464518,10,10.0,0.0,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,intact,dT_le_0,E,raw_r,0.4390597343444824,0.04310738667845726,0.43283504247665405,0.38336852192878723,0.5138475298881531,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,intact,dT_le_0,E,bias_coef,-0.15720974485915376,0.3647606237397577,0.005319570408208679,-0.9753858229580455,0.31742962731433705,10,,,Wilcoxon signed-rank vs 0 across networks,0.625
+bilateral,intact,dT_le_0,E,bias_z,-0.45841619214639157,1.102544999052633,0.027053039725084552,-2.8824248691187937,1.0074796989516244,10,,,Wilcoxon signed-rank vs 0 across networks,0.625
+bilateral,intact,dT_le_0,E,bias_coef_celladj,-0.14397622730350831,0.4003162808722794,0.03416396531134235,-1.0372700414804408,0.3383526969814933,10,,,Wilcoxon signed-rank vs 0 across networks,0.6953125
+bilateral,intact,dT_le_0,E,bias_z_celladj,-0.4155393861313968,1.1874343813824333,0.11540623053467997,-2.9862546431505588,1.074693776063758,10,,,Wilcoxon signed-rank vs 0 across networks,0.625
+bilateral,intact,dT_le_0,E,n_trials_celladj,558.7,120.68604816722694,575.5,370.0,780.0,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,intact,dT_le_0,E,p_majority_choice,0.9952207148569517,0.0014767342935385237,0.9947292592996442,0.9928534966819806,0.9975526186979932,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,intact,dT_le_0,I,partial_r,-0.08296918641409712,0.017936560802628027,-0.08315193750822963,-0.10688176238757197,-0.041306468360600646,10,0.0,9.0,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,intact,dT_le_0,I,raw_r,-0.08284103870391846,0.017524106428027153,-0.08351166546344757,-0.10767656564712524,-0.04259640723466873,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,intact,dT_le_0,I,bias_coef,0.023862902574475087,0.217021231366815,0.05155934928857965,-0.37646057941262967,0.24627587286912986,10,,,Wilcoxon signed-rank vs 0 across networks,0.76953125
+bilateral,intact,dT_le_0,I,bias_z,0.09438844527362858,0.6770469445002854,0.1580112113019449,-1.2510170696632752,0.8426722168108248,10,,,Wilcoxon signed-rank vs 0 across networks,0.556640625
+bilateral,intact,dT_le_0,I,bias_coef_celladj,0.028839941907497463,0.22725907947683005,0.028358708729983678,-0.3479599431704715,0.349941244670612,10,,,Wilcoxon signed-rank vs 0 across networks,0.76953125
+bilateral,intact,dT_le_0,I,bias_z_celladj,0.11025101077823658,0.6930887151650094,0.08302664812099417,-1.118624932820262,1.1177271876284476,10,,,Wilcoxon signed-rank vs 0 across networks,0.6953125
+bilateral,intact,dT_le_0,I,n_trials_celladj,558.7,120.68604816722694,575.5,370.0,780.0,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,intact,dT_le_0,I,p_majority_choice,0.9952207148569517,0.0014767342935385237,0.9947292592996442,0.9928534966819806,0.9975526186979932,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,no_shared_input_noise,dT_le_0,E,partial_r,0.14250704888083207,0.04237390360964321,0.14265752641858953,0.07641491011407463,0.21071143123589559,10,10.0,0.0,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,no_shared_input_noise,dT_le_0,E,raw_r,0.1417911946773529,0.04199521988630295,0.1424398124217987,0.07659629732370377,0.20834000408649445,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,no_shared_input_noise,dT_le_0,E,bias_coef,-0.15976965828178982,0.3350869428189092,-0.09818271228344352,-0.9770670372558535,0.33230163522295614,10,,,Wilcoxon signed-rank vs 0 across networks,0.064453125
+bilateral,no_shared_input_noise,dT_le_0,E,bias_z,-0.42376536746529625,0.9851717094739747,-0.32285823003292863,-2.8412251750679203,1.0922719898692477,10,,,Wilcoxon signed-rank vs 0 across networks,0.083984375
+bilateral,no_shared_input_noise,dT_le_0,E,bias_coef_celladj,-0.15136816959717603,0.3578160473202489,-0.09369842959243768,-1.0377317014596692,0.35384235628115474,10,,,Wilcoxon signed-rank vs 0 across networks,0.130859375
+bilateral,no_shared_input_noise,dT_le_0,E,bias_z_celladj,-0.39930589773644576,1.0359995876830903,-0.29231149760825037,-2.943936232533883,1.1634565611792267,10,,,Wilcoxon signed-rank vs 0 across networks,0.130859375
+bilateral,no_shared_input_noise,dT_le_0,E,n_trials_celladj,533.2,108.05430733355026,545.5,264.0,646.0,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,no_shared_input_noise,dT_le_0,E,p_majority_choice,0.995318196907078,0.0016415200768049535,0.9951355739619169,0.9928789420142421,0.9980420949583945,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,no_shared_input_noise,dT_le_0,I,partial_r,-0.0812018843057209,0.013323864738002525,-0.08222344680308041,-0.10147233758723159,-0.04953060976227258,10,0.0,10.0,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,no_shared_input_noise,dT_le_0,I,raw_r,-0.08103049546480179,0.012676802463829517,-0.08186037838459015,-0.09986685961484909,-0.05083027482032776,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,no_shared_input_noise,dT_le_0,I,bias_coef,0.021239169299938365,0.32242049839576553,0.12813817674742328,-0.7716774323923252,0.35299786157028135,10,,,Wilcoxon signed-rank vs 0 across networks,0.375
+bilateral,no_shared_input_noise,dT_le_0,I,bias_z,0.033654619931468344,0.9705551600434101,0.36100061520418897,-2.2824698045969876,1.1966781236000055,10,,,Wilcoxon signed-rank vs 0 across networks,0.6953125
+bilateral,no_shared_input_noise,dT_le_0,I,bias_coef_celladj,0.022412169788633446,0.32479800353104404,0.13168519599790252,-0.7668161713085204,0.3465462409391071,10,,,Wilcoxon signed-rank vs 0 across networks,0.375
+bilateral,no_shared_input_noise,dT_le_0,I,bias_z_celladj,0.045666718876680924,0.9523013912162716,0.35419317090360913,-2.139888050939852,1.204487258437829,10,,,Wilcoxon signed-rank vs 0 across networks,0.625
+bilateral,no_shared_input_noise,dT_le_0,I,n_trials_celladj,533.2,108.05430733355026,545.5,264.0,646.0,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral,no_shared_input_noise,dT_le_0,I,p_majority_choice,0.995318196907078,0.0016415200768049535,0.9951355739619169,0.9928789420142421,0.9980420949583945,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+no_commissure,intact,all_dT,E,partial_r,0.21857917245959468,0.026781974924417508,0.22287653410169034,0.1702290804747998,0.2649131211234218,10,10.0,0.0,Wilcoxon signed-rank vs 0 across networks,0.001953125
+no_commissure,intact,all_dT,E,raw_r,0.9419425129890442,0.010330211371183395,0.9433261156082153,0.9281682372093201,0.956611156463623,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+no_commissure,intact,all_dT,E,bias_coef,-0.030179315267877198,0.09518013306844013,-0.009485870054306,-0.1737004601738283,0.14995720919480876,10,,,Wilcoxon signed-rank vs 0 across networks,0.375
+no_commissure,intact,all_dT,E,bias_z,-0.3488736640848215,1.2169175024909313,-0.12401871487079436,-2.188360293375025,2.039999366330304,10,,,Wilcoxon signed-rank vs 0 across networks,0.375
+no_commissure,intact,all_dT,E,bias_coef_celladj,-0.03175133587646377,0.09624411226549243,-0.03603456828950593,-0.19419712834215214,0.17082614501941165,10,,,Wilcoxon signed-rank vs 0 across networks,0.193359375
+no_commissure,intact,all_dT,E,bias_z_celladj,-0.3450802897884644,1.122890585399456,-0.3854735346486669,-2.2399948131898384,2.055609632183744,10,,,Wilcoxon signed-rank vs 0 across networks,0.193359375
+no_commissure,intact,all_dT,E,n_trials_celladj,1799.9,235.64778330758338,1862.5,1338.0,2099.0,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+no_commissure,intact,all_dT,E,p_majority_choice,0.9431920106276189,0.0035701775274075715,0.9424580285293049,0.9374436090225564,0.95,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+no_commissure,intact,all_dT,I,partial_r,0.005480817498897291,0.020624054563632702,0.006751000041855719,-0.02900618844290447,0.040007964062048644,10,1.0,0.0,Wilcoxon signed-rank vs 0 across networks,0.4921875
+no_commissure,intact,all_dT,I,raw_r,-0.13088205456733704,0.25349798798561096,-0.0889546200633049,-0.5714108943939209,0.137166827917099,10,,,Wilcoxon signed-rank vs 0 across networks,0.193359375
+no_commissure,intact,all_dT,I,bias_coef,-0.01901469164637489,0.0847103919070378,-0.0006255249788037444,-0.14534390490510973,0.0884470211577259,10,,,Wilcoxon signed-rank vs 0 across networks,0.556640625
+no_commissure,intact,all_dT,I,bias_z,-0.15421687056057448,0.8682236949588896,-0.029926082939428306,-1.5025158844456805,1.1507290060616262,10,,,Wilcoxon signed-rank vs 0 across networks,0.556640625
+no_commissure,intact,all_dT,I,bias_coef_celladj,-0.02241764274780348,0.13373546022791472,0.0002925922990866096,-0.25275527767221145,0.187164405051851,10,,,Wilcoxon signed-rank vs 0 across networks,0.6953125
+no_commissure,intact,all_dT,I,bias_z_celladj,-0.17270343348569178,1.223160512775301,-0.0002940525125500054,-2.182878433756552,2.156201106932999,10,,,Wilcoxon signed-rank vs 0 across networks,0.625
+no_commissure,intact,all_dT,I,n_trials_celladj,1799.9,235.64778330758338,1862.5,1338.0,2099.0,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+no_commissure,intact,all_dT,I,p_majority_choice,0.9431920106276189,0.0035701775274075715,0.9424580285293049,0.9374436090225564,0.95,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+no_commissure,intact,dT_le_0,E,partial_r,0.3439760671539643,0.02752917784929501,0.3458251493805614,0.30459617232022274,0.3925166936141433,10,10.0,0.0,Wilcoxon signed-rank vs 0 across networks,0.001953125
+no_commissure,intact,dT_le_0,E,raw_r,0.34387096762657166,0.027742449194192886,0.3460544943809509,0.30404940247535706,0.39310556650161743,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+no_commissure,intact,dT_le_0,E,bias_coef,0.014929279802849211,0.25551085271895035,-0.014596371761848597,-0.3812776279844166,0.41472831823266937,10,,,Wilcoxon signed-rank vs 0 across networks,1.0
+no_commissure,intact,dT_le_0,E,bias_z,0.012841400670482908,0.6942900831374362,-0.04779983410853138,-1.1211727492941121,1.0199966943274394,10,,,Wilcoxon signed-rank vs 0 across networks,1.0
+no_commissure,intact,dT_le_0,E,bias_coef_celladj,0.012023679516483041,0.26523554848475206,-0.015410933148793477,-0.44013509184240435,0.45338508371541414,10,,,Wilcoxon signed-rank vs 0 across networks,1.0
+no_commissure,intact,dT_le_0,E,bias_z_celladj,0.008178386558650247,0.710086173435825,-0.05063862881911404,-1.233494272180285,1.1414970523784067,10,,,Wilcoxon signed-rank vs 0 across networks,1.0
+no_commissure,intact,dT_le_0,E,n_trials_celladj,567.5,192.93709395090985,618.5,229.0,855.0,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+no_commissure,intact,dT_le_0,E,p_majority_choice,0.995521858567147,0.0013386588791368158,0.9957155009331793,0.9938837920489296,0.9970238095238095,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+no_commissure,intact,dT_le_0,I,partial_r,0.0012658110092998677,0.02354858860070172,0.005641571614352523,-0.03383093616118138,0.037922953527980696,10,0.0,0.0,Wilcoxon signed-rank vs 0 across networks,1.0
+no_commissure,intact,dT_le_0,I,raw_r,0.0014990514609962702,0.023426465690135956,0.00602189265191555,-0.03322068601846695,0.03793734312057495,10,,,Wilcoxon signed-rank vs 0 across networks,0.921875
+no_commissure,intact,dT_le_0,I,bias_coef,-0.2324094538028596,0.558805659795342,-0.1641364139013489,-0.9695076998901596,0.50405259236701,10,,,Wilcoxon signed-rank vs 0 across networks,0.322265625
+no_commissure,intact,dT_le_0,I,bias_z,-0.5722457171785245,1.5414791041776754,-0.4850857766358656,-2.7100712432923366,1.7185478909039318,10,,,Wilcoxon signed-rank vs 0 across networks,0.275390625
+no_commissure,intact,dT_le_0,I,bias_coef_celladj,-0.21411772982579738,0.5631358466294654,-0.1296291868769158,-1.006070366176614,0.5269876949992509,10,,,Wilcoxon signed-rank vs 0 across networks,0.375
+no_commissure,intact,dT_le_0,I,bias_z_celladj,-0.5149599362631884,1.5289678076330682,-0.3694248824226678,-2.7141252309608666,1.7490020856268274,10,,,Wilcoxon signed-rank vs 0 across networks,0.375
+no_commissure,intact,dT_le_0,I,n_trials_celladj,567.5,192.93709395090985,618.5,229.0,855.0,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+no_commissure,intact,dT_le_0,I,p_majority_choice,0.995521858567147,0.0013386588791368158,0.9957155009331793,0.9938837920489296,0.9970238095238095,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+no_commissure,no_shared_input_noise,dT_le_0,E,partial_r,0.01305805794261492,0.020851567744683174,0.008432271409528987,-0.009088874880913889,0.04859250026895984,10,1.0,0.0,Wilcoxon signed-rank vs 0 across networks,0.193359375
+no_commissure,no_shared_input_noise,dT_le_0,E,raw_r,0.012867267243564129,0.020713722333312035,0.009500998072326183,-0.009169870056211948,0.04862185940146446,10,,,Wilcoxon signed-rank vs 0 across networks,0.16015625
+no_commissure,no_shared_input_noise,dT_le_0,E,bias_coef,0.00047320427988018496,0.2535687778780296,0.008439869792067617,-0.4461128733819508,0.39161578962547405,10,,,Wilcoxon signed-rank vs 0 across networks,1.0
+no_commissure,no_shared_input_noise,dT_le_0,E,bias_z,-0.0035589955297807728,0.7256568271542732,0.031159086867099083,-1.3167225776475364,1.0315181953698056,10,,,Wilcoxon signed-rank vs 0 across networks,0.921875
+no_commissure,no_shared_input_noise,dT_le_0,E,bias_coef_celladj,-0.007377495984272767,0.2662795265752888,-0.011945641337501634,-0.5276430691150138,0.4074571729475698,10,,,Wilcoxon signed-rank vs 0 across networks,1.0
+no_commissure,no_shared_input_noise,dT_le_0,E,bias_z_celladj,-0.014035607447142395,0.7543618013697418,-0.04167204944130207,-1.4695553969824222,1.1449485103460237,10,,,Wilcoxon signed-rank vs 0 across networks,1.0
+no_commissure,no_shared_input_noise,dT_le_0,E,n_trials_celladj,595.4,154.2416574369223,618.5,377.0,856.0,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+no_commissure,no_shared_input_noise,dT_le_0,E,p_majority_choice,0.9950681641382702,0.0013674814728746225,0.9954624828427635,0.9933741080530072,0.9970208540218471,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+no_commissure,no_shared_input_noise,dT_le_0,I,partial_r,0.0021535522954653713,0.02166731979093228,0.00924101460483097,-0.0451401067784805,0.028054783511430058,10,0.0,1.0,Wilcoxon signed-rank vs 0 across networks,0.625
+no_commissure,no_shared_input_noise,dT_le_0,I,raw_r,0.002385938074439764,0.021612538024783134,0.009565796703100204,-0.04439660161733627,0.02816900424659252,10,,,Wilcoxon signed-rank vs 0 across networks,0.625
+no_commissure,no_shared_input_noise,dT_le_0,I,bias_coef,-0.14577268386398778,0.5031597162810552,-0.06641884094294073,-0.8517858574194452,0.5789280535256723,10,,,Wilcoxon signed-rank vs 0 across networks,0.431640625
+no_commissure,no_shared_input_noise,dT_le_0,I,bias_z,-0.3627688634563593,1.4977002686207206,-0.17837637607441223,-2.422694583988135,2.0239182113012704,10,,,Wilcoxon signed-rank vs 0 across networks,0.556640625
+no_commissure,no_shared_input_noise,dT_le_0,I,bias_coef_celladj,-0.12159896055963496,0.4987339474208082,-0.04627355936458567,-0.8445325169857847,0.60278073754244,10,,,Wilcoxon signed-rank vs 0 across networks,0.4921875
+no_commissure,no_shared_input_noise,dT_le_0,I,bias_z_celladj,-0.3013463011444834,1.4845926057678065,-0.14570655904167246,-2.3612950845043574,2.0746282582786804,10,,,Wilcoxon signed-rank vs 0 across networks,0.625
+no_commissure,no_shared_input_noise,dT_le_0,I,n_trials_celladj,595.4,154.2416574369223,618.5,377.0,856.0,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+no_commissure,no_shared_input_noise,dT_le_0,I,p_majority_choice,0.9950681641382702,0.0013674814728746225,0.9954624828427635,0.9933741080530072,0.9970208540218471,10,,,Wilcoxon signed-rank vs 0 across networks,0.001953125
+bilateral_vs_no_commissure,intact,dT_le_0,E,partial_r,0.09548176660876478,,,,,10+10,,,Mann-Whitney U (two-sided); mean = difference of group means,0.00032983852077799353
+bilateral_vs_no_commissure,intact,dT_le_0,E,bias_coef,-0.17213902466200298,,,,,10+10,,,Mann-Whitney U (two-sided); mean = difference of group means,0.4273553138978077
+bilateral_vs_no_commissure,intact,dT_le_0,E,bias_coef_celladj,-0.15599990681999135,,,,,10+10,,,Mann-Whitney U (two-sided); mean = difference of group means,0.6231762238821174
+bilateral_vs_no_commissure,intact,dT_le_0,I,partial_r,-0.08423499742339699,,,,,10+10,,,Mann-Whitney U (two-sided); mean = difference of group means,0.00018267179110955002
+bilateral_vs_no_commissure,intact,dT_le_0,I,bias_coef,0.2562723563773347,,,,,10+10,,,Mann-Whitney U (two-sided); mean = difference of group means,0.3447042220069576
+bilateral_vs_no_commissure,intact,dT_le_0,I,bias_coef_celladj,0.24295767173329486,,,,,10+10,,,Mann-Whitney U (two-sided); mean = difference of group means,0.3447042220069576
+bilateral_vs_no_commissure,intact,all_dT,E,partial_r,0.11149269784293381,,,,,10+10,,,Mann-Whitney U (two-sided); mean = difference of group means,0.00018267179110955002
+bilateral_vs_no_commissure,intact,all_dT,E,bias_coef,0.007999210345130705,,,,,10+10,,,Mann-Whitney U (two-sided); mean = difference of group means,0.8501067391385259
+bilateral_vs_no_commissure,intact,all_dT,E,bias_coef_celladj,0.003262339848061121,,,,,10+10,,,Mann-Whitney U (two-sided); mean = difference of group means,0.6775849579524755
+bilateral_vs_no_commissure,intact,all_dT,I,partial_r,-0.05468592856388889,,,,,10+10,,,Mann-Whitney U (two-sided); mean = difference of group means,0.00032983852077799353
+bilateral_vs_no_commissure,intact,all_dT,I,bias_coef,0.011018022412071485,,,,,10+10,,,Mann-Whitney U (two-sided); mean = difference of group means,0.8501067391385259
+bilateral_vs_no_commissure,intact,all_dT,I,bias_coef_celladj,0.0186494667942783,,,,,10+10,,,Mann-Whitney U (two-sided); mean = difference of group means,0.7913367801006604
+bilateral,no_shared_input_noise_minus_intact,dT_le_0,E,partial_r_change,-0.29695078488189697,0.024092023996116475,,,,10,,,paired Wilcoxon signed-rank,0.001953125
+bilateral,commissure_cut_minus_intact,dT_le_0,E,partial_r_change,-0.12140799162710687,0.03159287904606049,,,,10,,,paired Wilcoxon signed-rank,0.001953125
+no_commissure,no_shared_input_noise_minus_intact,dT_le_0,E,partial_r_change,-0.3309180092113494,0.02381640645820144,,,,10,,,paired Wilcoxon signed-rank,0.001953125
+monkey_08-20,recorded,all,all,partial_r,0.1551437616656432,,,,,,,,partial correlation of left and right SC pre-target population activity vs null,0.0107334525939177
+monkey_08-19,recorded,all,all,partial_r,0.143516536741163,,,,,,,,partial correlation of left and right SC pre-target population activity vs null,0.0912698412698412
+monkey_08-20,recorded,choice,all,bias_coef,0.6277855949189531,,,,,,,,"logistic regression z of L-R bias (beyond prev side, running side mean, reward side, gaze x, eye movements) vs circular-shift null",0.0052910052910052
+monkey_08-20,recorded,choice,all,bias_z,3.777308884224888,,,,,,,,"logistic regression z of L-R bias (beyond prev side, running side mean, reward side, gaze x, eye movements) vs circular-shift null",0.0052910052910052
+monkey_08-19,recorded,choice,all,bias_coef,0.6734057388848881,,,,,,,,"logistic regression z of L-R bias (beyond prev side, running side mean, reward side, gaze x, eye movements) vs circular-shift null",0.0263157894736842
+monkey_08-19,recorded,choice,all,bias_z,2.32342794073079,,,,,,,,"logistic regression z of L-R bias (beyond prev side, running side mean, reward side, gaze x, eye movements) vs circular-shift null",0.0263157894736842

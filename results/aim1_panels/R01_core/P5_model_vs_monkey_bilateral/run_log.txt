@@ -1,0 +1,154 @@
+final_bilat_s0: E partial r +0.491 (p 1.2e-119), bias coef -0.437 z -1.46; cell-adj -0.474 z -1.54 (n 644)
+final_bilat_s1: E partial r +0.515 (p 1.8e-137), bias coef +0.048 z +0.12; cell-adj +0.120 z +0.29 (n 611)
+final_bilat_s2: E partial r +0.423 (p 2.6e-85), bias coef +0.048 z +0.15; cell-adj +0.065 z +0.21 (n 519)
+final_bilat_s3: E partial r +0.383 (p 7.2e-72), bias coef +0.025 z +0.08; cell-adj +0.110 z +0.36 (n 370)
+final_bilat_s4: E partial r +0.407 (p 4e-82), bias coef -0.014 z -0.03; cell-adj +0.012 z +0.03 (n 394)
+final_bilat_s5: E partial r +0.473 (p 1.6e-110), bias coef -0.313 z -0.71; cell-adj -0.293 z -0.69 (n 500)
+final_bilat_s6: E partial r +0.391 (p 3.3e-75), bias coef -0.312 z -1.01; cell-adj -0.338 z -1.10 (n 780)
+final_bilat_s7: E partial r +0.448 (p 2.4e-97), bias coef -0.975 z -2.88; cell-adj -1.037 z -2.99 (n 564)
+final_bilat_s8: E partial r +0.444 (p 5e-97), bias coef +0.317 z +1.01; cell-adj +0.338 z +1.07 (n 618)
+final_bilat_s9: E partial r +0.419 (p 4e-84), bias coef +0.040 z +0.15; cell-adj +0.057 z +0.20 (n 587)
+final_nocomm_s0: E partial r +0.393 (p 1.5e-74), bias coef +0.112 z +0.31; cell-adj +0.102 z +0.28 (n 627)
+final_nocomm_s1: E partial r +0.355 (p 2e-60), bias coef +0.147 z +0.51; cell-adj +0.118 z +0.40 (n 617)
+final_nocomm_s2: E partial r +0.305 (p 6.3e-43), bias coef +0.374 z +0.94; cell-adj +0.361 z +0.90 (n 497)
+final_nocomm_s3: E partial r +0.359 (p 3e-62), bias coef +0.415 z +1.02; cell-adj +0.453 z +1.14 (n 229)
+final_nocomm_s4: E partial r +0.337 (p 1.5e-54), bias coef -0.255 z -0.64; cell-adj -0.239 z -0.60 (n 395)
+final_nocomm_s5: E partial r +0.355 (p 1.2e-59), bias coef -0.381 z -1.12; cell-adj -0.440 z -1.23 (n 741)
+final_nocomm_s6: E partial r +0.317 (p 1.3e-47), bias coef -0.029 z -0.10; cell-adj -0.031 z -0.10 (n 855)
+final_nocomm_s7: E partial r +0.373 (p 8.2e-67), bias coef -0.167 z -0.57; cell-adj -0.134 z -0.48 (n 725)
+final_nocomm_s8: E partial r +0.328 (p 2.7e-51), bias coef +0.000 z +0.00; cell-adj +0.000 z +0.00 (n 369)
+final_nocomm_s9: E partial r +0.320 (p 7.6e-48), bias coef -0.067 z -0.23; cell-adj -0.070 z -0.24 (n 620)
+                          group                           condition trial_set unit_class          statistic         mean          sd  n_sig_pos  n_sig_neg         p
+0                     bilateral                      commissure_cut   dT_le_0          E          partial_r     0.318050    0.038553       10.0        0.0  0.001953
+1                     bilateral                      commissure_cut   dT_le_0          E              raw_r     0.317615    0.038233        NaN        NaN  0.001953
+2                     bilateral                      commissure_cut   dT_le_0          E          bias_coef    -0.149210    0.686743        NaN        NaN  1.000000
+3                     bilateral                      commissure_cut   dT_le_0          E             bias_z    -0.125193    1.470570        NaN        NaN  0.845703
+4                     bilateral                      commissure_cut   dT_le_0          E  bias_coef_celladj    -0.109959    0.638577        NaN        NaN  0.845703
+5                     bilateral                      commissure_cut   dT_le_0          E     bias_z_celladj    -0.060325    1.496738        NaN        NaN  0.695312
+6                     bilateral                      commissure_cut   dT_le_0          E   n_trials_celladj   545.100000  151.019094        NaN        NaN  0.001953
+7                     bilateral                      commissure_cut   dT_le_0          E  p_majority_choice     0.992669    0.002727        NaN        NaN  0.001953
+8                     bilateral                      commissure_cut   dT_le_0          I          partial_r    -0.020043    0.020280        0.0        2.0  0.019531
+9                     bilateral                      commissure_cut   dT_le_0          I              raw_r    -0.019987    0.020108        NaN        NaN  0.019531
+10                    bilateral                      commissure_cut   dT_le_0          I          bias_coef     0.065843    0.187024        NaN        NaN  0.275391
+11                    bilateral                      commissure_cut   dT_le_0          I             bias_z     0.196754    0.613232        NaN        NaN  0.322266
+12                    bilateral                      commissure_cut   dT_le_0          I  bias_coef_celladj     0.062199    0.183626        NaN        NaN  0.375000
+13                    bilateral                      commissure_cut   dT_le_0          I     bias_z_celladj     0.183366    0.606036        NaN        NaN  0.431641
+14                    bilateral                      commissure_cut   dT_le_0          I   n_trials_celladj   545.100000  151.019094        NaN        NaN  0.001953
+15                    bilateral                      commissure_cut   dT_le_0          I  p_majority_choice     0.992669    0.002727        NaN        NaN  0.001953
+16                    bilateral                              intact    all_dT          E          partial_r     0.330072    0.043084       10.0        0.0  0.001953
+17                    bilateral                              intact    all_dT          E              raw_r     0.949970    0.009648        NaN        NaN  0.001953
+18                    bilateral                              intact    all_dT          E          bias_coef    -0.022180    0.069437        NaN        NaN  0.322266
+19                    bilateral                              intact    all_dT          E             bias_z    -0.276131    0.881692        NaN        NaN  0.322266
+20                    bilateral                              intact    all_dT          E  bias_coef_celladj    -0.028489    0.080885        NaN        NaN  0.492188
+21                    bilateral                              intact    all_dT          E     bias_z_celladj    -0.325581    0.938715        NaN        NaN  0.492188
+22                    bilateral                              intact    all_dT          E   n_trials_celladj  1755.000000  165.208286        NaN        NaN  0.001953
+23                    bilateral                              intact    all_dT          E  p_majority_choice     0.942560    0.003731        NaN        NaN  0.001953
+24                    bilateral                              intact    all_dT          I          partial_r    -0.049205    0.016976        0.0        8.0  0.001953
+25                    bilateral                              intact    all_dT          I              raw_r    -0.112418    0.244910        NaN        NaN  0.130859
+26                    bilateral                              intact    all_dT          I          bias_coef    -0.007997    0.113433        NaN        NaN  0.769531
+27                    bilateral                              intact    all_dT          I             bias_z    -0.173305    1.187751        NaN        NaN  0.769531
+28                    bilateral                              intact    all_dT          I  bias_coef_celladj    -0.003768    0.135808        NaN        NaN  0.556641
+29                    bilateral                              intact    all_dT          I     bias_z_celladj    -0.171270    1.154017        NaN        NaN  0.625000
+30                    bilateral                              intact    all_dT          I   n_trials_celladj  1755.000000  165.208286        NaN        NaN  0.001953
+31                    bilateral                              intact    all_dT          I  p_majority_choice     0.942560    0.003731        NaN        NaN  0.001953
+32                    bilateral                              intact   dT_le_0          E          partial_r     0.439458    0.043317       10.0        0.0  0.001953
+33                    bilateral                              intact   dT_le_0          E              raw_r     0.439060    0.043107        NaN        NaN  0.001953
+34                    bilateral                              intact   dT_le_0          E          bias_coef    -0.157210    0.364761        NaN        NaN  0.625000
+35                    bilateral                              intact   dT_le_0          E             bias_z    -0.458416    1.102545        NaN        NaN  0.625000
+36                    bilateral                              intact   dT_le_0          E  bias_coef_celladj    -0.143976    0.400316        NaN        NaN  0.695312
+37                    bilateral                              intact   dT_le_0          E     bias_z_celladj    -0.415539    1.187434        NaN        NaN  0.625000
+38                    bilateral                              intact   dT_le_0          E   n_trials_celladj   558.700000  120.686048        NaN        NaN  0.001953
+39                    bilateral                              intact   dT_le_0          E  p_majority_choice     0.995221    0.001477        NaN        NaN  0.001953
+40                    bilateral                              intact   dT_le_0          I          partial_r    -0.082969    0.017937        0.0        9.0  0.001953
+41                    bilateral                              intact   dT_le_0          I              raw_r    -0.082841    0.017524        NaN        NaN  0.001953
+42                    bilateral                              intact   dT_le_0          I          bias_coef     0.023863    0.217021        NaN        NaN  0.769531
+43                    bilateral                              intact   dT_le_0          I             bias_z     0.094388    0.677047        NaN        NaN  0.556641
+44                    bilateral                              intact   dT_le_0          I  bias_coef_celladj     0.028840    0.227259        NaN        NaN  0.769531
+45                    bilateral                              intact   dT_le_0          I     bias_z_celladj     0.110251    0.693089        NaN        NaN  0.695312
+46                    bilateral                              intact   dT_le_0          I   n_trials_celladj   558.700000  120.686048        NaN        NaN  0.001953
+47                    bilateral                              intact   dT_le_0          I  p_majority_choice     0.995221    0.001477        NaN        NaN  0.001953
+48                    bilateral               no_shared_input_noise   dT_le_0          E          partial_r     0.142507    0.042374       10.0        0.0  0.001953
+49                    bilateral               no_shared_input_noise   dT_le_0          E              raw_r     0.141791    0.041995        NaN        NaN  0.001953
+50                    bilateral               no_shared_input_noise   dT_le_0          E          bias_coef    -0.159770    0.335087        NaN        NaN  0.064453
+51                    bilateral               no_shared_input_noise   dT_le_0          E             bias_z    -0.423765    0.985172        NaN        NaN  0.083984
+52                    bilateral               no_shared_input_noise   dT_le_0          E  bias_coef_celladj    -0.151368    0.357816        NaN        NaN  0.130859
+53                    bilateral               no_shared_input_noise   dT_le_0          E     bias_z_celladj    -0.399306    1.036000        NaN        NaN  0.130859
+54                    bilateral               no_shared_input_noise   dT_le_0          E   n_trials_celladj   533.200000  108.054307        NaN        NaN  0.001953
+55                    bilateral               no_shared_input_noise   dT_le_0          E  p_majority_choice     0.995318    0.001642        NaN        NaN  0.001953
+56                    bilateral               no_shared_input_noise   dT_le_0          I          partial_r    -0.081202    0.013324        0.0       10.0  0.001953
+57                    bilateral               no_shared_input_noise   dT_le_0          I              raw_r    -0.081030    0.012677        NaN        NaN  0.001953
+58                    bilateral               no_shared_input_noise   dT_le_0          I          bias_coef     0.021239    0.322420        NaN        NaN  0.375000
+59                    bilateral               no_shared_input_noise   dT_le_0          I             bias_z     0.033655    0.970555        NaN        NaN  0.695312
+60                    bilateral               no_shared_input_noise   dT_le_0          I  bias_coef_celladj     0.022412    0.324798        NaN        NaN  0.375000
+61                    bilateral               no_shared_input_noise   dT_le_0          I     bias_z_celladj     0.045667    0.952301        NaN        NaN  0.625000
+62                    bilateral               no_shared_input_noise   dT_le_0          I   n_trials_celladj   533.200000  108.054307        NaN        NaN  0.001953
+63                    bilateral               no_shared_input_noise   dT_le_0          I  p_majority_choice     0.995318    0.001642        NaN        NaN  0.001953
+64                no_commissure                              intact    all_dT          E          partial_r     0.218579    0.026782       10.0        0.0  0.001953
+65                no_commissure                              intact    all_dT          E              raw_r     0.941943    0.010330        NaN        NaN  0.001953
+66                no_commissure                              intact    all_dT          E          bias_coef    -0.030179    0.095180        NaN        NaN  0.375000
+67                no_commissure                              intact    all_dT          E             bias_z    -0.348874    1.216918        NaN        NaN  0.375000
+68                no_commissure                              intact    all_dT          E  bias_coef_celladj    -0.031751    0.096244        NaN        NaN  0.193359
+69                no_commissure                              intact    all_dT          E     bias_z_celladj    -0.345080    1.122891        NaN        NaN  0.193359
+70                no_commissure                              intact    all_dT          E   n_trials_celladj  1799.900000  235.647783        NaN        NaN  0.001953
+71                no_commissure                              intact    all_dT          E  p_majority_choice     0.943192    0.003570        NaN        NaN  0.001953
+72                no_commissure                              intact    all_dT          I          partial_r     0.005481    0.020624        1.0        0.0  0.492188
+73                no_commissure                              intact    all_dT          I              raw_r    -0.130882    0.253498        NaN        NaN  0.193359
+74                no_commissure                              intact    all_dT          I          bias_coef    -0.019015    0.084710        NaN        NaN  0.556641
+75                no_commissure                              intact    all_dT          I             bias_z    -0.154217    0.868224        NaN        NaN  0.556641
+76                no_commissure                              intact    all_dT          I  bias_coef_celladj    -0.022418    0.133735        NaN        NaN  0.695312
+77                no_commissure                              intact    all_dT          I     bias_z_celladj    -0.172703    1.223161        NaN        NaN  0.625000
+78                no_commissure                              intact    all_dT          I   n_trials_celladj  1799.900000  235.647783        NaN        NaN  0.001953
+79                no_commissure                              intact    all_dT          I  p_majority_choice     0.943192    0.003570        NaN        NaN  0.001953
+80                no_commissure                              intact   dT_le_0          E          partial_r     0.343976    0.027529       10.0        0.0  0.001953
+81                no_commissure                              intact   dT_le_0          E              raw_r     0.343871    0.027742        NaN        NaN  0.001953
+82                no_commissure                              intact   dT_le_0          E          bias_coef     0.014929    0.255511        NaN        NaN  1.000000
+83                no_commissure                              intact   dT_le_0          E             bias_z     0.012841    0.694290        NaN        NaN  1.000000
+84                no_commissure                              intact   dT_le_0          E  bias_coef_celladj     0.012024    0.265236        NaN        NaN  1.000000
+85                no_commissure                              intact   dT_le_0          E     bias_z_celladj     0.008178    0.710086        NaN        NaN  1.000000
+86                no_commissure                              intact   dT_le_0          E   n_trials_celladj   567.500000  192.937094        NaN        NaN  0.001953
+87                no_commissure                              intact   dT_le_0          E  p_majority_choice     0.995522    0.001339        NaN        NaN  0.001953
+88                no_commissure                              intact   dT_le_0          I          partial_r     0.001266    0.023549        0.0        0.0  1.000000
+89                no_commissure                              intact   dT_le_0          I              raw_r     0.001499    0.023426        NaN        NaN  0.921875
+90                no_commissure                              intact   dT_le_0          I          bias_coef    -0.232409    0.558806        NaN        NaN  0.322266
+91                no_commissure                              intact   dT_le_0          I             bias_z    -0.572246    1.541479        NaN        NaN  0.275391
+92                no_commissure                              intact   dT_le_0          I  bias_coef_celladj    -0.214118    0.563136        NaN        NaN  0.375000
+93                no_commissure                              intact   dT_le_0          I     bias_z_celladj    -0.514960    1.528968        NaN        NaN  0.375000
+94                no_commissure                              intact   dT_le_0          I   n_trials_celladj   567.500000  192.937094        NaN        NaN  0.001953
+95                no_commissure                              intact   dT_le_0          I  p_majority_choice     0.995522    0.001339        NaN        NaN  0.001953
+96                no_commissure               no_shared_input_noise   dT_le_0          E          partial_r     0.013058    0.020852        1.0        0.0  0.193359
+97                no_commissure               no_shared_input_noise   dT_le_0          E              raw_r     0.012867    0.020714        NaN        NaN  0.160156
+98                no_commissure               no_shared_input_noise   dT_le_0          E          bias_coef     0.000473    0.253569        NaN        NaN  1.000000
+99                no_commissure               no_shared_input_noise   dT_le_0          E             bias_z    -0.003559    0.725657        NaN        NaN  0.921875
+100               no_commissure               no_shared_input_noise   dT_le_0          E  bias_coef_celladj    -0.007377    0.266280        NaN        NaN  1.000000
+101               no_commissure               no_shared_input_noise   dT_le_0          E     bias_z_celladj    -0.014036    0.754362        NaN        NaN  1.000000
+102               no_commissure               no_shared_input_noise   dT_le_0          E   n_trials_celladj   595.400000  154.241657        NaN        NaN  0.001953
+103               no_commissure               no_shared_input_noise   dT_le_0          E  p_majority_choice     0.995068    0.001367        NaN        NaN  0.001953
+104               no_commissure               no_shared_input_noise   dT_le_0          I          partial_r     0.002154    0.021667        0.0        1.0  0.625000
+105               no_commissure               no_shared_input_noise   dT_le_0          I              raw_r     0.002386    0.021613        NaN        NaN  0.625000
+106               no_commissure               no_shared_input_noise   dT_le_0          I          bias_coef    -0.145773    0.503160        NaN        NaN  0.431641
+107               no_commissure               no_shared_input_noise   dT_le_0          I             bias_z    -0.362769    1.497700        NaN        NaN  0.556641
+108               no_commissure               no_shared_input_noise   dT_le_0          I  bias_coef_celladj    -0.121599    0.498734        NaN        NaN  0.492188
+109               no_commissure               no_shared_input_noise   dT_le_0          I     bias_z_celladj    -0.301346    1.484593        NaN        NaN  0.625000
+110               no_commissure               no_shared_input_noise   dT_le_0          I   n_trials_celladj   595.400000  154.241657        NaN        NaN  0.001953
+111               no_commissure               no_shared_input_noise   dT_le_0          I  p_majority_choice     0.995068    0.001367        NaN        NaN  0.001953
+112  bilateral_vs_no_commissure                              intact   dT_le_0          E          partial_r     0.095482         NaN        NaN        NaN  0.000330
+113  bilateral_vs_no_commissure                              intact   dT_le_0          E          bias_coef    -0.172139         NaN        NaN        NaN  0.427355
+114  bilateral_vs_no_commissure                              intact   dT_le_0          E  bias_coef_celladj    -0.156000         NaN        NaN        NaN  0.623176
+115  bilateral_vs_no_commissure                              intact   dT_le_0          I          partial_r    -0.084235         NaN        NaN        NaN  0.000183
+116  bilateral_vs_no_commissure                              intact   dT_le_0          I          bias_coef     0.256272         NaN        NaN        NaN  0.344704
+117  bilateral_vs_no_commissure                              intact   dT_le_0          I  bias_coef_celladj     0.242958         NaN        NaN        NaN  0.344704
+118  bilateral_vs_no_commissure                              intact    all_dT          E          partial_r     0.111493         NaN        NaN        NaN  0.000183
+119  bilateral_vs_no_commissure                              intact    all_dT          E          bias_coef     0.007999         NaN        NaN        NaN  0.850107
+120  bilateral_vs_no_commissure                              intact    all_dT          E  bias_coef_celladj     0.003262         NaN        NaN        NaN  0.677585
+121  bilateral_vs_no_commissure                              intact    all_dT          I          partial_r    -0.054686         NaN        NaN        NaN  0.000330
+122  bilateral_vs_no_commissure                              intact    all_dT          I          bias_coef     0.011018         NaN        NaN        NaN  0.850107
+123  bilateral_vs_no_commissure                              intact    all_dT          I  bias_coef_celladj     0.018649         NaN        NaN        NaN  0.791337
+124                   bilateral  no_shared_input_noise_minus_intact   dT_le_0          E   partial_r_change    -0.296951    0.024092        NaN        NaN  0.001953
+125                   bilateral         commissure_cut_minus_intact   dT_le_0          E   partial_r_change    -0.121408    0.031593        NaN        NaN  0.001953
+126               no_commissure  no_shared_input_noise_minus_intact   dT_le_0          E   partial_r_change    -0.330918    0.023816        NaN        NaN  0.001953
+127                monkey_08-20                            recorded       all        all          partial_r     0.155144         NaN        NaN        NaN  0.010733
+128                monkey_08-19                            recorded       all        all          partial_r     0.143517         NaN        NaN        NaN  0.091270
+129                monkey_08-20                            recorded    choice        all          bias_coef     0.627786         NaN        NaN        NaN  0.005291
+130                monkey_08-20                            recorded    choice        all             bias_z     3.777309         NaN        NaN        NaN  0.005291
+131                monkey_08-19                            recorded    choice        all          bias_coef     0.673406         NaN        NaN        NaN  0.026316
+132                monkey_08-19                            recorded    choice        all             bias_z     2.323428         NaN        NaN        NaN  0.026316
