@@ -27,3 +27,7 @@ interneurons; the monkey's are activated by ipsilateral targets at the same late
 relay delay; B8). Their ipsilateral drive therefore comes from input outside the local SC circuit, consistent with
 SC receiving bilateral, externally computed signals (hub). Caveats: different tasks (model: Conflict Task; monkey:
 4factors single targets); the I/E mapping assumes putative interneurons correspond to model I units.
+
+Per-network pooled I-unit values (commissural + local, 40 I units per network) from `conflict-task-RNN/results/
+final_bilat_s*/probe.json`: ipsilateral 3.0% (95% CI 1.6-4.4 across 10 networks; range 0-5%), contralateral 54%;
+with cross-midline E -> I: ipsilateral 11.5% (6.8-16.2, n = 5).

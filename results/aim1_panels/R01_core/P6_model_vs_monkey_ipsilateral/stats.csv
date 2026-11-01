@@ -6,3 +6,6 @@ model I units activated by ipsilateral target (trained),0.02-0.04,,,10 networks,
 model I units activated by ipsilateral target (+ cross-midline E->I),0.07-0.16,,,5 networks,probe_commEI_tables.md
 model I units activated by contralateral target,0.45-0.62,,,10 networks,probe_main_tables.md
 model E units activated by ipsilateral target,0.00,,,10 networks,probe_main_tables.md
+model I units activated by ipsilateral target (trained; commissural + local pooled per network),0.030,0.016,0.044,10 networks (40 I units each; range 0-0.05),conflict-task-RNN results/final_bilat_s*/probe.json (t CI across networks)
+model I units activated by ipsilateral target (+ cross-midline E->I; pooled),0.115,0.068,0.162,5 networks (range 0.075-0.15),results/final_commEI_s*/probe.json
+model I units activated by contralateral target (trained; pooled),0.538,,,10 networks,results/final_bilat_s*/probe.json
