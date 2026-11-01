@@ -33,3 +33,7 @@ Feynman: 79 putative interneurons (I), 40 classic SC (E). Newton: 111 I, 63 E.
    reproduce the probability effect (as in the context report).
 5. Caveat: RNN observation noise is Poisson, while recorded variability is super-Poisson, so the RNN percent
    significant is if anything inflated; shortfalls (location, identity, salience) are not a noise artifact.
+
+Figure: `scatter_recorded_vs_rnn_roc_grid_v13_free_free.{png,pdf}` (from `scripts/plot_selectivity_by_type.py`, which
+still writes here) was moved on 2026-11-01 to `results/aim1_panels/B11_rnn_selectivity_scatter/`, with per-unit CSVs
+and a standalone `plot_B11.py`.

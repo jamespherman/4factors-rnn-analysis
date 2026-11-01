@@ -1,0 +1,7 @@
+unit_type,target_location,angle_from_P_deg,n_suppressed,n_units,pct_suppressed,ci95_lo_pct,ci95_hi_pct
+E,contra_neighbour_90deg,90,2,72,2.7778,0.7651,9.5742
+E,ipsi_neighbour_90deg,90,2,72,2.7778,0.7651,9.5742
+E,opposite_180deg,180,9,72,12.5,6.7178,22.081
+I,contra_neighbour_90deg,90,30,154,19.481,14,26.446
+I,ipsi_neighbour_90deg,90,30,154,19.481,14,26.446
+I,opposite_180deg,180,51,154,33.117,26.174,40.881

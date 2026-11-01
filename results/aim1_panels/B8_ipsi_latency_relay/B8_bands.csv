@@ -1,0 +1,4 @@
+band,low_ms,high_ms,source
+commissural_relay_prediction,10.000,27.000,"bilateral S1 planted-relay simulation, rise estimator, activation (Newton_SC_2026 NOTE_2026-10-31_intercollicular_for_4factors.md)"
+planted_synaptic_delay,2.000,10.000,"same simulation: true delays planted (2, 5, 10 ms)"
+excess_median_CI_unit_bootstrap,-2.233,7.078,"median 3.70 ms; 10000 unit-level cluster bootstrap resamples (41 units), seed 0"

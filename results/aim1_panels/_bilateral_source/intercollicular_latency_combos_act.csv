@@ -1,0 +1,5 @@
+session,hemi,xSide,ySide,nTrials,x_rise_s,x_dep_s,y_rise_s,y_dep_s
+Newton_08192026,1,left,right,89,-0.0935,-0.5775,-0.0705,-0.4895
+Newton_08192026,-1,right,left,95,-0.0585,-0.5905,-0.1245,-0.2115
+Newton_08202026,1,left,right,148,-0.0435,-0.0695,-0.0165,-0.0175
+Newton_08202026,-1,right,left,153,-0.0275,-0.0205,-0.0335,-0.0515

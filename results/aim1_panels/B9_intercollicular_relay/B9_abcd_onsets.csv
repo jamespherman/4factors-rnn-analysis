@@ -1,0 +1,9 @@
+session,target_side,x_side,y_side,y_response,n_trials,combo_label,x_rise_onset_ms,y_rise_onset_ms,delta_rise_ms,x_departure_onset_ms,y_departure_onset_ms,relay_pred_rise_onset_lo_ms,relay_pred_rise_onset_hi_ms
+08-19,right,left,right,act,89,"08192026, target right: X = left SC (39 units), Y = right SC (8 units)",-93.5,-70.5,23.000000000000007,-577.5,-489.5,-83.26,-66.1575
+08-19,left,right,left,act,95,"08192026, target left: X = right SC (38 units), Y = left SC (2 units)",-58.5,-124.5,-66.0,-590.5,-211.5,-48.26,-31.157500000000002
+08-20,right,left,right,act,148,"08202026, target right: X = left SC (19 units), Y = right SC (3 units)",-43.5,-16.5,26.999999999999996,-69.5,-17.5,-33.26,-16.157500000000002
+08-20,left,right,left,act,153,"08202026, target left: X = right SC (27 units), Y = left SC (3 units)",-27.5,-33.5,-6.000000000000002,-20.5,-51.5,-17.259999999999998,-0.15750000000000242
+08-19,right,left,right,supp,89,"08192026, target right: X = left SC (39 units), Y = right SC (5 units)",-93.5,-57.5,36.0,-577.5,,-83.26,-66.1575
+08-19,left,right,left,supp,95,"08192026, target left: X = right SC (38 units), Y = left SC (3 units)",-58.5,-362.5,-304.0,-590.5,-256.5,-48.26,-31.157500000000002
+08-20,right,left,right,supp,148,"08202026, target right: X = left SC (19 units), Y = right SC (2 units)",-43.5,-53.5,-10.000000000000002,-69.5,-41.5,-33.26,-16.157500000000002
+08-20,left,right,left,supp,153,"08202026, target left: X = right SC (27 units), Y = left SC (1 units)",-27.5,-553.5,-526.0,-20.5,-522.5,-17.259999999999998,-0.15750000000000242

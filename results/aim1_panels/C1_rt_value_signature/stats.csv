@@ -1,0 +1,60 @@
+statistic,value,n,test,source,note
+recorded S9 08-20 (belief value),-0.20921154189347677,301,Spearman; p two-sided,results/hub_models/belief/08-20_trials_with_belief.csv (filter as scripts/srs_belief_fit.py),p = 0.00026
+"recorded S9 08-20 95% CI (bootstrap percentile, 10000 resamples)","[-0.319, -0.094]",301,bootstrap over trials,same,
+"recorded S9 08-20 95% CI (Fisher z, SE sqrt(1.06/(n-3)))","[-0.318, -0.095]",301,Fieller-Hartley-Pearson,same,
+recorded S9 08-20 with block-mean value (drift control),0.05365791831489935,301,Spearman,same,"p = 0.35; bootstrap CI [-0.061, 0.168]"
+recorded S9 08-19 (belief value),0.026497912249000083,184,Spearman; p two-sided,results/hub_models/belief/08-19_trials_with_belief.csv (filter as scripts/srs_belief_fit.py),p = 0.72
+"recorded S9 08-19 95% CI (bootstrap percentile, 10000 resamples)","[-0.124, 0.180]",184,bootstrap over trials,same,
+"recorded S9 08-19 95% CI (Fisher z, SE sqrt(1.06/(n-3)))","[-0.123, 0.175]",184,Fieller-Hartley-Pearson,same,
+recorded S9 08-19 with block-mean value (drift control),-0.07162213442256343,184,Spearman,same,"p = 0.33; bootstrap CI [-0.220, 0.082]"
+recorded S9 08-20 partial on trial order (drift control),-0.17860004237361046,301,partial Spearman,same,p = 0.0019
+08-20 RT vs trial order,-0.11196008140125831,301,Spearman,same,p = 0.052
+08-20 mean single-target RT (ms),221.13410852715944,301,mean,same,median 217.2
+"S9 trained A median [min, max], w = 1, offset 0","-0.235 [-0.375, -0.159]",6,per-network mean of 2 seeds,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",
+"S9 trained AE median [min, max], w = 1, offset 0","-0.220 [-0.353, -0.176]",6,per-network mean of 2 seeds,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",
+"S9 trained B median [min, max], w = 1, offset 0","-0.175 [-0.445, -0.101]",6,per-network mean of 2 seeds,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",
+"S9 trained C median [min, max], w = 1, offset 0","-0.040 [-0.043, -0.011]",3,per-network mean of 2 seeds,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",
+"S9 hand_A, w = 1",-0.8634224228640794,2,mean of 2 seeds,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",
+"S9 hand_B, w = 1",-0.7855435815139138,2,mean of 2 seeds,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",
+"S9 hand_C, w = 1",0.00336629367231245,2,mean of 2 seeds,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",
+"S9 hand-built A, CALIBRATED engagement (stage0; A,B w 0.3, C w 0.1)",-0.319 +- 0.042,20,mean +- SD over draws,results/hub_models/stage0/draws.csv,these are the write-up hand-built values (-0.32 / +0.02); not full engagement
+"S9 hand-built B, CALIBRATED engagement (stage0; A,B w 0.3, C w 0.1)",-0.321 +- 0.046,20,mean +- SD over draws,results/hub_models/stage0/draws.csv,these are the write-up hand-built values (-0.32 / +0.02); not full engagement
+"S9 hand-built C, CALIBRATED engagement (stage0; A,B w 0.3, C w 0.1)",+0.018 +- 0.052,20,mean +- SD over draws,results/hub_models/stage0/draws.csv,these are the write-up hand-built values (-0.32 / +0.02); not full engagement
+B vs C S9 rank-sum,0.023809523809523808,6 vs 3,Mann-Whitney U exact two-sided,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",U = 0.0
+resolvers (A+AE) vs C S9 rank-sum,0.004395604395604396,12 vs 3,Mann-Whitney U exact two-sided,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",U = 0.0
+resolvers (A+AE) vs B S9 rank-sum,0.24962292609351436,12 vs 6,Mann-Whitney U exact two-sided,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",U = 23.0
+"08-20 gap to most negative C network, offset 0, in SE (SE = 1/sqrt(n-3))",2.873264449680345,301,z distance,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",most negative C at offset 0 = -0.043
+"08-20 gap to most negative C network over all offsets, in SE",2.2034726419750688,301,z distance,results/hub_models/rt_shift_pilot/runs.csv,most negative C over offsets = -0.082
+B S9 range over all offsets 0-0.5,"[-0.503, -0.094]",6,per-network seed means,results/hub_models/rt_shift_pilot/runs.csv,
+"B RT slowing at offset 0.5 (ms), range over networks","[20.3, 24.9]",6,median RT difference,results/hub_models/rt_shift_pilot/runs.csv,
+B max |delta S9| over offsets,0.057252210622173505,6,per-network,results/hub_models/rt_shift_pilot/runs.csv,network B_s1
+C S9 range over all offsets 0-0.5,"[-0.082, -0.006]",3,per-network seed means,results/hub_models/rt_shift_pilot/runs.csv,
+"C RT slowing at offset 0.5 (ms), range over networks","[22.5, 35.9]",3,median RT difference,results/hub_models/rt_shift_pilot/runs.csv,
+C max |delta S9| over offsets,0.041562699463000896,3,per-network,results/hub_models/rt_shift_pilot/runs.csv,network C_s5
+"B upstream (disinhibition) vs value rho, single-target, median over networks",0.377038996534643,6,Spearman,rt_shift_pilot/runs.csv,
+"C upstream (disinhibition) vs value rho, single-target, median over networks",-0.1418009631073695,3,Spearman,rt_shift_pilot/runs.csv,
+"agreement check: per-network S9 (both fields) vs bicuculline ctrl rho_inj (right field, 3 seeds), Spearman",0.8730434782608695,24,Spearman across networks,results/hub_models/bicuculline/per_network.csv,rho_inj = same statistic restricted to targets in the right field; median |difference| 0.039
+"representative A network (A_s2) S9, recorded_08-20 trials only",-0.04568592145546272,640,Spearman,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",p = 0.25; 2 seeds pooled
+"representative A network (A_s2) S9, synthetic trials only",-0.30115801171703455,1595,Spearman,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",p = 8.5e-35; 2 seeds pooled
+"representative B network (B_s0) S9, recorded_08-20 trials only",0.09351995802530118,640,Spearman,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",p = 0.018; 2 seeds pooled
+"representative B network (B_s0) S9, synthetic trials only",-0.19941730997843432,1595,Spearman,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",p = 9.1e-16; 2 seeds pooled
+"representative C network (C_s5) S9, recorded_08-20 trials only",0.012391602035463679,640,Spearman,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",p = 0.75; 2 seeds pooled
+"representative C network (C_s5) S9, synthetic trials only",-0.04921553851717325,1598,Spearman,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",p = 0.049; 2 seeds pooled
+"S9 trained A on the recorded 08-20 value sequence only, median [min, max]","-0.017 [-0.103, +0.042]",6,per-network mean of 2 seeds (~320 single-target trials per seed),"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",
+"S9 trained A on synthetic sessions only, median [min, max]","-0.277 [-0.429, -0.194]",6,per-network mean of 2 seeds,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",
+"S9 trained AE on the recorded 08-20 value sequence only, median [min, max]","-0.051 [-0.093, +0.004]",6,per-network mean of 2 seeds (~320 single-target trials per seed),"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",
+"S9 trained AE on synthetic sessions only, median [min, max]","-0.256 [-0.419, -0.201]",6,per-network mean of 2 seeds,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",
+"S9 trained B on the recorded 08-20 value sequence only, median [min, max]","-0.024 [-0.146, +0.095]",6,per-network mean of 2 seeds (~320 single-target trials per seed),"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",
+"S9 trained B on synthetic sessions only, median [min, max]","-0.219 [-0.503, -0.145]",6,per-network mean of 2 seeds,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",
+"S9 trained C on the recorded 08-20 value sequence only, median [min, max]","+0.011 [-0.037, +0.014]",3,per-network mean of 2 seeds (~320 single-target trials per seed),"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",
+"S9 trained C on synthetic sessions only, median [min, max]","-0.041 [-0.048, -0.015]",3,per-network mean of 2 seeds,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",
+S9 hand_A on the recorded 08-20 value sequence only,-0.4615272721911262,2,mean of 2 seeds,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",
+S9 hand_B on the recorded 08-20 value sequence only,-0.48194269672687834,2,mean of 2 seeds,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",
+S9 hand_C on the recorded 08-20 value sequence only,0.04643265942781665,2,mean of 2 seeds,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)",
+"08-20 within-block RT difference rich - lean identity (ms), mean over 8 blocks",0.18066126859091014,301,bootstrap over trials within block (2000),belief csv,"95% CI [-10.2, +10.3] ms; positive = rich SLOWER; a value effect predicts negative"
+08-20 log RT ~ belief + block fixed effects: belief coefficient (per ms),-0.0013442829651131385,301,OLS,belief csv,p = 0.33
+08-20 belief vs trial order,0.4664934178008673,301,Spearman,belief csv,p = 1.1e-17
+"08-20 within-block RT difference rich - poor identity (% of block mean RT), mean over blocks",0.06734829422977051,8,Wilcoxon signed-rank over blocks,belief csv,p = 1; per block: -2.1 -3.3 -2.0 -5.0 +3.5 +10.1 -7.4 +6.6
+"08-20 belief range (shown identity, single-target)","[143, 197] ms, SD 11.7",301,range,belief csv,delta rule alpha 0.01 (fit at bound)
+08-20 block-mean value range (shown identity),"[64, 286] ms, SD 78.6",301,range,belief csv,
+model synthetic-session value range (shown identity),"[62, 286] ms, SD 49.5",33473,range,"scripts/aim1_panels/build_C1.py simulation (= srs_rt_shift_pilot.py code, offset 0, seeds 0-1)","srs.task.make_session: k 1.5, delta-rule alpha 0.1"

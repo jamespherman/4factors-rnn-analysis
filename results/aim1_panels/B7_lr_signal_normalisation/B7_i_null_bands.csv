@@ -1,0 +1,5 @@
+session,level,alpha_two_sided,n_trials,choice_z_crit,reward_t_crit,note
+08-20,uncorrected 95% (two-sided),0.05,227,1.9599639845400545,1.9707073953190282,"choice: z = sign(added CP - 0.5) x sqrt(LR chi2, 1 df); reward: OLS t, df = n - 5"
+08-20,Bonferroni over 11 windows (two-sided 0.05),0.004545454545454546,227,2.8375969129437935,2.866797838119819,"choice: z = sign(added CP - 0.5) x sqrt(LR chi2, 1 df); reward: OLS t, df = n - 5"
+08-19,uncorrected 95% (two-sided),0.05,76,1.9599639845400545,1.9939433678456258,"choice: z = sign(added CP - 0.5) x sqrt(LR chi2, 1 df); reward: OLS t, df = n - 5"
+08-19,Bonferroni over 11 windows (two-sided 0.05),0.004545454545454546,76,2.8375969129437935,2.9307749670177143,"choice: z = sign(added CP - 0.5) x sqrt(LR chi2, 1 df); reward: OLS t, df = n - 5"

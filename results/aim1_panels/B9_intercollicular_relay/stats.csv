@@ -1,0 +1,18 @@
+statistic,value,ci_lo,ci_hi,p,n,test,window,unit_class,session,note
+"S1 planted relay (activation), rise-estimator read-out Delta range, ms",,10.24,27.342499999999998,,9,simulation (peer tests/test_onset_estimators.m; 100 sims per cell),saccade-aligned,Y activation units,08-19 + 08-20,true synaptic delays 2-10 ms + 5-ms kernel; linear/saturating/threshold transfer
+"Delta rise onset Y - X (activation), mean over 4 session x direction combinations, ms",-5.5000000000000115,-8.375000000000007,18.249999999999996,,4,"trial bootstrap (joint X, Y), 95% CI",saccade-aligned; baseline 200 ms before target,Y activation units (16) vs all X units,08-19 + 08-20,"Bonferroni (2 signs) upper bound +20.2 ms; pre-stated result ""not resolved"""
+"z of real Delta vs S1 relay cells (activation, rise), range",,-12.529487215220358,-2.5188307314408536,,9,post hoc z = (Delta - mean_relay) / sd_relay,saccade-aligned,Y activation,08-19 + 08-20,negative = earlier than simulated relay
+"Delta rise onset (activation), 08-19 target right",23.000000000000007,,,,89,"rise estimator, point estimate",saccade-aligned,Y activation,08-19,
+"Delta rise onset (activation), 08-19 target left",-66.0,,,,95,"rise estimator, point estimate",saccade-aligned,Y activation,08-19,
+"Delta rise onset (activation), 08-20 target right",26.999999999999996,,,,148,"rise estimator, point estimate",saccade-aligned,Y activation,08-20,
+"Delta rise onset (activation), 08-20 target left",-6.000000000000002,,,,153,"rise estimator, point estimate",saccade-aligned,Y activation,08-20,
+"Delta rise onset Y - X (suppression), mean over 4 session x direction combinations, ms",-201.0,-175.00000000000003,27.625,,4,"trial bootstrap (joint X, Y), 95% CI",saccade-aligned; baseline 200 ms before target,Y suppression units (11) vs all X units,08-19 + 08-20,"Bonferroni (2 signs) upper bound +32.3 ms; pre-stated result ""not resolved"""
+"z of real Delta vs S1 relay cells (suppression, rise), range",,-15.791117177417643,-13.691388393652463,,9,post hoc z = (Delta - mean_relay) / sd_relay,saccade-aligned,Y suppression,08-19 + 08-20,negative = earlier than simulated relay
+"Delta rise onset (suppression), 08-19 target right",36.0,,,,89,"rise estimator, point estimate",saccade-aligned,Y suppression,08-19,
+"Delta rise onset (suppression), 08-19 target left",-304.0,,,,95,"rise estimator, point estimate",saccade-aligned,Y suppression,08-19,
+"Delta rise onset (suppression), 08-20 target right",-10.000000000000002,,,,148,"rise estimator, point estimate",saccade-aligned,Y suppression,08-20,
+"Delta rise onset (suppression), 08-20 target left",-526.0,,,,153,"rise estimator, point estimate",saccade-aligned,Y suppression,08-20,
+08-20 fixation L->R band (2-8 ms) modulation (band fit),-0.0012350724438026,-0.0119104993338264,,,473,interval jitter + spill-corrected band fit; 95% CI lower bound in ci_lo,fixation,all cross-midline pairs,08-20,08-20 fixation is the primary bound window (X nearly silent: not perisaccadic)
+"q-bar upper bound (L->R, 08-20 fixation)",,0.0216534426177132,0.0295506762425571,,473,-lower95 / recovery (0.40-0.55),fixation,all cross-midline pairs,08-20,
+converging X neurons below which a relay is excluded,,169.2008656234845,461.82032929118094,,473,"N = (r N) / r_bound, r N = 5-10",fixation bound,all pairs,08-20,"write-up ""~170-500""; assumes every recorded X neuron projects (f = 1), while the 0.40-0.55 recovery was measured at f <= 0.2 (~0.15 at f = 1, which would loosen the bound ~3x)"
+max |z| over Y groups x windows (X->Y band and zero band),1.76659395978931,,,,8,band fit z,"fixation, pre-saccade",4 Y groups,08-19 + 08-20 pooled,peer note: all |z| <= 1.8

@@ -1,0 +1,13 @@
+monkey,measure,reward_cue,loc_class,null_change,null_name
+Feynman,rt_pct,high,expected,-3.7059,no-interaction (additive) null: low-reward cell + additive reward effect
+Feynman,rt_pct,high,neighbour_90deg,-6.0258,no-interaction (additive) null: low-reward cell + additive reward effect
+Feynman,rt_pct,high,opposite_180deg,-11.4043,no-interaction (additive) null: low-reward cell + additive reward effect
+Feynman,pv_deg_s,high,expected,11.1681,no-interaction (additive) null: low-reward cell + additive reward effect
+Feynman,pv_deg_s,high,neighbour_90deg,29.1317,no-interaction (additive) null: low-reward cell + additive reward effect
+Feynman,pv_deg_s,high,opposite_180deg,26.5456,no-interaction (additive) null: low-reward cell + additive reward effect
+Newton,rt_pct,high,expected,2.2089,no-interaction (additive) null: low-reward cell + additive reward effect
+Newton,rt_pct,high,neighbour_90deg,-1.9833,no-interaction (additive) null: low-reward cell + additive reward effect
+Newton,rt_pct,high,opposite_180deg,4.0345,no-interaction (additive) null: low-reward cell + additive reward effect
+Newton,pv_deg_s,high,expected,-6.0071,no-interaction (additive) null: low-reward cell + additive reward effect
+Newton,pv_deg_s,high,neighbour_90deg,153.0106,no-interaction (additive) null: low-reward cell + additive reward effect
+Newton,pv_deg_s,high,opposite_180deg,4.5844,no-interaction (additive) null: low-reward cell + additive reward effect

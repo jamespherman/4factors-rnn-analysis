@@ -1,0 +1,865 @@
+net,arch,handbuilt,cond,manipulation,dose_d,source_column,value,measure
+A_s0,A,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+A_s0,A,False,full05,bicuculline (full),0.05,db0,0.080113710849957,delta_logit_bias_toward_injected_value_controlled
+A_s0,A,False,full10,bicuculline (full),0.1,db0,0.7514283370003088,delta_logit_bias_toward_injected_value_controlled
+A_s0,A,False,full20,bicuculline (full),0.2,db0,2.0894874879513448,delta_logit_bias_toward_injected_value_controlled
+A_s0,A,False,full35,bicuculline (full),0.35,db0,4.042884161832318,delta_logit_bias_toward_injected_value_controlled
+A_s0,A,False,musc50,muscimol,0.5,db0,-17.390542822217114,delta_logit_bias_toward_injected_value_controlled
+A_s1,A,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+A_s1,A,False,full05,bicuculline (full),0.05,db0,0.9050323626094672,delta_logit_bias_toward_injected_value_controlled
+A_s1,A,False,full10,bicuculline (full),0.1,db0,1.7033171554918145,delta_logit_bias_toward_injected_value_controlled
+A_s1,A,False,full20,bicuculline (full),0.2,db0,0.1490229036944743,delta_logit_bias_toward_injected_value_controlled
+A_s1,A,False,full35,bicuculline (full),0.35,db0,,delta_logit_bias_toward_injected_value_controlled
+A_s1,A,False,musc50,muscimol,0.5,db0,-6.0096945168613045,delta_logit_bias_toward_injected_value_controlled
+A_s2,A,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+A_s2,A,False,full05,bicuculline (full),0.05,db0,0.3289148621118098,delta_logit_bias_toward_injected_value_controlled
+A_s2,A,False,full10,bicuculline (full),0.1,db0,1.488765279152457,delta_logit_bias_toward_injected_value_controlled
+A_s2,A,False,full20,bicuculline (full),0.2,db0,8.37644426238711,delta_logit_bias_toward_injected_value_controlled
+A_s2,A,False,full35,bicuculline (full),0.35,db0,,delta_logit_bias_toward_injected_value_controlled
+A_s2,A,False,musc50,muscimol,0.5,db0,-9.06758616781548,delta_logit_bias_toward_injected_value_controlled
+A_s3,A,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+A_s3,A,False,full05,bicuculline (full),0.05,db0,0.0738719210863849,delta_logit_bias_toward_injected_value_controlled
+A_s3,A,False,full10,bicuculline (full),0.1,db0,-0.3227737954256722,delta_logit_bias_toward_injected_value_controlled
+A_s3,A,False,full20,bicuculline (full),0.2,db0,0.9093068356117848,delta_logit_bias_toward_injected_value_controlled
+A_s3,A,False,full35,bicuculline (full),0.35,db0,5.96428784329994,delta_logit_bias_toward_injected_value_controlled
+A_s3,A,False,musc50,muscimol,0.5,db0,-37.214250224762125,delta_logit_bias_toward_injected_value_controlled
+A_s4,A,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+A_s4,A,False,full05,bicuculline (full),0.05,db0,0.5675079593114023,delta_logit_bias_toward_injected_value_controlled
+A_s4,A,False,full10,bicuculline (full),0.1,db0,1.2774172564626745,delta_logit_bias_toward_injected_value_controlled
+A_s4,A,False,full20,bicuculline (full),0.2,db0,2.9477163889692344,delta_logit_bias_toward_injected_value_controlled
+A_s4,A,False,full35,bicuculline (full),0.35,db0,4.233726267088557,delta_logit_bias_toward_injected_value_controlled
+A_s4,A,False,musc50,muscimol,0.5,db0,-12.385126131694868,delta_logit_bias_toward_injected_value_controlled
+A_s5,A,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+A_s5,A,False,full05,bicuculline (full),0.05,db0,-1.778861273911556,delta_logit_bias_toward_injected_value_controlled
+A_s5,A,False,full10,bicuculline (full),0.1,db0,-1.8814939834588449,delta_logit_bias_toward_injected_value_controlled
+A_s5,A,False,full20,bicuculline (full),0.2,db0,-2.31790913418529,delta_logit_bias_toward_injected_value_controlled
+A_s5,A,False,full35,bicuculline (full),0.35,db0,2.57302034993718,delta_logit_bias_toward_injected_value_controlled
+A_s5,A,False,musc50,muscimol,0.5,db0,-40.31435884327494,delta_logit_bias_toward_injected_value_controlled
+AE_s0,AE,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+AE_s0,AE,False,full05,bicuculline (full),0.05,db0,0.7106411101797776,delta_logit_bias_toward_injected_value_controlled
+AE_s0,AE,False,full10,bicuculline (full),0.1,db0,1.2414932153742393,delta_logit_bias_toward_injected_value_controlled
+AE_s0,AE,False,full20,bicuculline (full),0.2,db0,2.1503698484606337,delta_logit_bias_toward_injected_value_controlled
+AE_s0,AE,False,full35,bicuculline (full),0.35,db0,2.883655345590136,delta_logit_bias_toward_injected_value_controlled
+AE_s0,AE,False,musc50,muscimol,0.5,db0,-18.311336642256467,delta_logit_bias_toward_injected_value_controlled
+AE_s1,AE,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+AE_s1,AE,False,full05,bicuculline (full),0.05,db0,0.8703771604623856,delta_logit_bias_toward_injected_value_controlled
+AE_s1,AE,False,full10,bicuculline (full),0.1,db0,1.5555856022693115,delta_logit_bias_toward_injected_value_controlled
+AE_s1,AE,False,full20,bicuculline (full),0.2,db0,2.8486417115766107,delta_logit_bias_toward_injected_value_controlled
+AE_s1,AE,False,full35,bicuculline (full),0.35,db0,,delta_logit_bias_toward_injected_value_controlled
+AE_s1,AE,False,musc50,muscimol,0.5,db0,-19.10905488959059,delta_logit_bias_toward_injected_value_controlled
+AE_s2,AE,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+AE_s2,AE,False,full05,bicuculline (full),0.05,db0,0.6030715166284297,delta_logit_bias_toward_injected_value_controlled
+AE_s2,AE,False,full10,bicuculline (full),0.1,db0,1.5082474759637126,delta_logit_bias_toward_injected_value_controlled
+AE_s2,AE,False,full20,bicuculline (full),0.2,db0,3.13270142921169,delta_logit_bias_toward_injected_value_controlled
+AE_s2,AE,False,full35,bicuculline (full),0.35,db0,3.520149233241255,delta_logit_bias_toward_injected_value_controlled
+AE_s2,AE,False,musc50,muscimol,0.5,db0,-17.649947455593498,delta_logit_bias_toward_injected_value_controlled
+AE_s3,AE,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+AE_s3,AE,False,full05,bicuculline (full),0.05,db0,0.2646567368916109,delta_logit_bias_toward_injected_value_controlled
+AE_s3,AE,False,full10,bicuculline (full),0.1,db0,1.3541481557063917,delta_logit_bias_toward_injected_value_controlled
+AE_s3,AE,False,full20,bicuculline (full),0.2,db0,5.48452463993439,delta_logit_bias_toward_injected_value_controlled
+AE_s3,AE,False,full35,bicuculline (full),0.35,db0,,delta_logit_bias_toward_injected_value_controlled
+AE_s3,AE,False,musc50,muscimol,0.5,db0,-19.87418209864116,delta_logit_bias_toward_injected_value_controlled
+AE_s4,AE,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+AE_s4,AE,False,full05,bicuculline (full),0.05,db0,0.1849104434366353,delta_logit_bias_toward_injected_value_controlled
+AE_s4,AE,False,full10,bicuculline (full),0.1,db0,0.962180542566958,delta_logit_bias_toward_injected_value_controlled
+AE_s4,AE,False,full20,bicuculline (full),0.2,db0,3.374176305432109,delta_logit_bias_toward_injected_value_controlled
+AE_s4,AE,False,full35,bicuculline (full),0.35,db0,28.56823485472211,delta_logit_bias_toward_injected_value_controlled
+AE_s4,AE,False,musc50,muscimol,0.5,db0,-18.039738008868515,delta_logit_bias_toward_injected_value_controlled
+AE_s5,AE,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+AE_s5,AE,False,full05,bicuculline (full),0.05,db0,-0.142342826753547,delta_logit_bias_toward_injected_value_controlled
+AE_s5,AE,False,full10,bicuculline (full),0.1,db0,0.4540086412647536,delta_logit_bias_toward_injected_value_controlled
+AE_s5,AE,False,full20,bicuculline (full),0.2,db0,5.3502285308401465,delta_logit_bias_toward_injected_value_controlled
+AE_s5,AE,False,full35,bicuculline (full),0.35,db0,20.301970923095503,delta_logit_bias_toward_injected_value_controlled
+AE_s5,AE,False,musc50,muscimol,0.5,db0,-20.58572941846437,delta_logit_bias_toward_injected_value_controlled
+B_s0,B,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+B_s0,B,False,full05,bicuculline (full),0.05,db0,0.835833752645864,delta_logit_bias_toward_injected_value_controlled
+B_s0,B,False,full10,bicuculline (full),0.1,db0,3.0771037706180087,delta_logit_bias_toward_injected_value_controlled
+B_s0,B,False,full20,bicuculline (full),0.2,db0,5.338375783134604,delta_logit_bias_toward_injected_value_controlled
+B_s0,B,False,full35,bicuculline (full),0.35,db0,7.123319802947077,delta_logit_bias_toward_injected_value_controlled
+B_s0,B,False,musc50,muscimol,0.5,db0,-14.794508647175316,delta_logit_bias_toward_injected_value_controlled
+B_s1,B,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+B_s1,B,False,full05,bicuculline (full),0.05,db0,3.226889018402643,delta_logit_bias_toward_injected_value_controlled
+B_s1,B,False,full10,bicuculline (full),0.1,db0,5.1871689202518905,delta_logit_bias_toward_injected_value_controlled
+B_s1,B,False,full20,bicuculline (full),0.2,db0,5.073368972577583,delta_logit_bias_toward_injected_value_controlled
+B_s1,B,False,full35,bicuculline (full),0.35,db0,1.7648274960482189,delta_logit_bias_toward_injected_value_controlled
+B_s1,B,False,musc50,muscimol,0.5,db0,-9.315161769403876,delta_logit_bias_toward_injected_value_controlled
+B_s2,B,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+B_s2,B,False,full05,bicuculline (full),0.05,db0,0.307756038791581,delta_logit_bias_toward_injected_value_controlled
+B_s2,B,False,full10,bicuculline (full),0.1,db0,0.1659536875385181,delta_logit_bias_toward_injected_value_controlled
+B_s2,B,False,full20,bicuculline (full),0.2,db0,-0.2204159526034412,delta_logit_bias_toward_injected_value_controlled
+B_s2,B,False,full35,bicuculline (full),0.35,db0,-3.2439977352903053,delta_logit_bias_toward_injected_value_controlled
+B_s2,B,False,musc50,muscimol,0.5,db0,-28.564522160476145,delta_logit_bias_toward_injected_value_controlled
+B_s3,B,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+B_s3,B,False,full05,bicuculline (full),0.05,db0,1.0911239713475638,delta_logit_bias_toward_injected_value_controlled
+B_s3,B,False,full10,bicuculline (full),0.1,db0,1.3427533071683015,delta_logit_bias_toward_injected_value_controlled
+B_s3,B,False,full20,bicuculline (full),0.2,db0,4.614172389537751,delta_logit_bias_toward_injected_value_controlled
+B_s3,B,False,full35,bicuculline (full),0.35,db0,12.21716344231605,delta_logit_bias_toward_injected_value_controlled
+B_s3,B,False,musc50,muscimol,0.5,db0,1.3129757160994018,delta_logit_bias_toward_injected_value_controlled
+B_s4,B,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+B_s4,B,False,full05,bicuculline (full),0.05,db0,-0.8293267526744241,delta_logit_bias_toward_injected_value_controlled
+B_s4,B,False,full10,bicuculline (full),0.1,db0,0.8411264878321347,delta_logit_bias_toward_injected_value_controlled
+B_s4,B,False,full20,bicuculline (full),0.2,db0,-9.252886729003691,delta_logit_bias_toward_injected_value_controlled
+B_s4,B,False,full35,bicuculline (full),0.35,db0,-15.682407779149042,delta_logit_bias_toward_injected_value_controlled
+B_s4,B,False,musc50,muscimol,0.5,db0,-26.229952058133208,delta_logit_bias_toward_injected_value_controlled
+B_s5,B,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+B_s5,B,False,full05,bicuculline (full),0.05,db0,0.4888739201779379,delta_logit_bias_toward_injected_value_controlled
+B_s5,B,False,full10,bicuculline (full),0.1,db0,-0.0885222591010599,delta_logit_bias_toward_injected_value_controlled
+B_s5,B,False,full20,bicuculline (full),0.2,db0,-0.3513827187212832,delta_logit_bias_toward_injected_value_controlled
+B_s5,B,False,full35,bicuculline (full),0.35,db0,0.2064894028814252,delta_logit_bias_toward_injected_value_controlled
+B_s5,B,False,musc50,muscimol,0.5,db0,-9.695570028193067,delta_logit_bias_toward_injected_value_controlled
+C_s0,C,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+C_s0,C,False,full05,bicuculline (full),0.05,db0,-0.1124614889086388,delta_logit_bias_toward_injected_value_controlled
+C_s0,C,False,full10,bicuculline (full),0.1,db0,-0.1330364547201843,delta_logit_bias_toward_injected_value_controlled
+C_s0,C,False,full20,bicuculline (full),0.2,db0,8.157894418444615,delta_logit_bias_toward_injected_value_controlled
+C_s0,C,False,full35,bicuculline (full),0.35,db0,,delta_logit_bias_toward_injected_value_controlled
+C_s0,C,False,musc50,muscimol,0.5,db0,-20.621126470725752,delta_logit_bias_toward_injected_value_controlled
+C_s4,C,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+C_s4,C,False,full05,bicuculline (full),0.05,db0,-1.6066406008563856,delta_logit_bias_toward_injected_value_controlled
+C_s4,C,False,full10,bicuculline (full),0.1,db0,-3.1337384327073794,delta_logit_bias_toward_injected_value_controlled
+C_s4,C,False,full20,bicuculline (full),0.2,db0,-1.9449066662313608,delta_logit_bias_toward_injected_value_controlled
+C_s4,C,False,full35,bicuculline (full),0.35,db0,7.552505486742043,delta_logit_bias_toward_injected_value_controlled
+C_s4,C,False,musc50,muscimol,0.5,db0,36.30135507009192,delta_logit_bias_toward_injected_value_controlled
+C_s5,C,False,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+C_s5,C,False,full05,bicuculline (full),0.05,db0,-2.0365665845780283,delta_logit_bias_toward_injected_value_controlled
+C_s5,C,False,full10,bicuculline (full),0.1,db0,-9.522321140650384,delta_logit_bias_toward_injected_value_controlled
+C_s5,C,False,full20,bicuculline (full),0.2,db0,-7.634194963833325,delta_logit_bias_toward_injected_value_controlled
+C_s5,C,False,full35,bicuculline (full),0.35,db0,,delta_logit_bias_toward_injected_value_controlled
+C_s5,C,False,musc50,muscimol,0.5,db0,-24.779503504667627,delta_logit_bias_toward_injected_value_controlled
+hand_A,A,True,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+hand_A,A,True,full05,bicuculline (full),0.05,db0,0.7885369459479817,delta_logit_bias_toward_injected_value_controlled
+hand_A,A,True,full10,bicuculline (full),0.1,db0,0.6866921396267532,delta_logit_bias_toward_injected_value_controlled
+hand_A,A,True,full20,bicuculline (full),0.2,db0,2.554278493065116,delta_logit_bias_toward_injected_value_controlled
+hand_A,A,True,full35,bicuculline (full),0.35,db0,5.083847948242928,delta_logit_bias_toward_injected_value_controlled
+hand_A,A,True,musc50,muscimol,0.5,db0,-21.068406043066503,delta_logit_bias_toward_injected_value_controlled
+hand_B,B,True,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+hand_B,B,True,full05,bicuculline (full),0.05,db0,-1.2323808831948495,delta_logit_bias_toward_injected_value_controlled
+hand_B,B,True,full10,bicuculline (full),0.1,db0,-1.4924119063495522,delta_logit_bias_toward_injected_value_controlled
+hand_B,B,True,full20,bicuculline (full),0.2,db0,-1.6161229363806169,delta_logit_bias_toward_injected_value_controlled
+hand_B,B,True,full35,bicuculline (full),0.35,db0,-0.2577860876811542,delta_logit_bias_toward_injected_value_controlled
+hand_B,B,True,musc50,muscimol,0.5,db0,-22.37950978609515,delta_logit_bias_toward_injected_value_controlled
+hand_C,C,True,ctrl,control,0.0,db0,0.0,delta_logit_bias_toward_injected_value_controlled
+hand_C,C,True,full05,bicuculline (full),0.05,db0,10.830758617661292,delta_logit_bias_toward_injected_value_controlled
+hand_C,C,True,full10,bicuculline (full),0.1,db0,-7.766248268138321,delta_logit_bias_toward_injected_value_controlled
+hand_C,C,True,full20,bicuculline (full),0.2,db0,4.951600885548456,delta_logit_bias_toward_injected_value_controlled
+hand_C,C,True,full35,bicuculline (full),0.35,db0,-5.036591836475047,delta_logit_bias_toward_injected_value_controlled
+hand_C,C,True,musc50,muscimol,0.5,db0,-1.929119685152945,delta_logit_bias_toward_injected_value_controlled
+A_s0,A,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+A_s0,A,False,full05,bicuculline (full),0.05,dp_right,0.0287994420040439,delta_p_choose_injected_field
+A_s0,A,False,full10,bicuculline (full),0.1,dp_right,0.0630088961757853,delta_p_choose_injected_field
+A_s0,A,False,full20,bicuculline (full),0.2,dp_right,0.1354616236322341,delta_p_choose_injected_field
+A_s0,A,False,full35,bicuculline (full),0.35,dp_right,0.4522622517677786,delta_p_choose_injected_field
+A_s0,A,False,musc50,muscimol,0.5,dp_right,-0.2617264770206999,delta_p_choose_injected_field
+A_s1,A,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+A_s1,A,False,full05,bicuculline (full),0.05,dp_right,0.0431203865285084,delta_p_choose_injected_field
+A_s1,A,False,full10,bicuculline (full),0.1,dp_right,0.0812957644521473,delta_p_choose_injected_field
+A_s1,A,False,full20,bicuculline (full),0.2,dp_right,0.0868143551742647,delta_p_choose_injected_field
+A_s1,A,False,full35,bicuculline (full),0.35,dp_right,0.2457013376164032,delta_p_choose_injected_field
+A_s1,A,False,musc50,muscimol,0.5,dp_right,-0.7448521470324447,delta_p_choose_injected_field
+A_s2,A,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+A_s2,A,False,full05,bicuculline (full),0.05,dp_right,0.0564072950348061,delta_p_choose_injected_field
+A_s2,A,False,full10,bicuculline (full),0.1,dp_right,0.1090869526257501,delta_p_choose_injected_field
+A_s2,A,False,full20,bicuculline (full),0.2,dp_right,0.1011518865471039,delta_p_choose_injected_field
+A_s2,A,False,full35,bicuculline (full),0.35,dp_right,,delta_p_choose_injected_field
+A_s2,A,False,musc50,muscimol,0.5,dp_right,-0.7388529179023492,delta_p_choose_injected_field
+A_s3,A,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+A_s3,A,False,full05,bicuculline (full),0.05,dp_right,0.0346948178499,delta_p_choose_injected_field
+A_s3,A,False,full10,bicuculline (full),0.1,dp_right,0.0711514145308893,delta_p_choose_injected_field
+A_s3,A,False,full20,bicuculline (full),0.2,dp_right,0.162545193526274,delta_p_choose_injected_field
+A_s3,A,False,full35,bicuculline (full),0.35,dp_right,0.432341002612562,delta_p_choose_injected_field
+A_s3,A,False,musc50,muscimol,0.5,dp_right,-0.4913665940531719,delta_p_choose_injected_field
+A_s4,A,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+A_s4,A,False,full05,bicuculline (full),0.05,dp_right,0.0355210621707144,delta_p_choose_injected_field
+A_s4,A,False,full10,bicuculline (full),0.1,dp_right,0.073408821184877,delta_p_choose_injected_field
+A_s4,A,False,full20,bicuculline (full),0.2,dp_right,0.1374373010930346,delta_p_choose_injected_field
+A_s4,A,False,full35,bicuculline (full),0.35,dp_right,0.3077147833538327,delta_p_choose_injected_field
+A_s4,A,False,musc50,muscimol,0.5,dp_right,-0.2394675015974972,delta_p_choose_injected_field
+A_s5,A,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+A_s5,A,False,full05,bicuculline (full),0.05,dp_right,0.0520700116244342,delta_p_choose_injected_field
+A_s5,A,False,full10,bicuculline (full),0.1,dp_right,0.0960945335954376,delta_p_choose_injected_field
+A_s5,A,False,full20,bicuculline (full),0.2,dp_right,0.1174387151982186,delta_p_choose_injected_field
+A_s5,A,False,full35,bicuculline (full),0.35,dp_right,0.1775713033486665,delta_p_choose_injected_field
+A_s5,A,False,musc50,muscimol,0.5,dp_right,-0.4904720978400965,delta_p_choose_injected_field
+AE_s0,AE,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+AE_s0,AE,False,full05,bicuculline (full),0.05,dp_right,0.0345757357174699,delta_p_choose_injected_field
+AE_s0,AE,False,full10,bicuculline (full),0.1,dp_right,0.0664585744292886,delta_p_choose_injected_field
+AE_s0,AE,False,full20,bicuculline (full),0.2,dp_right,0.1515757956523679,delta_p_choose_injected_field
+AE_s0,AE,False,full35,bicuculline (full),0.35,dp_right,0.3396114877905652,delta_p_choose_injected_field
+AE_s0,AE,False,musc50,muscimol,0.5,dp_right,-0.2825907627368249,delta_p_choose_injected_field
+AE_s1,AE,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+AE_s1,AE,False,full05,bicuculline (full),0.05,dp_right,0.0446167989211412,delta_p_choose_injected_field
+AE_s1,AE,False,full10,bicuculline (full),0.1,dp_right,0.0901055961135957,delta_p_choose_injected_field
+AE_s1,AE,False,full20,bicuculline (full),0.2,dp_right,0.2270693102362175,delta_p_choose_injected_field
+AE_s1,AE,False,full35,bicuculline (full),0.35,dp_right,0.685854383001919,delta_p_choose_injected_field
+AE_s1,AE,False,musc50,muscimol,0.5,dp_right,-0.3141456169980809,delta_p_choose_injected_field
+AE_s2,AE,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+AE_s2,AE,False,full05,bicuculline (full),0.05,dp_right,0.0506477263884035,delta_p_choose_injected_field
+AE_s2,AE,False,full10,bicuculline (full),0.1,dp_right,0.1165981782834935,delta_p_choose_injected_field
+AE_s2,AE,False,full20,bicuculline (full),0.2,dp_right,0.2043533449411189,delta_p_choose_injected_field
+AE_s2,AE,False,full35,bicuculline (full),0.35,dp_right,0.4469869139271586,delta_p_choose_injected_field
+AE_s2,AE,False,musc50,muscimol,0.5,dp_right,-0.236011284455655,delta_p_choose_injected_field
+AE_s3,AE,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+AE_s3,AE,False,full05,bicuculline (full),0.05,dp_right,0.1539871056187982,delta_p_choose_injected_field
+AE_s3,AE,False,full10,bicuculline (full),0.1,dp_right,0.2919161739487997,delta_p_choose_injected_field
+AE_s3,AE,False,full20,bicuculline (full),0.2,dp_right,0.4727093213253246,delta_p_choose_injected_field
+AE_s3,AE,False,full35,bicuculline (full),0.35,dp_right,,delta_p_choose_injected_field
+AE_s3,AE,False,musc50,muscimol,0.5,dp_right,-0.4026414768958644,delta_p_choose_injected_field
+AE_s4,AE,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+AE_s4,AE,False,full05,bicuculline (full),0.05,dp_right,0.0443362471179562,delta_p_choose_injected_field
+AE_s4,AE,False,full10,bicuculline (full),0.1,dp_right,0.0967465431712771,delta_p_choose_injected_field
+AE_s4,AE,False,full20,bicuculline (full),0.2,dp_right,0.1777996295237573,delta_p_choose_injected_field
+AE_s4,AE,False,full35,bicuculline (full),0.35,dp_right,0.2439482969742389,delta_p_choose_injected_field
+AE_s4,AE,False,musc50,muscimol,0.5,dp_right,-0.7412216341649038,delta_p_choose_injected_field
+AE_s5,AE,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+AE_s5,AE,False,full05,bicuculline (full),0.05,dp_right,0.1189155649945123,delta_p_choose_injected_field
+AE_s5,AE,False,full10,bicuculline (full),0.1,dp_right,0.2351359219337183,delta_p_choose_injected_field
+AE_s5,AE,False,full20,bicuculline (full),0.2,dp_right,0.4101047123170538,delta_p_choose_injected_field
+AE_s5,AE,False,full35,bicuculline (full),0.35,dp_right,0.4801363981459819,delta_p_choose_injected_field
+AE_s5,AE,False,musc50,muscimol,0.5,dp_right,-0.519863601854018,delta_p_choose_injected_field
+B_s0,B,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+B_s0,B,False,full05,bicuculline (full),0.05,dp_right,0.0143570472913936,delta_p_choose_injected_field
+B_s0,B,False,full10,bicuculline (full),0.1,dp_right,0.0290449998268943,delta_p_choose_injected_field
+B_s0,B,False,full20,bicuculline (full),0.2,dp_right,0.0784750041395578,delta_p_choose_injected_field
+B_s0,B,False,full35,bicuculline (full),0.35,dp_right,0.0998408874058542,delta_p_choose_injected_field
+B_s0,B,False,musc50,muscimol,0.5,dp_right,-0.5709128524077877,delta_p_choose_injected_field
+B_s1,B,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+B_s1,B,False,full05,bicuculline (full),0.05,dp_right,0.0140700313983096,delta_p_choose_injected_field
+B_s1,B,False,full10,bicuculline (full),0.1,dp_right,0.0290776523425206,delta_p_choose_injected_field
+B_s1,B,False,full20,bicuculline (full),0.2,dp_right,0.0635367356079091,delta_p_choose_injected_field
+B_s1,B,False,full35,bicuculline (full),0.35,dp_right,0.0751900848480055,delta_p_choose_injected_field
+B_s1,B,False,musc50,muscimol,0.5,dp_right,-0.4685130622180466,delta_p_choose_injected_field
+B_s2,B,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+B_s2,B,False,full05,bicuculline (full),0.05,dp_right,0.0048048542162226,delta_p_choose_injected_field
+B_s2,B,False,full10,bicuculline (full),0.1,dp_right,0.0113127093346477,delta_p_choose_injected_field
+B_s2,B,False,full20,bicuculline (full),0.2,dp_right,0.0224195342275255,delta_p_choose_injected_field
+B_s2,B,False,full35,bicuculline (full),0.35,dp_right,0.0116789793775912,delta_p_choose_injected_field
+B_s2,B,False,musc50,muscimol,0.5,dp_right,-0.4739012548223201,delta_p_choose_injected_field
+B_s3,B,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+B_s3,B,False,full05,bicuculline (full),0.05,dp_right,0.0067571022062264,delta_p_choose_injected_field
+B_s3,B,False,full10,bicuculline (full),0.1,dp_right,0.0151691013184932,delta_p_choose_injected_field
+B_s3,B,False,full20,bicuculline (full),0.2,dp_right,0.0298071280326456,delta_p_choose_injected_field
+B_s3,B,False,full35,bicuculline (full),0.35,dp_right,0.0602386432485332,delta_p_choose_injected_field
+B_s3,B,False,musc50,muscimol,0.5,dp_right,-0.4484860218567128,delta_p_choose_injected_field
+B_s4,B,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+B_s4,B,False,full05,bicuculline (full),0.05,dp_right,0.0087628194041656,delta_p_choose_injected_field
+B_s4,B,False,full10,bicuculline (full),0.1,dp_right,0.0149806829602255,delta_p_choose_injected_field
+B_s4,B,False,full20,bicuculline (full),0.2,dp_right,0.0411999627109188,delta_p_choose_injected_field
+B_s4,B,False,full35,bicuculline (full),0.35,dp_right,0.0822076390701271,delta_p_choose_injected_field
+B_s4,B,False,musc50,muscimol,0.5,dp_right,-0.423403860493532,delta_p_choose_injected_field
+B_s5,B,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+B_s5,B,False,full05,bicuculline (full),0.05,dp_right,-0.0077509816218885,delta_p_choose_injected_field
+B_s5,B,False,full10,bicuculline (full),0.1,dp_right,-0.0324061174767671,delta_p_choose_injected_field
+B_s5,B,False,full20,bicuculline (full),0.2,dp_right,-0.1844501975134446,delta_p_choose_injected_field
+B_s5,B,False,full35,bicuculline (full),0.35,dp_right,-0.1761160919956279,delta_p_choose_injected_field
+B_s5,B,False,musc50,muscimol,0.5,dp_right,-0.4690505159544774,delta_p_choose_injected_field
+C_s0,C,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+C_s0,C,False,full05,bicuculline (full),0.05,dp_right,0.0839857227822011,delta_p_choose_injected_field
+C_s0,C,False,full10,bicuculline (full),0.1,dp_right,0.163981584003286,delta_p_choose_injected_field
+C_s0,C,False,full20,bicuculline (full),0.2,dp_right,0.3377001903227568,delta_p_choose_injected_field
+C_s0,C,False,full35,bicuculline (full),0.35,dp_right,,delta_p_choose_injected_field
+C_s0,C,False,musc50,muscimol,0.5,dp_right,-0.649960174768297,delta_p_choose_injected_field
+C_s4,C,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+C_s4,C,False,full05,bicuculline (full),0.05,dp_right,0.0086113124929293,delta_p_choose_injected_field
+C_s4,C,False,full10,bicuculline (full),0.1,dp_right,0.0193556026155777,delta_p_choose_injected_field
+C_s4,C,False,full20,bicuculline (full),0.2,dp_right,0.0567426418475456,delta_p_choose_injected_field
+C_s4,C,False,full35,bicuculline (full),0.35,dp_right,0.4022509990388075,delta_p_choose_injected_field
+C_s4,C,False,musc50,muscimol,0.5,dp_right,-0.4146156406914467,delta_p_choose_injected_field
+C_s5,C,False,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+C_s5,C,False,full05,bicuculline (full),0.05,dp_right,0.0309746034933944,delta_p_choose_injected_field
+C_s5,C,False,full10,bicuculline (full),0.1,dp_right,0.0713253962390864,delta_p_choose_injected_field
+C_s5,C,False,full20,bicuculline (full),0.2,dp_right,0.2466871066633,delta_p_choose_injected_field
+C_s5,C,False,full35,bicuculline (full),0.35,dp_right,,delta_p_choose_injected_field
+C_s5,C,False,musc50,muscimol,0.5,dp_right,-0.4345311532697143,delta_p_choose_injected_field
+hand_A,A,True,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+hand_A,A,True,full05,bicuculline (full),0.05,dp_right,0.0879846452338808,delta_p_choose_injected_field
+hand_A,A,True,full10,bicuculline (full),0.1,dp_right,0.1680544956086028,delta_p_choose_injected_field
+hand_A,A,True,full20,bicuculline (full),0.2,dp_right,0.2998317833293216,delta_p_choose_injected_field
+hand_A,A,True,full35,bicuculline (full),0.35,dp_right,0.4832461719437168,delta_p_choose_injected_field
+hand_A,A,True,musc50,muscimol,0.5,dp_right,-0.4565840964214947,delta_p_choose_injected_field
+hand_B,B,True,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+hand_B,B,True,full05,bicuculline (full),0.05,dp_right,0.0520196021590148,delta_p_choose_injected_field
+hand_B,B,True,full10,bicuculline (full),0.1,dp_right,0.0989828329056076,delta_p_choose_injected_field
+hand_B,B,True,full20,bicuculline (full),0.2,dp_right,0.1965822715613682,delta_p_choose_injected_field
+hand_B,B,True,full35,bicuculline (full),0.35,dp_right,0.3762662862281359,delta_p_choose_injected_field
+hand_B,B,True,musc50,muscimol,0.5,dp_right,-0.4588792315942965,delta_p_choose_injected_field
+hand_C,C,True,ctrl,control,0.0,dp_right,0.0,delta_p_choose_injected_field
+hand_C,C,True,full05,bicuculline (full),0.05,dp_right,0.0043058342959469,delta_p_choose_injected_field
+hand_C,C,True,full10,bicuculline (full),0.1,dp_right,0.0105323538259973,delta_p_choose_injected_field
+hand_C,C,True,full20,bicuculline (full),0.2,dp_right,0.0205392979350831,delta_p_choose_injected_field
+hand_C,C,True,full35,bicuculline (full),0.35,dp_right,0.0431201607549829,delta_p_choose_injected_field
+hand_C,C,True,musc50,muscimol,0.5,dp_right,-0.4531239715112213,delta_p_choose_injected_field
+A_s0,A,False,ctrl,control,0.0,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s0,A,False,full05,bicuculline (full),0.05,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s0,A,False,full10,bicuculline (full),0.1,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s0,A,False,full20,bicuculline (full),0.2,fixbreak_right,0.9792193624299662,fixation_break_fraction_toward_injected
+A_s0,A,False,full35,bicuculline (full),0.35,fixbreak_right,0.9980469756121332,fixation_break_fraction_toward_injected
+A_s0,A,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s1,A,False,ctrl,control,0.0,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s1,A,False,full05,bicuculline (full),0.05,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s1,A,False,full10,bicuculline (full),0.1,fixbreak_right,0.9071839080459768,fixation_break_fraction_toward_injected
+A_s1,A,False,full20,bicuculline (full),0.2,fixbreak_right,0.9961543815746317,fixation_break_fraction_toward_injected
+A_s1,A,False,full35,bicuculline (full),0.35,fixbreak_right,0.9992336892181056,fixation_break_fraction_toward_injected
+A_s1,A,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s2,A,False,ctrl,control,0.0,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s2,A,False,full05,bicuculline (full),0.05,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s2,A,False,full10,bicuculline (full),0.1,fixbreak_right,0.9149159663865546,fixation_break_fraction_toward_injected
+A_s2,A,False,full20,bicuculline (full),0.2,fixbreak_right,0.9974870177936784,fixation_break_fraction_toward_injected
+A_s2,A,False,full35,bicuculline (full),0.35,fixbreak_right,0.9992364269160908,fixation_break_fraction_toward_injected
+A_s2,A,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s3,A,False,ctrl,control,0.0,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s3,A,False,full05,bicuculline (full),0.05,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s3,A,False,full10,bicuculline (full),0.1,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s3,A,False,full20,bicuculline (full),0.2,fixbreak_right,0.9390553705759034,fixation_break_fraction_toward_injected
+A_s3,A,False,full35,bicuculline (full),0.35,fixbreak_right,0.9984123873478374,fixation_break_fraction_toward_injected
+A_s3,A,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s4,A,False,ctrl,control,0.0,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s4,A,False,full05,bicuculline (full),0.05,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s4,A,False,full10,bicuculline (full),0.1,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s4,A,False,full20,bicuculline (full),0.2,fixbreak_right,0.9731978713110788,fixation_break_fraction_toward_injected
+A_s4,A,False,full35,bicuculline (full),0.35,fixbreak_right,0.9968447541618274,fixation_break_fraction_toward_injected
+A_s4,A,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s5,A,False,ctrl,control,0.0,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s5,A,False,full05,bicuculline (full),0.05,fixbreak_right,0.9166666666666669,fixation_break_fraction_toward_injected
+A_s5,A,False,full10,bicuculline (full),0.1,fixbreak_right,0.9588888888888888,fixation_break_fraction_toward_injected
+A_s5,A,False,full20,bicuculline (full),0.2,fixbreak_right,0.9969559778741766,fixation_break_fraction_toward_injected
+A_s5,A,False,full35,bicuculline (full),0.35,fixbreak_right,0.9994071100397438,fixation_break_fraction_toward_injected
+A_s5,A,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+AE_s0,AE,False,ctrl,control,0.0,fixbreak_right,,fixation_break_fraction_toward_injected
+AE_s0,AE,False,full05,bicuculline (full),0.05,fixbreak_right,,fixation_break_fraction_toward_injected
+AE_s0,AE,False,full10,bicuculline (full),0.1,fixbreak_right,,fixation_break_fraction_toward_injected
+AE_s0,AE,False,full20,bicuculline (full),0.2,fixbreak_right,0.8433048433048432,fixation_break_fraction_toward_injected
+AE_s0,AE,False,full35,bicuculline (full),0.35,fixbreak_right,0.9950536921234044,fixation_break_fraction_toward_injected
+AE_s0,AE,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+AE_s1,AE,False,ctrl,control,0.0,fixbreak_right,0.5454545454545454,fixation_break_fraction_toward_injected
+AE_s1,AE,False,full05,bicuculline (full),0.05,fixbreak_right,0.7241161616161617,fixation_break_fraction_toward_injected
+AE_s1,AE,False,full10,bicuculline (full),0.1,fixbreak_right,0.9707893840209362,fixation_break_fraction_toward_injected
+AE_s1,AE,False,full20,bicuculline (full),0.2,fixbreak_right,0.9945017879319747,fixation_break_fraction_toward_injected
+AE_s1,AE,False,full35,bicuculline (full),0.35,fixbreak_right,0.9987190309740156,fixation_break_fraction_toward_injected
+AE_s1,AE,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+AE_s2,AE,False,ctrl,control,0.0,fixbreak_right,,fixation_break_fraction_toward_injected
+AE_s2,AE,False,full05,bicuculline (full),0.05,fixbreak_right,,fixation_break_fraction_toward_injected
+AE_s2,AE,False,full10,bicuculline (full),0.1,fixbreak_right,0.894871794871795,fixation_break_fraction_toward_injected
+AE_s2,AE,False,full20,bicuculline (full),0.2,fixbreak_right,0.9936356712236808,fixation_break_fraction_toward_injected
+AE_s2,AE,False,full35,bicuculline (full),0.35,fixbreak_right,0.9992815883400548,fixation_break_fraction_toward_injected
+AE_s2,AE,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+AE_s3,AE,False,ctrl,control,0.0,fixbreak_right,,fixation_break_fraction_toward_injected
+AE_s3,AE,False,full05,bicuculline (full),0.05,fixbreak_right,0.820855614973262,fixation_break_fraction_toward_injected
+AE_s3,AE,False,full10,bicuculline (full),0.1,fixbreak_right,0.9684184033021244,fixation_break_fraction_toward_injected
+AE_s3,AE,False,full20,bicuculline (full),0.2,fixbreak_right,0.9973478118196952,fixation_break_fraction_toward_injected
+AE_s3,AE,False,full35,bicuculline (full),0.35,fixbreak_right,0.9992374209113728,fixation_break_fraction_toward_injected
+AE_s3,AE,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+AE_s4,AE,False,ctrl,control,0.0,fixbreak_right,,fixation_break_fraction_toward_injected
+AE_s4,AE,False,full05,bicuculline (full),0.05,fixbreak_right,,fixation_break_fraction_toward_injected
+AE_s4,AE,False,full10,bicuculline (full),0.1,fixbreak_right,,fixation_break_fraction_toward_injected
+AE_s4,AE,False,full20,bicuculline (full),0.2,fixbreak_right,0.9844525844525844,fixation_break_fraction_toward_injected
+AE_s4,AE,False,full35,bicuculline (full),0.35,fixbreak_right,0.9993710898727982,fixation_break_fraction_toward_injected
+AE_s4,AE,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+AE_s5,AE,False,ctrl,control,0.0,fixbreak_right,,fixation_break_fraction_toward_injected
+AE_s5,AE,False,full05,bicuculline (full),0.05,fixbreak_right,,fixation_break_fraction_toward_injected
+AE_s5,AE,False,full10,bicuculline (full),0.1,fixbreak_right,0.8461538461538461,fixation_break_fraction_toward_injected
+AE_s5,AE,False,full20,bicuculline (full),0.2,fixbreak_right,0.9939208173690932,fixation_break_fraction_toward_injected
+AE_s5,AE,False,full35,bicuculline (full),0.35,fixbreak_right,0.9994612153414524,fixation_break_fraction_toward_injected
+AE_s5,AE,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+B_s0,B,False,ctrl,control,0.0,fixbreak_right,,fixation_break_fraction_toward_injected
+B_s0,B,False,full05,bicuculline (full),0.05,fixbreak_right,,fixation_break_fraction_toward_injected
+B_s0,B,False,full10,bicuculline (full),0.1,fixbreak_right,0.7333333333333333,fixation_break_fraction_toward_injected
+B_s0,B,False,full20,bicuculline (full),0.2,fixbreak_right,0.9533951762523192,fixation_break_fraction_toward_injected
+B_s0,B,False,full35,bicuculline (full),0.35,fixbreak_right,0.9971773425236586,fixation_break_fraction_toward_injected
+B_s0,B,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+B_s1,B,False,ctrl,control,0.0,fixbreak_right,0.4545454545454545,fixation_break_fraction_toward_injected
+B_s1,B,False,full05,bicuculline (full),0.05,fixbreak_right,0.5384615384615384,fixation_break_fraction_toward_injected
+B_s1,B,False,full10,bicuculline (full),0.1,fixbreak_right,0.6,fixation_break_fraction_toward_injected
+B_s1,B,False,full20,bicuculline (full),0.2,fixbreak_right,0.8256752993595099,fixation_break_fraction_toward_injected
+B_s1,B,False,full35,bicuculline (full),0.35,fixbreak_right,0.989444763866494,fixation_break_fraction_toward_injected
+B_s1,B,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+B_s2,B,False,ctrl,control,0.0,fixbreak_right,0.2967032967032967,fixation_break_fraction_toward_injected
+B_s2,B,False,full05,bicuculline (full),0.05,fixbreak_right,0.3452380952380952,fixation_break_fraction_toward_injected
+B_s2,B,False,full10,bicuculline (full),0.1,fixbreak_right,0.3781565656565656,fixation_break_fraction_toward_injected
+B_s2,B,False,full20,bicuculline (full),0.2,fixbreak_right,0.55007215007215,fixation_break_fraction_toward_injected
+B_s2,B,False,full35,bicuculline (full),0.35,fixbreak_right,0.9425170825906118,fixation_break_fraction_toward_injected
+B_s2,B,False,musc50,muscimol,0.5,fixbreak_right,0.1704545454545454,fixation_break_fraction_toward_injected
+B_s3,B,False,ctrl,control,0.0,fixbreak_right,,fixation_break_fraction_toward_injected
+B_s3,B,False,full05,bicuculline (full),0.05,fixbreak_right,,fixation_break_fraction_toward_injected
+B_s3,B,False,full10,bicuculline (full),0.1,fixbreak_right,0.6363636363636364,fixation_break_fraction_toward_injected
+B_s3,B,False,full20,bicuculline (full),0.2,fixbreak_right,0.6098484848484849,fixation_break_fraction_toward_injected
+B_s3,B,False,full35,bicuculline (full),0.35,fixbreak_right,0.9296650240046468,fixation_break_fraction_toward_injected
+B_s3,B,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+B_s4,B,False,ctrl,control,0.0,fixbreak_right,,fixation_break_fraction_toward_injected
+B_s4,B,False,full05,bicuculline (full),0.05,fixbreak_right,,fixation_break_fraction_toward_injected
+B_s4,B,False,full10,bicuculline (full),0.1,fixbreak_right,,fixation_break_fraction_toward_injected
+B_s4,B,False,full20,bicuculline (full),0.2,fixbreak_right,0.8458694083694084,fixation_break_fraction_toward_injected
+B_s4,B,False,full35,bicuculline (full),0.35,fixbreak_right,0.9910761478183178,fixation_break_fraction_toward_injected
+B_s4,B,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+B_s5,B,False,ctrl,control,0.0,fixbreak_right,0.881427515573857,fixation_break_fraction_toward_injected
+B_s5,B,False,full05,bicuculline (full),0.05,fixbreak_right,0.954985597497048,fixation_break_fraction_toward_injected
+B_s5,B,False,full10,bicuculline (full),0.1,fixbreak_right,0.9784673064436948,fixation_break_fraction_toward_injected
+B_s5,B,False,full20,bicuculline (full),0.2,fixbreak_right,0.9908503120620932,fixation_break_fraction_toward_injected
+B_s5,B,False,full35,bicuculline (full),0.35,fixbreak_right,0.9949263007175108,fixation_break_fraction_toward_injected
+B_s5,B,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+C_s0,C,False,ctrl,control,0.0,fixbreak_right,0.6363636363636364,fixation_break_fraction_toward_injected
+C_s0,C,False,full05,bicuculline (full),0.05,fixbreak_right,0.6923076923076923,fixation_break_fraction_toward_injected
+C_s0,C,False,full10,bicuculline (full),0.1,fixbreak_right,0.7894736842105263,fixation_break_fraction_toward_injected
+C_s0,C,False,full20,bicuculline (full),0.2,fixbreak_right,0.936741088915002,fixation_break_fraction_toward_injected
+C_s0,C,False,full35,bicuculline (full),0.35,fixbreak_right,0.998240107348984,fixation_break_fraction_toward_injected
+C_s0,C,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+C_s4,C,False,ctrl,control,0.0,fixbreak_right,,fixation_break_fraction_toward_injected
+C_s4,C,False,full05,bicuculline (full),0.05,fixbreak_right,,fixation_break_fraction_toward_injected
+C_s4,C,False,full10,bicuculline (full),0.1,fixbreak_right,,fixation_break_fraction_toward_injected
+C_s4,C,False,full20,bicuculline (full),0.2,fixbreak_right,,fixation_break_fraction_toward_injected
+C_s4,C,False,full35,bicuculline (full),0.35,fixbreak_right,0.9664573354400976,fixation_break_fraction_toward_injected
+C_s4,C,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+C_s5,C,False,ctrl,control,0.0,fixbreak_right,,fixation_break_fraction_toward_injected
+C_s5,C,False,full05,bicuculline (full),0.05,fixbreak_right,,fixation_break_fraction_toward_injected
+C_s5,C,False,full10,bicuculline (full),0.1,fixbreak_right,,fixation_break_fraction_toward_injected
+C_s5,C,False,full20,bicuculline (full),0.2,fixbreak_right,,fixation_break_fraction_toward_injected
+C_s5,C,False,full35,bicuculline (full),0.35,fixbreak_right,0.999484505793832,fixation_break_fraction_toward_injected
+C_s5,C,False,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+hand_A,A,True,ctrl,control,0.0,fixbreak_right,,fixation_break_fraction_toward_injected
+hand_A,A,True,full05,bicuculline (full),0.05,fixbreak_right,,fixation_break_fraction_toward_injected
+hand_A,A,True,full10,bicuculline (full),0.1,fixbreak_right,,fixation_break_fraction_toward_injected
+hand_A,A,True,full20,bicuculline (full),0.2,fixbreak_right,,fixation_break_fraction_toward_injected
+hand_A,A,True,full35,bicuculline (full),0.35,fixbreak_right,0.9909611992945327,fixation_break_fraction_toward_injected
+hand_A,A,True,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+hand_B,B,True,ctrl,control,0.0,fixbreak_right,,fixation_break_fraction_toward_injected
+hand_B,B,True,full05,bicuculline (full),0.05,fixbreak_right,,fixation_break_fraction_toward_injected
+hand_B,B,True,full10,bicuculline (full),0.1,fixbreak_right,,fixation_break_fraction_toward_injected
+hand_B,B,True,full20,bicuculline (full),0.2,fixbreak_right,,fixation_break_fraction_toward_injected
+hand_B,B,True,full35,bicuculline (full),0.35,fixbreak_right,,fixation_break_fraction_toward_injected
+hand_B,B,True,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+hand_C,C,True,ctrl,control,0.0,fixbreak_right,,fixation_break_fraction_toward_injected
+hand_C,C,True,full05,bicuculline (full),0.05,fixbreak_right,,fixation_break_fraction_toward_injected
+hand_C,C,True,full10,bicuculline (full),0.1,fixbreak_right,,fixation_break_fraction_toward_injected
+hand_C,C,True,full20,bicuculline (full),0.2,fixbreak_right,0.75,fixation_break_fraction_toward_injected
+hand_C,C,True,full35,bicuculline (full),0.35,fixbreak_right,0.8831699346405228,fixation_break_fraction_toward_injected
+hand_C,C,True,musc50,muscimol,0.5,fixbreak_right,,fixation_break_fraction_toward_injected
+A_s0,A,False,ctrl,control,0.0,fixbreak,0.0021460327388734,fixation_break_rate
+A_s0,A,False,full05,bicuculline (full),0.05,fixbreak,0.0025047298560117,fixation_break_rate
+A_s0,A,False,full10,bicuculline (full),0.1,fixbreak,0.0044679653954578,fixation_break_rate
+A_s0,A,False,full20,bicuculline (full),0.2,fixbreak,0.0508376765251056,fixation_break_rate
+A_s0,A,False,full35,bicuculline (full),0.35,fixbreak,0.4572201352100871,fixation_break_rate
+A_s0,A,False,musc50,muscimol,0.5,fixbreak,0.0014286385045967,fixation_break_rate
+A_s1,A,False,ctrl,control,0.0,fixbreak,0.0024881482585414,fixation_break_rate
+A_s1,A,False,full05,bicuculline (full),0.05,fixbreak,0.003381442410529,fixation_break_rate
+A_s1,A,False,full10,bicuculline (full),0.1,fixbreak,0.0115610394671507,fixation_break_rate
+A_s1,A,False,full20,bicuculline (full),0.2,fixbreak,0.2813420482283668,fixation_break_rate
+A_s1,A,False,full35,bicuculline (full),0.35,fixbreak,0.6982560391285775,fixation_break_rate
+A_s1,A,False,musc50,muscimol,0.5,fixbreak,0.0014236095172797,fixation_break_rate
+A_s2,A,False,ctrl,control,0.0,fixbreak,0.0026810034326025,fixation_break_rate
+A_s2,A,False,full05,bicuculline (full),0.05,fixbreak,0.003039326890861,fixation_break_rate
+A_s2,A,False,full10,bicuculline (full),0.1,fixbreak,0.0083825102053166,fixation_break_rate
+A_s2,A,False,full20,bicuculline (full),0.2,fixbreak,0.2883521883443342,fixation_break_rate
+A_s2,A,False,full35,bicuculline (full),0.35,fixbreak,0.7007546190206327,fixation_break_rate
+A_s2,A,False,musc50,muscimol,0.5,fixbreak,0.0014232358583999,fixation_break_rate
+A_s3,A,False,ctrl,control,0.0,fixbreak,0.0028522480218765,fixation_break_rate
+A_s3,A,False,full05,bicuculline (full),0.05,fixbreak,0.0033872187156057,fixation_break_rate
+A_s3,A,False,full10,bicuculline (full),0.1,fixbreak,0.0044679653954578,fixation_break_rate
+A_s3,A,False,full20,bicuculline (full),0.2,fixbreak,0.0265437532433659,fixation_break_rate
+A_s3,A,False,full35,bicuculline (full),0.35,fixbreak,0.5604003348607826,fixation_break_rate
+A_s3,A,False,musc50,muscimol,0.5,fixbreak,0.0023172773281473,fixation_break_rate
+A_s4,A,False,ctrl,control,0.0,fixbreak,0.0025043561971318,fixation_break_rate
+A_s4,A,False,full05,bicuculline (full),0.05,fixbreak,0.0030339242446642,fixation_break_rate
+A_s4,A,False,full10,bicuculline (full),0.1,fixbreak,0.0046442389720487,fixation_break_rate
+A_s4,A,False,full20,bicuculline (full),0.2,fixbreak,0.060573359610142,fixation_break_rate
+A_s4,A,False,full35,bicuculline (full),0.35,fixbreak,0.4530849746774232,fixation_break_rate
+A_s4,A,False,musc50,muscimol,0.5,fixbreak,0.0024935509047382,fixation_break_rate
+A_s5,A,False,ctrl,control,0.0,fixbreak,0.0032217504314085,fixation_break_rate
+A_s5,A,False,full05,bicuculline (full),0.05,fixbreak,0.005714180359507,fixation_break_rate
+A_s5,A,False,full10,bicuculline (full),0.1,fixbreak,0.0124856285196795,fixation_break_rate
+A_s5,A,False,full20,bicuculline (full),0.2,fixbreak,0.1779995101712681,fixation_break_rate
+A_s5,A,False,full35,bicuculline (full),0.35,fixbreak,0.6067365399517332,fixation_break_rate
+A_s5,A,False,musc50,muscimol,0.5,fixbreak,0.001246962281809,fixation_break_rate
+AE_s0,AE,False,ctrl,control,0.0,fixbreak,0.00286342697315,fixation_break_rate
+AE_s0,AE,False,full05,bicuculline (full),0.05,fixbreak,0.00286342697315,fixation_break_rate
+AE_s0,AE,False,full10,bicuculline (full),0.1,fixbreak,0.0033983976668792,fixation_break_rate
+AE_s0,AE,False,full20,bicuculline (full),0.2,fixbreak,0.0110858715404664,fixation_break_rate
+AE_s0,AE,False,full35,bicuculline (full),0.35,fixbreak,0.2907173421704931,fixation_break_rate
+AE_s0,AE,False,musc50,muscimol,0.5,fixbreak,0.0023223063154642,fixation_break_rate
+AE_s1,AE,False,ctrl,control,0.0,fixbreak,0.0032059161516979,fixation_break_rate
+AE_s1,AE,False,full05,bicuculline (full),0.05,fixbreak,0.0074961133350454,fixation_break_rate
+AE_s1,AE,False,full10,bicuculline (full),0.1,fixbreak,0.0683362991086061,fixation_break_rate
+AE_s1,AE,False,full20,bicuculline (full),0.2,fixbreak,0.2946127205858458,fixation_break_rate
+AE_s1,AE,False,full35,bicuculline (full),0.35,fixbreak,0.6986197652330328,fixation_break_rate
+AE_s1,AE,False,musc50,muscimol,0.5,fixbreak,0.0030342979035441,fixation_break_rate
+AE_s2,AE,False,ctrl,control,0.0,fixbreak,0.0010703150463382,fixation_break_rate
+AE_s2,AE,False,full05,bicuculline (full),0.05,fixbreak,0.0021518090439501,fixation_break_rate
+AE_s2,AE,False,full10,bicuculline (full),0.1,fixbreak,0.0066121298399317,fixation_break_rate
+AE_s2,AE,False,full20,bicuculline (full),0.2,fixbreak,0.0887222271716973,fixation_break_rate
+AE_s2,AE,False,full35,bicuculline (full),0.35,fixbreak,0.499426925258327,fixation_break_rate
+AE_s2,AE,False,musc50,muscimol,0.5,fixbreak,0.0008936678108675,fixation_break_rate
+AE_s3,AE,False,ctrl,control,0.0,fixbreak,0.00286342697315,fixation_break_rate
+AE_s3,AE,False,full05,bicuculline (full),0.05,fixbreak,0.0068007033444358,fixation_break_rate
+AE_s3,AE,False,full10,bicuculline (full),0.1,fixbreak,0.0375375775614849,fixation_break_rate
+AE_s3,AE,False,full20,bicuculline (full),0.2,fixbreak,0.3444879587199215,fixation_break_rate
+AE_s3,AE,False,full35,bicuculline (full),0.35,fixbreak,0.701654063136577,fixation_break_rate
+AE_s3,AE,False,musc50,muscimol,0.5,fixbreak,0.0016056593989473,fixation_break_rate
+AE_s4,AE,False,ctrl,control,0.0,fixbreak,0.0014236095172797,fixation_break_rate
+AE_s4,AE,False,full05,bicuculline (full),0.05,fixbreak,0.0017877092806149,fixation_break_rate
+AE_s4,AE,False,full10,bicuculline (full),0.1,fixbreak,0.0021406300926766,fixation_break_rate
+AE_s4,AE,False,full20,bicuculline (full),0.2,fixbreak,0.0342439007037461,fixation_break_rate
+AE_s4,AE,False,full35,bicuculline (full),0.35,fixbreak,0.572011892406478,fixation_break_rate
+AE_s4,AE,False,musc50,muscimol,0.5,fixbreak,0.0008936678108675,fixation_break_rate
+AE_s5,AE,False,ctrl,control,0.0,fixbreak,0.0014290121634766,fixation_break_rate
+AE_s5,AE,False,full05,bicuculline (full),0.05,fixbreak,0.0026867797376793,fixation_break_rate
+AE_s5,AE,False,full10,bicuculline (full),0.1,fixbreak,0.0051907622759313,fixation_break_rate
+AE_s5,AE,False,full20,bicuculline (full),0.2,fixbreak,0.0987385261368356,fixation_break_rate
+AE_s5,AE,False,full35,bicuculline (full),0.35,fixbreak,0.6676892885241626,fixation_break_rate
+AE_s5,AE,False,musc50,muscimol,0.5,fixbreak,0.0010703150463382,fixation_break_rate
+B_s0,B,False,ctrl,control,0.0,fixbreak,0.0037563474662578,fixation_break_rate
+B_s0,B,False,full05,bicuculline (full),0.05,fixbreak,0.0039383973479254,fixation_break_rate
+B_s0,B,False,full10,bicuculline (full),0.1,fixbreak,0.0055544883803865,fixation_break_rate
+B_s0,B,False,full20,bicuculline (full),0.2,fixbreak,0.0274497209821467,fixation_break_rate
+B_s0,B,False,full35,bicuculline (full),0.35,fixbreak,0.4497374687479682,fixation_break_rate
+B_s0,B,False,musc50,muscimol,0.5,fixbreak,0.0019639828572058,fixation_break_rate
+B_s1,B,False,ctrl,control,0.0,fixbreak,0.005002936089187,fixation_break_rate
+B_s1,B,False,full05,bicuculline (full),0.05,fixbreak,0.0053670358525222,fixation_break_rate
+B_s1,B,False,full10,bicuculline (full),0.1,fixbreak,0.0059074091924481,fixation_break_rate
+B_s1,B,False,full20,bicuculline (full),0.2,fixbreak,0.0119741367051371,fixation_break_rate
+B_s1,B,False,full35,bicuculline (full),0.35,fixbreak,0.2093066196235116,fixation_break_rate
+B_s1,B,False,musc50,muscimol,0.5,fixbreak,0.0028630533142701,fixation_break_rate
+B_s2,B,False,ctrl,control,0.0,fixbreak,0.0062553010171929,fixation_break_rate
+B_s2,B,False,full05,bicuculline (full),0.05,fixbreak,0.006966545287513,fixation_break_rate
+B_s2,B,False,full10,bicuculline (full),0.1,fixbreak,0.0074961133350454,fixation_break_rate
+B_s2,B,False,full20,bicuculline (full),0.2,fixbreak,0.0103587929904357,fixation_break_rate
+B_s2,B,False,full35,bicuculline (full),0.35,fixbreak,0.0822643866646891,fixation_break_rate
+B_s2,B,False,musc50,muscimol,0.5,fixbreak,0.0053562305601285,fixation_break_rate
+B_s3,B,False,ctrl,control,0.0,fixbreak,0.0041096419371993,fixation_break_rate
+B_s3,B,False,full05,bicuculline (full),0.05,fixbreak,0.0044683390543377,fixation_break_rate
+B_s3,B,False,full10,bicuculline (full),0.1,fixbreak,0.0049975334429902,fixation_break_rate
+B_s3,B,False,full20,bicuculline (full),0.2,fixbreak,0.005714180359507,fixation_break_rate
+B_s3,B,False,full35,bicuculline (full),0.35,fixbreak,0.0304840188856909,fixation_break_rate
+B_s3,B,False,musc50,muscimol,0.5,fixbreak,0.0028576506680733,fixation_break_rate
+B_s4,B,False,ctrl,control,0.0,fixbreak,0.0032210031136487,fixation_break_rate
+B_s4,B,False,full05,bicuculline (full),0.05,fixbreak,0.0037563474662578,fixation_break_rate
+B_s4,B,False,full10,bicuculline (full),0.1,fixbreak,0.0042909445011071,fixation_break_rate
+B_s4,B,False,full20,bicuculline (full),0.2,fixbreak,0.0105350665670266,fixation_break_rate
+B_s4,B,False,full35,bicuculline (full),0.35,fixbreak,0.1881118259996778,fixation_break_rate
+B_s4,B,False,musc50,muscimol,0.5,fixbreak,0.0021456590799935,fixation_break_rate
+B_s5,B,False,ctrl,control,0.0,fixbreak,0.0207002570656413,fixation_break_rate
+B_s5,B,False,full05,bicuculline (full),0.05,fixbreak,0.0550459152758628,fixation_break_rate
+B_s5,B,False,full10,bicuculline (full),0.1,fixbreak,0.115964379676712,fixation_break_rate
+B_s5,B,False,full20,bicuculline (full),0.2,fixbreak,0.2721279457476301,fixation_break_rate
+B_s5,B,False,full35,bicuculline (full),0.35,fixbreak,0.4916615723847052,fixation_break_rate
+B_s5,B,False,musc50,muscimol,0.5,fixbreak,0.0030288952573473,fixation_break_rate
+C_s0,C,False,ctrl,control,0.0,fixbreak,0.0042963471473039,fixation_break_rate
+C_s0,C,False,full05,bicuculline (full),0.05,fixbreak,0.0051900149581715,fixation_break_rate
+C_s0,C,False,full10,bicuculline (full),0.1,fixbreak,0.0066348614013586,fixation_break_rate
+C_s0,C,False,full20,bicuculline (full),0.2,fixbreak,0.0230221897222258,fixation_break_rate
+C_s0,C,False,full35,bicuculline (full),0.35,fixbreak,0.7137659075771675,fixation_break_rate
+C_s0,C,False,musc50,muscimol,0.5,fixbreak,0.0019690118445227,fixation_break_rate
+C_s4,C,False,ctrl,control,0.0,fixbreak,0.0024993272098149,fixation_break_rate
+C_s4,C,False,full05,bicuculline (full),0.05,fixbreak,0.0030288952573473,fixation_break_rate
+C_s4,C,False,full10,bicuculline (full),0.1,fixbreak,0.0032109451390149,fixation_break_rate
+C_s4,C,False,full20,bicuculline (full),0.2,fixbreak,0.0039279657144117,fixation_break_rate
+C_s4,C,False,full35,bicuculline (full),0.35,fixbreak,0.0463410318412658,fixation_break_rate
+C_s4,C,False,musc50,muscimol,0.5,fixbreak,0.002129451141403,fixation_break_rate
+C_s5,C,False,ctrl,control,0.0,fixbreak,0.001075717692535,fixation_break_rate
+C_s5,C,False,full05,bicuculline (full),0.05,fixbreak,0.0017931119268117,fixation_break_rate
+C_s5,C,False,full10,bicuculline (full),0.1,fixbreak,0.0019693855034026,fixation_break_rate
+C_s5,C,False,full20,bicuculline (full),0.2,fixbreak,0.0026918087249962,fixation_break_rate
+C_s5,C,False,full35,bicuculline (full),0.35,fixbreak,0.6989622544115807,fixation_break_rate
+C_s5,C,False,musc50,muscimol,0.5,fixbreak,0.0008936678108675,fixation_break_rate
+hand_A,A,True,ctrl,control,0.0,fixbreak,0.00071124427032,fixation_break_rate
+hand_A,A,True,full05,bicuculline (full),0.05,fixbreak,0.00071124427032,fixation_break_rate
+hand_A,A,True,full10,bicuculline (full),0.1,fixbreak,0.00071124427032,fixation_break_rate
+hand_A,A,True,full20,bicuculline (full),0.2,fixbreak,0.0019628618805661,fixation_break_rate
+hand_A,A,True,full35,bicuculline (full),0.35,fixbreak,0.045132230926591,fixation_break_rate
+hand_A,A,True,musc50,muscimol,0.5,fixbreak,0.0010695677285784,fixation_break_rate
+hand_B,B,True,ctrl,control,0.0,fixbreak,0.0005291943886524,fixation_break_rate
+hand_B,B,True,full05,bicuculline (full),0.05,fixbreak,0.0005291943886524,fixation_break_rate
+hand_B,B,True,full10,bicuculline (full),0.1,fixbreak,0.00071124427032,fixation_break_rate
+hand_B,B,True,full20,bicuculline (full),0.2,fixbreak,0.0012462149640492,fixation_break_rate
+hand_B,B,True,full35,bicuculline (full),0.35,fixbreak,0.0032098241623752,fixation_break_rate
+hand_B,B,True,musc50,muscimol,0.5,fixbreak,0.00071124427032,fixation_break_rate
+hand_C,C,True,ctrl,control,0.0,fixbreak,0.002503608879372,fixation_break_rate
+hand_C,C,True,full05,bicuculline (full),0.05,fixbreak,0.0028561560325537,fixation_break_rate
+hand_C,C,True,full10,bicuculline (full),0.1,fixbreak,0.0032090768446154,fixation_break_rate
+hand_C,C,True,full20,bicuculline (full),0.2,fixbreak,0.0046369680314523,fixation_break_rate
+hand_C,C,True,full35,bicuculline (full),0.35,fixbreak,0.0090941281345166,fixation_break_rate
+hand_C,C,True,musc50,muscimol,0.5,fixbreak,0.0014224885406401,fixation_break_rate
+A_s0,A,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+A_s0,A,False,full05,bicuculline (full),0.05,drt_inj,-6.265523274739579,rt_change_injected_field_ms
+A_s0,A,False,full10,bicuculline (full),0.1,drt_inj,-13.79119873046875,rt_change_injected_field_ms
+A_s0,A,False,full20,bicuculline (full),0.2,drt_inj,-30.805582682291657,rt_change_injected_field_ms
+A_s0,A,False,full35,bicuculline (full),0.35,drt_inj,,rt_change_injected_field_ms
+A_s0,A,False,musc50,muscimol,0.5,drt_inj,,rt_change_injected_field_ms
+A_s1,A,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+A_s1,A,False,full05,bicuculline (full),0.05,drt_inj,-8.4881591796875,rt_change_injected_field_ms
+A_s1,A,False,full10,bicuculline (full),0.1,drt_inj,-17.95023600260417,rt_change_injected_field_ms
+A_s1,A,False,full20,bicuculline (full),0.2,drt_inj,-43.71510823567708,rt_change_injected_field_ms
+A_s1,A,False,full35,bicuculline (full),0.35,drt_inj,,rt_change_injected_field_ms
+A_s1,A,False,musc50,muscimol,0.5,drt_inj,231.2449137369792,rt_change_injected_field_ms
+A_s2,A,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+A_s2,A,False,full05,bicuculline (full),0.05,drt_inj,-8.283752441406264,rt_change_injected_field_ms
+A_s2,A,False,full10,bicuculline (full),0.1,drt_inj,-17.845601399739593,rt_change_injected_field_ms
+A_s2,A,False,full20,bicuculline (full),0.2,drt_inj,-44.93524169921877,rt_change_injected_field_ms
+A_s2,A,False,full35,bicuculline (full),0.35,drt_inj,,rt_change_injected_field_ms
+A_s2,A,False,musc50,muscimol,0.5,drt_inj,241.49820963541663,rt_change_injected_field_ms
+A_s3,A,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+A_s3,A,False,full05,bicuculline (full),0.05,drt_inj,-5.295084635416671,rt_change_injected_field_ms
+A_s3,A,False,full10,bicuculline (full),0.1,drt_inj,-10.56667073567708,rt_change_injected_field_ms
+A_s3,A,False,full20,bicuculline (full),0.2,drt_inj,-24.61417643229167,rt_change_injected_field_ms
+A_s3,A,False,full35,bicuculline (full),0.35,drt_inj,-55.62294514973958,rt_change_injected_field_ms
+A_s3,A,False,musc50,muscimol,0.5,drt_inj,136.33420817057294,rt_change_injected_field_ms
+A_s4,A,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+A_s4,A,False,full05,bicuculline (full),0.05,drt_inj,-7.275960286458343,rt_change_injected_field_ms
+A_s4,A,False,full10,bicuculline (full),0.1,drt_inj,-15.84861246744792,rt_change_injected_field_ms
+A_s4,A,False,full20,bicuculline (full),0.2,drt_inj,-36.14473470052084,rt_change_injected_field_ms
+A_s4,A,False,full35,bicuculline (full),0.35,drt_inj,,rt_change_injected_field_ms
+A_s4,A,False,musc50,muscimol,0.5,drt_inj,124.76247151692708,rt_change_injected_field_ms
+A_s5,A,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+A_s5,A,False,full05,bicuculline (full),0.05,drt_inj,-5.83221435546875,rt_change_injected_field_ms
+A_s5,A,False,full10,bicuculline (full),0.1,drt_inj,-12.75075276692708,rt_change_injected_field_ms
+A_s5,A,False,full20,bicuculline (full),0.2,drt_inj,-30.7191162109375,rt_change_injected_field_ms
+A_s5,A,False,full35,bicuculline (full),0.35,drt_inj,,rt_change_injected_field_ms
+A_s5,A,False,musc50,muscimol,0.5,drt_inj,115.09844970703126,rt_change_injected_field_ms
+AE_s0,AE,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+AE_s0,AE,False,full05,bicuculline (full),0.05,drt_inj,-4.045878092447921,rt_change_injected_field_ms
+AE_s0,AE,False,full10,bicuculline (full),0.1,drt_inj,-9.94512939453125,rt_change_injected_field_ms
+AE_s0,AE,False,full20,bicuculline (full),0.2,drt_inj,-23.276123046875,rt_change_injected_field_ms
+AE_s0,AE,False,full35,bicuculline (full),0.35,drt_inj,-49.30733235677083,rt_change_injected_field_ms
+AE_s0,AE,False,musc50,muscimol,0.5,drt_inj,102.33685302734376,rt_change_injected_field_ms
+AE_s1,AE,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+AE_s1,AE,False,full05,bicuculline (full),0.05,drt_inj,-14.55108642578125,rt_change_injected_field_ms
+AE_s1,AE,False,full10,bicuculline (full),0.1,drt_inj,-19.49066162109375,rt_change_injected_field_ms
+AE_s1,AE,False,full20,bicuculline (full),0.2,drt_inj,-38.723876953125,rt_change_injected_field_ms
+AE_s1,AE,False,full35,bicuculline (full),0.35,drt_inj,,rt_change_injected_field_ms
+AE_s1,AE,False,musc50,muscimol,0.5,drt_inj,,rt_change_injected_field_ms
+AE_s2,AE,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+AE_s2,AE,False,full05,bicuculline (full),0.05,drt_inj,-6.383544921875,rt_change_injected_field_ms
+AE_s2,AE,False,full10,bicuculline (full),0.1,drt_inj,-14.36374918619792,rt_change_injected_field_ms
+AE_s2,AE,False,full20,bicuculline (full),0.2,drt_inj,-34.09517415364583,rt_change_injected_field_ms
+AE_s2,AE,False,full35,bicuculline (full),0.35,drt_inj,,rt_change_injected_field_ms
+AE_s2,AE,False,musc50,muscimol,0.5,drt_inj,,rt_change_injected_field_ms
+AE_s3,AE,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+AE_s3,AE,False,full05,bicuculline (full),0.05,drt_inj,-8.418009440104171,rt_change_injected_field_ms
+AE_s3,AE,False,full10,bicuculline (full),0.1,drt_inj,-18.27488199869792,rt_change_injected_field_ms
+AE_s3,AE,False,full20,bicuculline (full),0.2,drt_inj,-44.588134765625,rt_change_injected_field_ms
+AE_s3,AE,False,full35,bicuculline (full),0.35,drt_inj,,rt_change_injected_field_ms
+AE_s3,AE,False,musc50,muscimol,0.5,drt_inj,,rt_change_injected_field_ms
+AE_s4,AE,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+AE_s4,AE,False,full05,bicuculline (full),0.05,drt_inj,-7.437642415364579,rt_change_injected_field_ms
+AE_s4,AE,False,full10,bicuculline (full),0.1,drt_inj,-16.386108398437486,rt_change_injected_field_ms
+AE_s4,AE,False,full20,bicuculline (full),0.2,drt_inj,-38.332885742187486,rt_change_injected_field_ms
+AE_s4,AE,False,full35,bicuculline (full),0.35,drt_inj,-64.79010009765624,rt_change_injected_field_ms
+AE_s4,AE,False,musc50,muscimol,0.5,drt_inj,,rt_change_injected_field_ms
+AE_s5,AE,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+AE_s5,AE,False,full05,bicuculline (full),0.05,drt_inj,-6.95806884765625,rt_change_injected_field_ms
+AE_s5,AE,False,full10,bicuculline (full),0.1,drt_inj,-14.89141845703125,rt_change_injected_field_ms
+AE_s5,AE,False,full20,bicuculline (full),0.2,drt_inj,-35.98299153645833,rt_change_injected_field_ms
+AE_s5,AE,False,full35,bicuculline (full),0.35,drt_inj,,rt_change_injected_field_ms
+AE_s5,AE,False,musc50,muscimol,0.5,drt_inj,134.2285563151042,rt_change_injected_field_ms
+B_s0,B,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+B_s0,B,False,full05,bicuculline (full),0.05,drt_inj,-3.569803873697907,rt_change_injected_field_ms
+B_s0,B,False,full10,bicuculline (full),0.1,drt_inj,-8.451029459635407,rt_change_injected_field_ms
+B_s0,B,False,full20,bicuculline (full),0.2,drt_inj,-20.51220703125,rt_change_injected_field_ms
+B_s0,B,False,full35,bicuculline (full),0.35,drt_inj,-35.51230875651041,rt_change_injected_field_ms
+B_s0,B,False,musc50,muscimol,0.5,drt_inj,140.59788004557294,rt_change_injected_field_ms
+B_s1,B,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+B_s1,B,False,full05,bicuculline (full),0.05,drt_inj,-3.6111246744791714,rt_change_injected_field_ms
+B_s1,B,False,full10,bicuculline (full),0.1,drt_inj,-8.28009033203125,rt_change_injected_field_ms
+B_s1,B,False,full20,bicuculline (full),0.2,drt_inj,-18.36918131510417,rt_change_injected_field_ms
+B_s1,B,False,full35,bicuculline (full),0.35,drt_inj,-38.43568929036459,rt_change_injected_field_ms
+B_s1,B,False,musc50,muscimol,0.5,drt_inj,220.572021484375,rt_change_injected_field_ms
+B_s2,B,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+B_s2,B,False,full05,bicuculline (full),0.05,drt_inj,-3.2109781901041714,rt_change_injected_field_ms
+B_s2,B,False,full10,bicuculline (full),0.1,drt_inj,-7.016682942708329,rt_change_injected_field_ms
+B_s2,B,False,full20,bicuculline (full),0.2,drt_inj,-15.004435221354171,rt_change_injected_field_ms
+B_s2,B,False,full35,bicuculline (full),0.35,drt_inj,-34.21327718098958,rt_change_injected_field_ms
+B_s2,B,False,musc50,muscimol,0.5,drt_inj,,rt_change_injected_field_ms
+B_s3,B,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+B_s3,B,False,full05,bicuculline (full),0.05,drt_inj,-3.1068522135416714,rt_change_injected_field_ms
+B_s3,B,False,full10,bicuculline (full),0.1,drt_inj,-7.150594075520843,rt_change_injected_field_ms
+B_s3,B,False,full20,bicuculline (full),0.2,drt_inj,-15.123575846354171,rt_change_injected_field_ms
+B_s3,B,False,full35,bicuculline (full),0.35,drt_inj,-31.50547281901042,rt_change_injected_field_ms
+B_s3,B,False,musc50,muscimol,0.5,drt_inj,186.93524169921875,rt_change_injected_field_ms
+B_s4,B,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+B_s4,B,False,full05,bicuculline (full),0.05,drt_inj,-3.82379150390625,rt_change_injected_field_ms
+B_s4,B,False,full10,bicuculline (full),0.1,drt_inj,-8.285420735677079,rt_change_injected_field_ms
+B_s4,B,False,full20,bicuculline (full),0.2,drt_inj,-17.97076416015625,rt_change_injected_field_ms
+B_s4,B,False,full35,bicuculline (full),0.35,drt_inj,-38.72077433268228,rt_change_injected_field_ms
+B_s4,B,False,musc50,muscimol,0.5,drt_inj,174.16080729166669,rt_change_injected_field_ms
+B_s5,B,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+B_s5,B,False,full05,bicuculline (full),0.05,drt_inj,-3.40692138671875,rt_change_injected_field_ms
+B_s5,B,False,full10,bicuculline (full),0.1,drt_inj,-5.059895833333329,rt_change_injected_field_ms
+B_s5,B,False,full20,bicuculline (full),0.2,drt_inj,-15.052042643229171,rt_change_injected_field_ms
+B_s5,B,False,full35,bicuculline (full),0.35,drt_inj,,rt_change_injected_field_ms
+B_s5,B,False,musc50,muscimol,0.5,drt_inj,151.0877685546875,rt_change_injected_field_ms
+C_s0,C,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+C_s0,C,False,full05,bicuculline (full),0.05,drt_inj,-7.731058756510436,rt_change_injected_field_ms
+C_s0,C,False,full10,bicuculline (full),0.1,drt_inj,-16.67850748697917,rt_change_injected_field_ms
+C_s0,C,False,full20,bicuculline (full),0.2,drt_inj,-47.71120198567709,rt_change_injected_field_ms
+C_s0,C,False,full35,bicuculline (full),0.35,drt_inj,,rt_change_injected_field_ms
+C_s0,C,False,musc50,muscimol,0.5,drt_inj,,rt_change_injected_field_ms
+C_s4,C,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+C_s4,C,False,full05,bicuculline (full),0.05,drt_inj,-8.29937744140625,rt_change_injected_field_ms
+C_s4,C,False,full10,bicuculline (full),0.1,drt_inj,-15.938232421875,rt_change_injected_field_ms
+C_s4,C,False,full20,bicuculline (full),0.2,drt_inj,-32.48531087239584,rt_change_injected_field_ms
+C_s4,C,False,full35,bicuculline (full),0.35,drt_inj,-72.59431966145834,rt_change_injected_field_ms
+C_s4,C,False,musc50,muscimol,0.5,drt_inj,214.45777384440103,rt_change_injected_field_ms
+C_s5,C,False,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+C_s5,C,False,full05,bicuculline (full),0.05,drt_inj,-9.573933919270814,rt_change_injected_field_ms
+C_s5,C,False,full10,bicuculline (full),0.1,drt_inj,-19.1376953125,rt_change_injected_field_ms
+C_s5,C,False,full20,bicuculline (full),0.2,drt_inj,-42.21402994791666,rt_change_injected_field_ms
+C_s5,C,False,full35,bicuculline (full),0.35,drt_inj,,rt_change_injected_field_ms
+C_s5,C,False,musc50,muscimol,0.5,drt_inj,,rt_change_injected_field_ms
+hand_A,A,True,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+hand_A,A,True,full05,bicuculline (full),0.05,drt_inj,-15.17230224609375,rt_change_injected_field_ms
+hand_A,A,True,full10,bicuculline (full),0.1,drt_inj,-30.111735026041657,rt_change_injected_field_ms
+hand_A,A,True,full20,bicuculline (full),0.2,drt_inj,-56.887715657552064,rt_change_injected_field_ms
+hand_A,A,True,full35,bicuculline (full),0.35,drt_inj,-90.98347981770831,rt_change_injected_field_ms
+hand_A,A,True,musc50,muscimol,0.5,drt_inj,,rt_change_injected_field_ms
+hand_B,B,True,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+hand_B,B,True,full05,bicuculline (full),0.05,drt_inj,-9.123026529947907,rt_change_injected_field_ms
+hand_B,B,True,full10,bicuculline (full),0.1,drt_inj,-16.747843424479157,rt_change_injected_field_ms
+hand_B,B,True,full20,bicuculline (full),0.2,drt_inj,-32.198486328125,rt_change_injected_field_ms
+hand_B,B,True,full35,bicuculline (full),0.35,drt_inj,-58.73124186197916,rt_change_injected_field_ms
+hand_B,B,True,musc50,muscimol,0.5,drt_inj,,rt_change_injected_field_ms
+hand_C,C,True,ctrl,control,0.0,drt_inj,0.0,rt_change_injected_field_ms
+hand_C,C,True,full05,bicuculline (full),0.05,drt_inj,-4.1065673828125,rt_change_injected_field_ms
+hand_C,C,True,full10,bicuculline (full),0.1,drt_inj,-8.453898111979157,rt_change_injected_field_ms
+hand_C,C,True,full20,bicuculline (full),0.2,drt_inj,-16.865620930989564,rt_change_injected_field_ms
+hand_C,C,True,full35,bicuculline (full),0.35,drt_inj,-32.45021565755208,rt_change_injected_field_ms
+hand_C,C,True,musc50,muscimol,0.5,drt_inj,190.95733642578128,rt_change_injected_field_ms
+A_s0,A,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+A_s0,A,False,full05,bicuculline (full),0.05,drt_oth,0.0291733333333183,rt_change_other_field_ms
+A_s0,A,False,full10,bicuculline (full),0.1,drt_oth,-0.0194900000000046,rt_change_other_field_ms
+A_s0,A,False,full20,bicuculline (full),0.2,drt_oth,-0.0610120000000051,rt_change_other_field_ms
+A_s0,A,False,full35,bicuculline (full),0.35,drt_oth,-0.4119036666666602,rt_change_other_field_ms
+A_s0,A,False,musc50,muscimol,0.5,drt_oth,-0.160725333333346,rt_change_other_field_ms
+A_s1,A,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+A_s1,A,False,full05,bicuculline (full),0.05,drt_oth,0.018271999999996,rt_change_other_field_ms
+A_s1,A,False,full10,bicuculline (full),0.1,drt_oth,0.0039886666666575,rt_change_other_field_ms
+A_s1,A,False,full20,bicuculline (full),0.2,drt_oth,-0.0106386666666793,rt_change_other_field_ms
+A_s1,A,False,full35,bicuculline (full),0.35,drt_oth,-0.5388983333333357,rt_change_other_field_ms
+A_s1,A,False,musc50,muscimol,0.5,drt_oth,-0.2758580000000137,rt_change_other_field_ms
+A_s2,A,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+A_s2,A,False,full05,bicuculline (full),0.05,drt_oth,0.1925466666666864,rt_change_other_field_ms
+A_s2,A,False,full10,bicuculline (full),0.1,drt_oth,0.1908633333333114,rt_change_other_field_ms
+A_s2,A,False,full20,bicuculline (full),0.2,drt_oth,0.5850033333333329,rt_change_other_field_ms
+A_s2,A,False,full35,bicuculline (full),0.35,drt_oth,0.6881533333333323,rt_change_other_field_ms
+A_s2,A,False,musc50,muscimol,0.5,drt_oth,-2.184650000000005,rt_change_other_field_ms
+A_s3,A,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+A_s3,A,False,full05,bicuculline (full),0.05,drt_oth,0.0998353333333454,rt_change_other_field_ms
+A_s3,A,False,full10,bicuculline (full),0.1,drt_oth,0.1042103333333415,rt_change_other_field_ms
+A_s3,A,False,full20,bicuculline (full),0.2,drt_oth,0.1065086666666701,rt_change_other_field_ms
+A_s3,A,False,full35,bicuculline (full),0.35,drt_oth,-0.0696796666666728,rt_change_other_field_ms
+A_s3,A,False,musc50,muscimol,0.5,drt_oth,-0.7248096666666584,rt_change_other_field_ms
+A_s4,A,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+A_s4,A,False,full05,bicuculline (full),0.05,drt_oth,0.0435999999999978,rt_change_other_field_ms
+A_s4,A,False,full10,bicuculline (full),0.1,drt_oth,0.0933233333333447,rt_change_other_field_ms
+A_s4,A,False,full20,bicuculline (full),0.2,drt_oth,0.0058199999999999,rt_change_other_field_ms
+A_s4,A,False,full35,bicuculline (full),0.35,drt_oth,-0.2104300000000023,rt_change_other_field_ms
+A_s4,A,False,musc50,muscimol,0.5,drt_oth,-1.749206666666666,rt_change_other_field_ms
+A_s5,A,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+A_s5,A,False,full05,bicuculline (full),0.05,drt_oth,0.2530116666666515,rt_change_other_field_ms
+A_s5,A,False,full10,bicuculline (full),0.1,drt_oth,0.3490603333333126,rt_change_other_field_ms
+A_s5,A,False,full20,bicuculline (full),0.2,drt_oth,0.6439216666666709,rt_change_other_field_ms
+A_s5,A,False,full35,bicuculline (full),0.35,drt_oth,0.5871783333333269,rt_change_other_field_ms
+A_s5,A,False,musc50,muscimol,0.5,drt_oth,-2.6994836666666657,rt_change_other_field_ms
+AE_s0,AE,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+AE_s0,AE,False,full05,bicuculline (full),0.05,drt_oth,0.0037027994791714,rt_change_other_field_ms
+AE_s0,AE,False,full10,bicuculline (full),0.1,drt_oth,-0.0207316080729071,rt_change_other_field_ms
+AE_s0,AE,False,full20,bicuculline (full),0.2,drt_oth,0.0583699544270928,rt_change_other_field_ms
+AE_s0,AE,False,full35,bicuculline (full),0.35,drt_oth,-0.76690673828125,rt_change_other_field_ms
+AE_s0,AE,False,musc50,muscimol,0.5,drt_oth,-1.4962158203125,rt_change_other_field_ms
+AE_s1,AE,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+AE_s1,AE,False,full05,bicuculline (full),0.05,drt_oth,0.209228515625,rt_change_other_field_ms
+AE_s1,AE,False,full10,bicuculline (full),0.1,drt_oth,0.5305989583333286,rt_change_other_field_ms
+AE_s1,AE,False,full20,bicuculline (full),0.2,drt_oth,0.7815755208333286,rt_change_other_field_ms
+AE_s1,AE,False,full35,bicuculline (full),0.35,drt_oth,0.5007527669270786,rt_change_other_field_ms
+AE_s1,AE,False,musc50,muscimol,0.5,drt_oth,-3.412353515625,rt_change_other_field_ms
+AE_s2,AE,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+AE_s2,AE,False,full05,bicuculline (full),0.05,drt_oth,0.0414632161458285,rt_change_other_field_ms
+AE_s2,AE,False,full10,bicuculline (full),0.1,drt_oth,0.07049560546875,rt_change_other_field_ms
+AE_s2,AE,False,full20,bicuculline (full),0.2,drt_oth,0.0897420247395786,rt_change_other_field_ms
+AE_s2,AE,False,full35,bicuculline (full),0.35,drt_oth,0.0331217447916571,rt_change_other_field_ms
+AE_s2,AE,False,musc50,muscimol,0.5,drt_oth,-1.8865152994791716,rt_change_other_field_ms
+AE_s3,AE,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+AE_s3,AE,False,full05,bicuculline (full),0.05,drt_oth,0.1012166341145786,rt_change_other_field_ms
+AE_s3,AE,False,full10,bicuculline (full),0.1,drt_oth,0.1719563802083286,rt_change_other_field_ms
+AE_s3,AE,False,full20,bicuculline (full),0.2,drt_oth,0.1494547526041572,rt_change_other_field_ms
+AE_s3,AE,False,full35,bicuculline (full),0.35,drt_oth,-1.0485636393229214,rt_change_other_field_ms
+AE_s3,AE,False,musc50,muscimol,0.5,drt_oth,-2.6858927408854214,rt_change_other_field_ms
+AE_s4,AE,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+AE_s4,AE,False,full05,bicuculline (full),0.05,drt_oth,0.1213175455729356,rt_change_other_field_ms
+AE_s4,AE,False,full10,bicuculline (full),0.1,drt_oth,0.3105061848958428,rt_change_other_field_ms
+AE_s4,AE,False,full20,bicuculline (full),0.2,drt_oth,0.6117757161458428,rt_change_other_field_ms
+AE_s4,AE,False,full35,bicuculline (full),0.35,drt_oth,0.6944580078125,rt_change_other_field_ms
+AE_s4,AE,False,musc50,muscimol,0.5,drt_oth,-3.983378092447907,rt_change_other_field_ms
+AE_s5,AE,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+AE_s5,AE,False,full05,bicuculline (full),0.05,drt_oth,0.2910359700520928,rt_change_other_field_ms
+AE_s5,AE,False,full10,bicuculline (full),0.1,drt_oth,0.6049397786458428,rt_change_other_field_ms
+AE_s5,AE,False,full20,bicuculline (full),0.2,drt_oth,0.8974812825520928,rt_change_other_field_ms
+AE_s5,AE,False,full35,bicuculline (full),0.35,drt_oth,0.9676920572916856,rt_change_other_field_ms
+AE_s5,AE,False,musc50,muscimol,0.5,drt_oth,-5.918986002604157,rt_change_other_field_ms
+B_s0,B,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+B_s0,B,False,full05,bicuculline (full),0.05,drt_oth,0.0,rt_change_other_field_ms
+B_s0,B,False,full10,bicuculline (full),0.1,drt_oth,-0.0158699999999925,rt_change_other_field_ms
+B_s0,B,False,full20,bicuculline (full),0.2,drt_oth,-0.0395133333333319,rt_change_other_field_ms
+B_s0,B,False,full35,bicuculline (full),0.35,drt_oth,-0.0433566666666678,rt_change_other_field_ms
+B_s0,B,False,musc50,muscimol,0.5,drt_oth,-0.2477646666666686,rt_change_other_field_ms
+B_s1,B,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+B_s1,B,False,full05,bicuculline (full),0.05,drt_oth,0.0,rt_change_other_field_ms
+B_s1,B,False,full10,bicuculline (full),0.1,drt_oth,0.0473633333333083,rt_change_other_field_ms
+B_s1,B,False,full20,bicuculline (full),0.2,drt_oth,0.0216263333333159,rt_change_other_field_ms
+B_s1,B,False,full35,bicuculline (full),0.35,drt_oth,-0.0962103333333459,rt_change_other_field_ms
+B_s1,B,False,musc50,muscimol,0.5,drt_oth,-0.249777000000023,rt_change_other_field_ms
+B_s2,B,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+B_s2,B,False,full05,bicuculline (full),0.05,drt_oth,0.0,rt_change_other_field_ms
+B_s2,B,False,full10,bicuculline (full),0.1,drt_oth,-0.0196533333333377,rt_change_other_field_ms
+B_s2,B,False,full20,bicuculline (full),0.2,drt_oth,-0.0178033333333331,rt_change_other_field_ms
+B_s2,B,False,full35,bicuculline (full),0.35,drt_oth,-0.0350566666666622,rt_change_other_field_ms
+B_s2,B,False,musc50,muscimol,0.5,drt_oth,-0.4490986666666856,rt_change_other_field_ms
+B_s3,B,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+B_s3,B,False,full05,bicuculline (full),0.05,drt_oth,0.0,rt_change_other_field_ms
+B_s3,B,False,full10,bicuculline (full),0.1,drt_oth,-0.0009350000000125,rt_change_other_field_ms
+B_s3,B,False,full20,bicuculline (full),0.2,drt_oth,0.0025216666666381,rt_change_other_field_ms
+B_s3,B,False,full35,bicuculline (full),0.35,drt_oth,0.0025833333333196,rt_change_other_field_ms
+B_s3,B,False,musc50,muscimol,0.5,drt_oth,-0.3150250000000199,rt_change_other_field_ms
+B_s4,B,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+B_s4,B,False,full05,bicuculline (full),0.05,drt_oth,-0.0122266666666632,rt_change_other_field_ms
+B_s4,B,False,full10,bicuculline (full),0.1,drt_oth,-0.0224613333333394,rt_change_other_field_ms
+B_s4,B,False,full20,bicuculline (full),0.2,drt_oth,-0.0224613333333394,rt_change_other_field_ms
+B_s4,B,False,full35,bicuculline (full),0.35,drt_oth,-0.031618333333327,rt_change_other_field_ms
+B_s4,B,False,musc50,muscimol,0.5,drt_oth,-0.2206833333333264,rt_change_other_field_ms
+B_s5,B,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+B_s5,B,False,full05,bicuculline (full),0.05,drt_oth,-0.0050866666666706,rt_change_other_field_ms
+B_s5,B,False,full10,bicuculline (full),0.1,drt_oth,-0.0050866666666706,rt_change_other_field_ms
+B_s5,B,False,full20,bicuculline (full),0.2,drt_oth,-0.0280763333333311,rt_change_other_field_ms
+B_s5,B,False,full35,bicuculline (full),0.35,drt_oth,-0.0448206666666806,rt_change_other_field_ms
+B_s5,B,False,musc50,muscimol,0.5,drt_oth,-0.1718160000000068,rt_change_other_field_ms
+C_s0,C,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+C_s0,C,False,full05,bicuculline (full),0.05,drt_oth,-0.6106974283854072,rt_change_other_field_ms
+C_s0,C,False,full10,bicuculline (full),0.1,drt_oth,-2.00872802734375,rt_change_other_field_ms
+C_s0,C,False,full20,bicuculline (full),0.2,drt_oth,-10.877054850260407,rt_change_other_field_ms
+C_s0,C,False,full35,bicuculline (full),0.35,drt_oth,-20.36324055989583,rt_change_other_field_ms
+C_s0,C,False,musc50,muscimol,0.5,drt_oth,-0.0359700520833143,rt_change_other_field_ms
+C_s4,C,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+C_s4,C,False,full05,bicuculline (full),0.05,drt_oth,0.0121256510416571,rt_change_other_field_ms
+C_s4,C,False,full10,bicuculline (full),0.1,drt_oth,0.02508544921875,rt_change_other_field_ms
+C_s4,C,False,full20,bicuculline (full),0.2,drt_oth,0.0192667643229071,rt_change_other_field_ms
+C_s4,C,False,full35,bicuculline (full),0.35,drt_oth,0.0320638020833285,rt_change_other_field_ms
+C_s4,C,False,musc50,muscimol,0.5,drt_oth,-0.1820475260416714,rt_change_other_field_ms
+C_s5,C,False,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+C_s5,C,False,full05,bicuculline (full),0.05,drt_oth,0.0,rt_change_other_field_ms
+C_s5,C,False,full10,bicuculline (full),0.1,drt_oth,-0.0147908528645785,rt_change_other_field_ms
+C_s5,C,False,full20,bicuculline (full),0.2,drt_oth,-0.0712687174479071,rt_change_other_field_ms
+C_s5,C,False,full35,bicuculline (full),0.35,drt_oth,-1.3668416341145786,rt_change_other_field_ms
+C_s5,C,False,musc50,muscimol,0.5,drt_oth,-0.2607828776041572,rt_change_other_field_ms
+hand_A,A,True,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+hand_A,A,True,full05,bicuculline (full),0.05,drt_oth,0.1637966666666557,rt_change_other_field_ms
+hand_A,A,True,full10,bicuculline (full),0.1,drt_oth,0.3052966666666634,rt_change_other_field_ms
+hand_A,A,True,full20,bicuculline (full),0.2,drt_oth,1.2653799999999933,rt_change_other_field_ms
+hand_A,A,True,full35,bicuculline (full),0.35,drt_oth,3.776183333333336,rt_change_other_field_ms
+hand_A,A,True,musc50,muscimol,0.5,drt_oth,-26.106889999999996,rt_change_other_field_ms
+hand_B,B,True,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+hand_B,B,True,full05,bicuculline (full),0.05,drt_oth,0.1977733333333446,rt_change_other_field_ms
+hand_B,B,True,full10,bicuculline (full),0.1,drt_oth,0.5514933333333545,rt_change_other_field_ms
+hand_B,B,True,full20,bicuculline (full),0.2,drt_oth,1.0643500000000188,rt_change_other_field_ms
+hand_B,B,True,full35,bicuculline (full),0.35,drt_oth,2.5311900000000094,rt_change_other_field_ms
+hand_B,B,True,musc50,muscimol,0.5,drt_oth,-26.198813333333334,rt_change_other_field_ms
+hand_C,C,True,ctrl,control,0.0,drt_oth,0.0,rt_change_other_field_ms
+hand_C,C,True,full05,bicuculline (full),0.05,drt_oth,0.0017300000000091,rt_change_other_field_ms
+hand_C,C,True,full10,bicuculline (full),0.1,drt_oth,0.0460233333333519,rt_change_other_field_ms
+hand_C,C,True,full20,bicuculline (full),0.2,drt_oth,0.1312066666666851,rt_change_other_field_ms
+hand_C,C,True,full35,bicuculline (full),0.35,drt_oth,0.1838633333333348,rt_change_other_field_ms
+hand_C,C,True,musc50,muscimol,0.5,drt_oth,-2.346429999999998,rt_change_other_field_ms

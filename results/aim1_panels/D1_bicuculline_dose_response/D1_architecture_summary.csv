@@ -1,0 +1,145 @@
+measure,arch,cond,manipulation,dose_d,n_networks,n_defined,median,min,max,plotted
+delta_logit_bias_toward_injected_value_controlled,A,ctrl,control,0.0,6,6,0.0,0.0,0.0,True
+delta_logit_bias_toward_injected_value_controlled,A,full05,bicuculline (full),0.05,6,6,0.2045142864808834,-1.778861273911556,0.9050323626094672,True
+delta_logit_bias_toward_injected_value_controlled,A,full10,bicuculline (full),0.1,6,6,1.0144227967314916,-1.8814939834588449,1.7033171554918145,True
+delta_logit_bias_toward_injected_value_controlled,A,full20,bicuculline (full),0.2,6,6,1.4993971617815647,-2.31790913418529,8.37644426238711,True
+delta_logit_bias_toward_injected_value_controlled,A,full35,bicuculline (full),0.35,6,4,4.138305214460438,2.57302034993718,5.96428784329994,False
+delta_logit_bias_toward_injected_value_controlled,A,musc50,muscimol,0.5,6,6,-14.887834476955991,-40.31435884327494,-6.0096945168613045,True
+delta_logit_bias_toward_injected_value_controlled,AE,ctrl,control,0.0,6,6,0.0,0.0,0.0,True
+delta_logit_bias_toward_injected_value_controlled,AE,full05,bicuculline (full),0.05,6,6,0.4338641267600203,-0.142342826753547,0.8703771604623856,True
+delta_logit_bias_toward_injected_value_controlled,AE,full10,bicuculline (full),0.1,6,6,1.2978206855403154,0.4540086412647536,1.5555856022693115,True
+delta_logit_bias_toward_injected_value_controlled,AE,full20,bicuculline (full),0.2,6,6,3.2534388673218997,2.1503698484606337,5.48452463993439,True
+delta_logit_bias_toward_injected_value_controlled,AE,full35,bicuculline (full),0.35,6,4,11.91106007816838,2.883655345590136,28.56823485472211,False
+delta_logit_bias_toward_injected_value_controlled,AE,musc50,muscimol,0.5,6,6,-18.71019576592353,-20.58572941846437,-17.649947455593498,True
+delta_logit_bias_toward_injected_value_controlled,B,ctrl,control,0.0,6,6,0.0,0.0,0.0,True
+delta_logit_bias_toward_injected_value_controlled,B,full05,bicuculline (full),0.05,6,6,0.6623538364119009,-0.8293267526744241,3.226889018402643,True
+delta_logit_bias_toward_injected_value_controlled,B,full10,bicuculline (full),0.1,6,6,1.0919398975002181,-0.0885222591010599,5.1871689202518905,True
+delta_logit_bias_toward_injected_value_controlled,B,full20,bicuculline (full),0.2,6,6,2.196878218467155,-9.252886729003691,5.338375783134604,True
+delta_logit_bias_toward_injected_value_controlled,B,full35,bicuculline (full),0.35,6,6,0.9856584494648221,-15.682407779149042,12.21716344231605,True
+delta_logit_bias_toward_injected_value_controlled,B,musc50,muscimol,0.5,6,6,-12.245039337684192,-28.564522160476145,1.3129757160994018,True
+delta_logit_bias_toward_injected_value_controlled,C,ctrl,control,0.0,3,3,0.0,0.0,0.0,True
+delta_logit_bias_toward_injected_value_controlled,C,full05,bicuculline (full),0.05,3,3,-1.6066406008563856,-2.0365665845780283,-0.1124614889086388,True
+delta_logit_bias_toward_injected_value_controlled,C,full10,bicuculline (full),0.1,3,3,-3.1337384327073794,-9.522321140650384,-0.1330364547201843,True
+delta_logit_bias_toward_injected_value_controlled,C,full20,bicuculline (full),0.2,3,3,-1.9449066662313608,-7.634194963833325,8.157894418444615,True
+delta_logit_bias_toward_injected_value_controlled,C,full35,bicuculline (full),0.35,3,1,7.552505486742043,7.552505486742043,7.552505486742043,False
+delta_logit_bias_toward_injected_value_controlled,C,musc50,muscimol,0.5,3,3,-20.621126470725752,-24.779503504667627,36.30135507009192,True
+delta_p_choose_injected_field,A,ctrl,control,0.0,6,6,0.0,0.0,0.0,True
+delta_p_choose_injected_field,A,full05,bicuculline (full),0.05,6,6,0.0393207243496114,0.0287994420040439,0.0564072950348061,True
+delta_p_choose_injected_field,A,full10,bicuculline (full),0.1,6,6,0.07735229281851215,0.0630088961757853,0.1090869526257501,True
+delta_p_choose_injected_field,A,full20,bicuculline (full),0.2,6,6,0.12645016941522635,0.0868143551742647,0.162545193526274,True
+delta_p_choose_injected_field,A,full35,bicuculline (full),0.35,6,5,0.3077147833538327,0.1775713033486665,0.4522622517677786,False
+delta_p_choose_injected_field,A,musc50,muscimol,0.5,6,6,-0.4909193459466342,-0.7448521470324447,-0.2394675015974972,True
+delta_p_choose_injected_field,AE,ctrl,control,0.0,6,6,0.0,0.0,0.0,True
+delta_p_choose_injected_field,AE,full05,bicuculline (full),0.05,6,6,0.04763226265477235,0.0345757357174699,0.1539871056187982,True
+delta_p_choose_injected_field,AE,full10,bicuculline (full),0.1,6,6,0.1066723607273853,0.0664585744292886,0.2919161739487997,True
+delta_p_choose_injected_field,AE,full20,bicuculline (full),0.2,6,6,0.21571132758866818,0.1515757956523679,0.4727093213253246,True
+delta_p_choose_injected_field,AE,full35,bicuculline (full),0.35,6,5,0.4469869139271586,0.2439482969742389,0.685854383001919,False
+delta_p_choose_injected_field,AE,musc50,muscimol,0.5,6,6,-0.3583935469469727,-0.7412216341649038,-0.236011284455655,True
+delta_p_choose_injected_field,B,ctrl,control,0.0,6,6,0.0,0.0,0.0,True
+delta_p_choose_injected_field,B,full05,bicuculline (full),0.05,6,6,0.007759960805196,-0.0077509816218885,0.0143570472913936,True
+delta_p_choose_injected_field,B,full10,bicuculline (full),0.1,6,6,0.01507489213935935,-0.0324061174767671,0.0290776523425206,True
+delta_p_choose_injected_field,B,full20,bicuculline (full),0.2,6,6,0.0355035453717822,-0.1844501975134446,0.0784750041395578,True
+delta_p_choose_injected_field,B,full35,bicuculline (full),0.35,6,6,0.06771436404826936,-0.1761160919956279,0.0998408874058542,True
+delta_p_choose_injected_field,B,musc50,muscimol,0.5,6,6,-0.468781789086262,-0.5709128524077877,-0.423403860493532,True
+delta_p_choose_injected_field,C,ctrl,control,0.0,3,3,0.0,0.0,0.0,True
+delta_p_choose_injected_field,C,full05,bicuculline (full),0.05,3,3,0.0309746034933944,0.0086113124929293,0.0839857227822011,True
+delta_p_choose_injected_field,C,full10,bicuculline (full),0.1,3,3,0.0713253962390864,0.0193556026155777,0.163981584003286,True
+delta_p_choose_injected_field,C,full20,bicuculline (full),0.2,3,3,0.2466871066633,0.0567426418475456,0.3377001903227568,True
+delta_p_choose_injected_field,C,full35,bicuculline (full),0.35,3,1,0.4022509990388075,0.4022509990388075,0.4022509990388075,False
+delta_p_choose_injected_field,C,musc50,muscimol,0.5,3,3,-0.4345311532697143,-0.649960174768297,-0.4146156406914467,True
+fixation_break_fraction_toward_injected,A,ctrl,control,0.0,6,0,,,,False
+fixation_break_fraction_toward_injected,A,full05,bicuculline (full),0.05,6,1,0.9166666666666669,0.9166666666666669,0.9166666666666669,False
+fixation_break_fraction_toward_injected,A,full10,bicuculline (full),0.1,6,3,0.9149159663865546,0.9071839080459768,0.9588888888888888,False
+fixation_break_fraction_toward_injected,A,full20,bicuculline (full),0.2,6,6,0.9876868720022989,0.9390553705759034,0.9974870177936784,True
+fixation_break_fraction_toward_injected,A,full35,bicuculline (full),0.35,6,6,0.9988230382829715,0.9968447541618274,0.9994071100397438,True
+fixation_break_fraction_toward_injected,A,musc50,muscimol,0.5,6,0,,,,False
+fixation_break_fraction_toward_injected,AE,ctrl,control,0.0,6,1,0.5454545454545454,0.5454545454545454,0.5454545454545454,False
+fixation_break_fraction_toward_injected,AE,full05,bicuculline (full),0.05,6,2,0.7724858882947119,0.7241161616161617,0.820855614973262,False
+fixation_break_fraction_toward_injected,AE,full10,bicuculline (full),0.1,6,4,0.9316450990869597,0.8461538461538461,0.9707893840209362,False
+fixation_break_fraction_toward_injected,AE,full20,bicuculline (full),0.2,6,6,0.993778244296387,0.8433048433048432,0.9973478118196952,True
+fixation_break_fraction_toward_injected,AE,full35,bicuculline (full),0.35,6,6,0.9992595046257138,0.9950536921234044,0.9994612153414524,True
+fixation_break_fraction_toward_injected,AE,musc50,muscimol,0.5,6,0,,,,False
+fixation_break_fraction_toward_injected,B,ctrl,control,0.0,6,3,0.4545454545454545,0.2967032967032967,0.881427515573857,False
+fixation_break_fraction_toward_injected,B,full05,bicuculline (full),0.05,6,3,0.5384615384615384,0.3452380952380952,0.954985597497048,False
+fixation_break_fraction_toward_injected,B,full10,bicuculline (full),0.1,6,5,0.6363636363636364,0.3781565656565656,0.9784673064436948,False
+fixation_break_fraction_toward_injected,B,full20,bicuculline (full),0.2,6,6,0.8357723538644591,0.55007215007215,0.9908503120620932,True
+fixation_break_fraction_toward_injected,B,full35,bicuculline (full),0.35,6,6,0.990260455842406,0.9296650240046468,0.9971773425236586,True
+fixation_break_fraction_toward_injected,B,musc50,muscimol,0.5,6,1,0.1704545454545454,0.1704545454545454,0.1704545454545454,False
+fixation_break_fraction_toward_injected,C,ctrl,control,0.0,3,1,0.6363636363636364,0.6363636363636364,0.6363636363636364,False
+fixation_break_fraction_toward_injected,C,full05,bicuculline (full),0.05,3,1,0.6923076923076923,0.6923076923076923,0.6923076923076923,False
+fixation_break_fraction_toward_injected,C,full10,bicuculline (full),0.1,3,1,0.7894736842105263,0.7894736842105263,0.7894736842105263,False
+fixation_break_fraction_toward_injected,C,full20,bicuculline (full),0.2,3,1,0.936741088915002,0.936741088915002,0.936741088915002,False
+fixation_break_fraction_toward_injected,C,full35,bicuculline (full),0.35,3,3,0.998240107348984,0.9664573354400976,0.999484505793832,True
+fixation_break_fraction_toward_injected,C,musc50,muscimol,0.5,3,0,,,,False
+fixation_break_rate,A,ctrl,control,0.0,6,6,0.00259267981486715,0.0021460327388734,0.0032217504314085,True
+fixation_break_rate,A,full05,bicuculline (full),0.05,6,6,0.0032103846506949998,0.0025047298560117,0.005714180359507,True
+fixation_break_rate,A,full10,bicuculline (full),0.1,6,6,0.00651337458868265,0.0044679653954578,0.0124856285196795,True
+fixation_break_rate,A,full20,bicuculline (full),0.2,6,6,0.11928643489070506,0.0265437532433659,0.2883521883443342,True
+fixation_break_rate,A,full35,bicuculline (full),0.35,6,6,0.5835684374062579,0.4530849746774232,0.7007546190206327,True
+fixation_break_rate,A,musc50,muscimol,0.5,6,6,0.0014261240109382,0.001246962281809,0.0024935509047382,True
+fixation_break_rate,AE,ctrl,control,0.0,6,6,0.0021462195683133,0.0010703150463382,0.0032059161516979,True
+fixation_break_rate,AE,full05,bicuculline (full),0.05,6,6,0.00277510335541465,0.0017877092806149,0.0074961133350454,True
+fixation_break_rate,AE,full10,bicuculline (full),0.1,6,6,0.0059014460579315,0.0021406300926766,0.0683362991086061,True
+fixation_break_rate,AE,full20,bicuculline (full),0.2,6,6,0.09373037665426645,0.0110858715404664,0.3444879587199215,True
+fixation_break_rate,AE,full35,bicuculline (full),0.35,6,6,0.6198505904653203,0.2907173421704931,0.701654063136577,True
+fixation_break_rate,AE,musc50,muscimol,0.5,6,6,0.00133798722264275,0.0008936678108675,0.0030342979035441,True
+fixation_break_rate,B,ctrl,control,0.0,6,6,0.0045562890131931495,0.0032210031136487,0.0207002570656413,True
+fixation_break_rate,B,full05,bicuculline (full),0.05,6,6,0.00491768745342995,0.0037563474662578,0.0550459152758628,True
+fixation_break_rate,B,full10,bicuculline (full),0.1,6,6,0.0057309487864173,0.0042909445011071,0.115964379676712,True
+fixation_break_rate,B,full20,bicuculline (full),0.2,6,6,0.01125460163608185,0.005714180359507,0.2721279457476301,True
+fixation_break_rate,B,full35,bicuculline (full),0.35,6,6,0.1987092228115947,0.0304840188856909,0.4916615723847052,True
+fixation_break_rate,B,musc50,muscimol,0.5,6,6,0.0028603519911717,0.0019639828572058,0.0053562305601285,True
+fixation_break_rate,C,ctrl,control,0.0,3,3,0.0024993272098149,0.001075717692535,0.0042963471473039,True
+fixation_break_rate,C,full05,bicuculline (full),0.05,3,3,0.0030288952573473,0.0017931119268117,0.0051900149581715,True
+fixation_break_rate,C,full10,bicuculline (full),0.1,3,3,0.0032109451390149,0.0019693855034026,0.0066348614013586,True
+fixation_break_rate,C,full20,bicuculline (full),0.2,3,3,0.0039279657144117,0.0026918087249962,0.0230221897222258,True
+fixation_break_rate,C,full35,bicuculline (full),0.35,3,3,0.6989622544115807,0.0463410318412658,0.7137659075771675,True
+fixation_break_rate,C,musc50,muscimol,0.5,3,3,0.0019690118445227,0.0008936678108675,0.002129451141403,True
+rt_change_injected_field_ms,A,ctrl,control,0.0,6,6,0.0,0.0,0.0,True
+rt_change_injected_field_ms,A,full05,bicuculline (full),0.05,6,6,-6.770741780598961,-8.4881591796875,-5.295084635416671,True
+rt_change_injected_field_ms,A,full10,bicuculline (full),0.1,6,6,-14.819905598958336,-17.95023600260417,-10.56667073567708,True
+rt_change_injected_field_ms,A,full20,bicuculline (full),0.2,6,6,-33.47515869140625,-44.93524169921877,-24.61417643229167,True
+rt_change_injected_field_ms,A,full35,bicuculline (full),0.35,6,1,-55.62294514973958,-55.62294514973958,-55.62294514973958,False
+rt_change_injected_field_ms,A,musc50,muscimol,0.5,6,5,136.33420817057294,115.09844970703126,241.49820963541663,False
+rt_change_injected_field_ms,AE,ctrl,control,0.0,6,6,0.0,0.0,0.0,True
+rt_change_injected_field_ms,AE,full05,bicuculline (full),0.05,6,6,-7.197855631510414,-14.55108642578125,-4.045878092447921,True
+rt_change_injected_field_ms,AE,full10,bicuculline (full),0.1,6,6,-15.638763427734368,-19.49066162109375,-9.94512939453125,True
+rt_change_injected_field_ms,AE,full20,bicuculline (full),0.2,6,6,-37.15793863932291,-44.588134765625,-23.276123046875,True
+rt_change_injected_field_ms,AE,full35,bicuculline (full),0.35,6,2,-57.04871622721353,-64.79010009765624,-49.30733235677083,False
+rt_change_injected_field_ms,AE,musc50,muscimol,0.5,6,2,118.282704671224,102.33685302734376,134.2285563151042,False
+rt_change_injected_field_ms,B,ctrl,control,0.0,6,6,0.0,0.0,0.0,True
+rt_change_injected_field_ms,B,full05,bicuculline (full),0.05,6,6,-3.4883626302083286,-3.82379150390625,-3.1068522135416714,True
+rt_change_injected_field_ms,B,full10,bicuculline (full),0.1,6,6,-7.715342203776046,-8.451029459635407,-5.059895833333329,True
+rt_change_injected_field_ms,B,full20,bicuculline (full),0.2,6,6,-16.54717000325521,-20.51220703125,-15.004435221354171,True
+rt_change_injected_field_ms,B,full35,bicuculline (full),0.35,6,5,-35.51230875651041,-38.72077433268228,-31.50547281901042,False
+rt_change_injected_field_ms,B,musc50,muscimol,0.5,6,5,174.16080729166669,140.59788004557294,220.572021484375,False
+rt_change_injected_field_ms,C,ctrl,control,0.0,3,3,0.0,0.0,0.0,True
+rt_change_injected_field_ms,C,full05,bicuculline (full),0.05,3,3,-8.29937744140625,-9.573933919270814,-7.731058756510436,True
+rt_change_injected_field_ms,C,full10,bicuculline (full),0.1,3,3,-16.67850748697917,-19.1376953125,-15.938232421875,True
+rt_change_injected_field_ms,C,full20,bicuculline (full),0.2,3,3,-42.21402994791666,-47.71120198567709,-32.48531087239584,True
+rt_change_injected_field_ms,C,full35,bicuculline (full),0.35,3,1,-72.59431966145834,-72.59431966145834,-72.59431966145834,False
+rt_change_injected_field_ms,C,musc50,muscimol,0.5,3,1,214.45777384440103,214.45777384440103,214.45777384440103,False
+rt_change_other_field_ms,A,ctrl,control,0.0,6,6,0.0,0.0,0.0,True
+rt_change_other_field_ms,A,full05,bicuculline (full),0.05,6,6,0.0717176666666716,0.018271999999996,0.2530116666666515,True
+rt_change_other_field_ms,A,full10,bicuculline (full),0.1,6,6,0.0987668333333431,-0.0194900000000046,0.3490603333333126,True
+rt_change_other_field_ms,A,full20,bicuculline (full),0.2,6,6,0.056164333333334995,-0.0610120000000051,0.6439216666666709,True
+rt_change_other_field_ms,A,full35,bicuculline (full),0.35,6,6,-0.14005483333333757,-0.5388983333333357,0.6881533333333323,True
+rt_change_other_field_ms,A,musc50,muscimol,0.5,6,6,-1.2370081666666621,-2.6994836666666657,-0.160725333333346,True
+rt_change_other_field_ms,AE,ctrl,control,0.0,6,6,0.0,0.0,0.0,True
+rt_change_other_field_ms,AE,full05,bicuculline (full),0.05,6,6,0.1112670898437571,0.0037027994791714,0.2910359700520928,True
+rt_change_other_field_ms,AE,full10,bicuculline (full),0.1,6,6,0.2412312825520857,-0.0207316080729071,0.6049397786458428,True
+rt_change_other_field_ms,AE,full20,bicuculline (full),0.2,6,6,0.380615234375,0.0583699544270928,0.8974812825520928,True
+rt_change_other_field_ms,AE,full35,bicuculline (full),0.35,6,6,0.26693725585936784,-1.0485636393229214,0.9676920572916856,True
+rt_change_other_field_ms,AE,musc50,muscimol,0.5,6,6,-3.0491231282552107,-5.918986002604157,-1.4962158203125,True
+rt_change_other_field_ms,B,ctrl,control,0.0,6,6,0.0,0.0,0.0,True
+rt_change_other_field_ms,B,full05,bicuculline (full),0.05,6,6,0.0,-0.0122266666666632,0.0,True
+rt_change_other_field_ms,B,full10,bicuculline (full),0.1,6,6,-0.010478333333331551,-0.0224613333333394,0.0473633333333083,True
+rt_change_other_field_ms,B,full20,bicuculline (full),0.2,6,6,-0.02013233333333625,-0.0395133333333319,0.0216263333333159,True
+rt_change_other_field_ms,B,full35,bicuculline (full),0.35,6,6,-0.039206666666665,-0.0962103333333459,0.0025833333333196,True
+rt_change_other_field_ms,B,musc50,muscimol,0.5,6,6,-0.24877083333334582,-0.4490986666666856,-0.1718160000000068,True
+rt_change_other_field_ms,C,ctrl,control,0.0,3,3,0.0,0.0,0.0,True
+rt_change_other_field_ms,C,full05,bicuculline (full),0.05,3,3,0.0,-0.6106974283854072,0.0121256510416571,True
+rt_change_other_field_ms,C,full10,bicuculline (full),0.1,3,3,-0.0147908528645785,-2.00872802734375,0.02508544921875,True
+rt_change_other_field_ms,C,full20,bicuculline (full),0.2,3,3,-0.0712687174479071,-10.877054850260407,0.0192667643229071,True
+rt_change_other_field_ms,C,full35,bicuculline (full),0.35,3,3,-1.3668416341145786,-20.36324055989583,0.0320638020833285,True
+rt_change_other_field_ms,C,musc50,muscimol,0.5,3,3,-0.1820475260416714,-0.2607828776041572,-0.0359700520833143,True
